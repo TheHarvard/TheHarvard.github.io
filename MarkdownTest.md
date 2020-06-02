@@ -4,7 +4,7 @@ i can write Normally
 
 ### Or in titles! 
 
-or strikethrough~~
+~~or strikethrough~~
 
 | or | in | a | table |
 |----|----|---|-------|
