@@ -2,8 +2,8 @@
 /*This is a comment*/
 
 body {
-  /*background-color: #ffffff;*/
-  background-color: #202020;
+  background-color: #ffffff;
+  /*background-color: #202020;*/
   background-image: radial-gradient(
     #2a2820, #202020
   );
@@ -11,7 +11,10 @@ body {
   width: 100vw;
   height: 100vh;
   border: 1px solid transparent;
-  
+  margin-left: 1vw;
+  margin-top: 1vw;
+  margin-bottom: 1vw;
+  margin-right: 1vw;
 }
 
 body::before{
@@ -22,26 +25,26 @@ body::before{
   pointer-events: none;
   background: repeating-linear-gradient(
     transparent 0.0px, 
-    #20202040 0.5px, 
-    #20202040 0.5px, 
-    transparent 1.0px, 
-    transparent 3px);
+    #20202040 0.05vw, 
+    #20202040 0.05vw, 
+    transparent 0.10vw, 
+    transparent 0.30vw);
 }
 
 
 h1 { 
   font-size: 2vw;
-  font-family: 1.3rem Inconsolata, monospace;
+  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   color:#ffb000;
-  text-shadow: 0 0 2px #ffb000;
+  text-shadow: 0 0 0.2vw #ffb000;
   cursor:context-menu;
 }
 
 p { 
   font-size: 2vw;
-  font-family: 1.3rem Inconsolata, monospace;
+  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   color:#ffb000;
-  text-shadow: 0 0 2px #ffb000;
+  text-shadow: 0 0 0.2vw #ffb000;
   cursor:context-menu;
   overflow: hidden;
   white-space: pre-wrap;
@@ -49,31 +52,29 @@ p {
 
 a {
   font-size: 2vw;
-  font-family: 1.3rem Inconsolata, monospace;
+  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   color:#202020;
   background: #ffb000;
-  text-shadow: 0 0 2px #202020;
-  box-shadow: 0 0 2px #ffb000;
-  cursor:crosshair;
+  text-shadow: 0 0 0.2vw #202020;
+  box-shadow: 0 0 0.2vw #ffb000;
   text-decoration: none; /*remove link underline*/
 }
 
 textarea {
   font-size: 2vw;
-  font-family: 1.3rem Inconsolata, monospace;
+  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   color:#ffb000;
-  font-family: 1.3rem Inconsolata, monospace;
-  text-shadow: 0 0 2px #ffb000;
+  text-shadow: 0 0 0.2vw #ffb000;
 
   background-color: transparent;
-  box-shadow: 0 0 2px #ffb000;
+  box-shadow: 0 0 0.2vw #ffb000;
   /*width: 100%;*/
   /*height: 150px;*/
-  padding: 12px 20px;
+  padding: 0px 0px;
   box-sizing: border-box;
-  border: 7px solid #FFB000;
+  border: 1vw solid #FFB000;
   border-radius: 0px;
-  font-size: 16px;
+  font-size: 2vw;
   resize: none;
   cursor:crosshair;
 }
@@ -93,7 +94,7 @@ button:focus {
   animation: blinker 1s linear infinite;
   color:#FFB000;
   font-family: "Lucida Console", "Courier New", monospace;
-  text-shadow: 0 0 2px #ffb000;
+  text-shadow: 0 0 0.2vw #ffb000;
   cursor:context-menu;
 }
 
@@ -105,12 +106,13 @@ button:focus {
   100% { opacity: 1;}
 }
 
-/*selection, appaerntly*/
+/*selection, apparently*/
 
 ::selection {
   background: #FFB000;
   color:#202020;
-  text-shadow: none;
+  text-shadow: 0 0 0.3vw #202020;
+  box-shadow: 0 0 0.3vw #ffb000;
 }
 
 
