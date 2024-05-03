@@ -2,14 +2,16 @@
 /*This is a comment*/
 
 body {
-  background-color: #ffffff;
-  /*background-color: #202020;*/
+  /*background-color: #ffffff;*/
+  background-color: #202020;
   background-image: radial-gradient(
     #2a2820, #202020
   );
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   
-  width: 100vw;
-  height: 100vh;
+  width: 100vmax;
+  height: 100vmax;
   border: 1px solid transparent;
   margin-left: 1vw;
   margin-top: 1vw;
@@ -91,7 +93,7 @@ button:focus {
 
 .blink{
   font-size: 2vw;
-  animation: blinker 1s linear infinite;
+  animation: blinker 1.5s linear infinite;
   color:#FFB000;
   font-family: "Lucida Console", "Courier New", monospace;
   text-shadow: 0 0 0.2vw #ffb000;
