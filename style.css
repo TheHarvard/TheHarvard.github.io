@@ -48,6 +48,22 @@ p {
   color:#ffb000;
   text-shadow: 0 0 0.2vw #ffb000;
   cursor:context-menu;
+}
+
+pre { 
+  font-size: 2vw;
+  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+  color:#ffb000;
+  text-shadow: 0 0 0.2vw #ffb000;
+  cursor:context-menu;
+}
+
+code { 
+  font-size: 2vw;
+  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+  color:#ffb000;
+  text-shadow: 0 0 0.2vw #ffb000;
+  cursor:context-menu;
   overflow: hidden;
   white-space: pre-wrap;
 }
@@ -61,6 +77,31 @@ a {
   box-shadow: 0 0 0.2vw #ffb000;
   text-decoration: none; /*remove link underline*/
 }
+
+
+summary {
+  font-size: 2vw;
+  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+  color:#ffb000;
+  text-shadow: 0 0 0.2vw #ffb000;
+  cursor:context-menu;
+}
+
+details {
+  font-size: 2vw;
+  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+  color:#ffb000;
+  text-shadow: 0 0 0.2vw #ffb000;
+  cursor:context-menu;
+}
+details > summary {
+  list-style-type: '';
+}
+details[open] > summary {
+  list-style-type: '';
+}
+
+
 
 textarea {
   font-size: 2vw;
