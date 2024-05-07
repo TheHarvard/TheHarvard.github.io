@@ -1,6 +1,50 @@
 
 /*This is a comment*/
 
+.noto-sans-math-regular {
+  font-family: "Noto Sans Math", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.noto-emoji-regular {
+  font-family: "Noto Emoji", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+.noto-color-emoji-regular {
+  font-family: "Noto Color Emoji", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.noto-sans-signwriting-regular {
+  font-family: "Noto Sans SignWriting", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.noto-music-regular {
+  font-family: "Noto Music", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.noto-sans-symbols-2-regular {
+  font-family: "Noto Sans Symbols 2", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.noto-sans-symbols-regular> {
+  font-family: "Noto Sans Symbols", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+
+
+
+
+
 body {
   /*background-color: #ffffff;*/
   background-color: #202020;
@@ -23,8 +67,9 @@ body::before{
   position: absolute;
   content: '';
   width: 100vw;
-  height: 100vh;
+  height: 1000vh;
   pointer-events: none;
+  background-attachment: fixed;
   background: repeating-linear-gradient(
     transparent 0.0px, 
     #20202040 0.05vw, 
@@ -52,7 +97,7 @@ p {
 
 pre { 
   font-size: 2vw;
-  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+  font-family: "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   color:#ffb000;
   text-shadow: 0 0 0.2vw #ffb000;
   cursor:context-menu;
