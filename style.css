@@ -1,6 +1,7 @@
 
 /*This is a comment*/
 
+/*
 .noto-sans-math-regular {
   font-family: "Noto Sans Math", sans-serif;
   font-weight: 400;
@@ -38,7 +39,7 @@
   font-weight: 400;
   font-style: normal;
 }
-
+*/
 
 
 
@@ -47,9 +48,12 @@
 
 body {
   /*background-color: #ffffff;*/
-  background-color: #202020;
-  background-image: radial-gradient(
+  /*background-color: #202020;*/
+  /*background-image: radial-gradient(
     #2a2820, #202020
+  );*/
+  background-image: radial-gradient(
+    hsl(48, 14%, 15%), hsl(0, 0%, 13%)
   );
   background-repeat: no-repeat;
   background-attachment: fixed;
