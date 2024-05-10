@@ -53,7 +53,7 @@ body {
     #2a2820, #202020
   );*/
   background-image: radial-gradient(
-    hsl(48, 14%, 15%), hsl(0, 0%, 13%)
+    rgb(44, 41, 33), rgb(33, 33, 33)
   );
   background-repeat: no-repeat;
   background-attachment: fixed;
