@@ -16,7 +16,7 @@ body {
   
   width: 92vw;
   height: 1000vh;
-  border: 1px solid white;
+  border: 1px solid transparent;
   margin-left: 2vw;
   margin-top: 2vw;
   margin-bottom: 2vw;
@@ -73,14 +73,8 @@ h3 {
   cursor:context-menu;
 }
 
-p { 
-  font-size: 2vw;
-  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
-  color:#ffb000;
-  text-shadow: 0 0 0.2vw #ffb000;
-  cursor:context-menu;
-}
-
+p,
+code,
 pre { 
   font-size: 2vw;
   font-family: "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
@@ -89,23 +83,11 @@ pre {
   cursor:context-menu;
 }
 
-code { 
+a {
   font-size: 2vw;
   font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   color:#ffb000;
   text-shadow: 0 0 0.2vw #ffb000;
-  cursor:context-menu;
-  overflow: hidden;
-  white-space: pre-wrap;
-}
-
-a {
-  font-size: 2vw;
-  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
-  color:#202020;
-  background: #ffb000;
-  text-shadow: 0 0 0.2vw #202020;
-  box-shadow: 0 0 0.2vw #ffb000;
   text-decoration: none; /*remove link underline*/
 }
 
@@ -132,8 +114,6 @@ details[open] > summary {
   list-style-type: '';
 }
 
-
-
 textarea {
   font-size: 2vw;
   font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
@@ -153,11 +133,22 @@ textarea {
   cursor:crosshair;
 }
 
+a:hover,
+a:focus,
+summary:focus,
+summary:hover,
 input:focus,
-select:focus,
+input:hover
 textarea:focus,
-button:focus {
-    outline: none;
+textarea:hover,
+button:focus,
+button:hover {
+  /*focus for tabindex navigation*/
+  outline: none;
+  color:#202020;
+  background: #ffb000;
+  text-shadow: 0 0 0.2vw #202020;
+  box-shadow: 0 0 0.2vw #ffb000;
 }
 
 
