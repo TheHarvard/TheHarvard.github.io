@@ -43,41 +43,26 @@ h1 {
   font-weight: bold;
   text-decoration-line: none;
   margin-left: 2vw;
-
-  font-size: 2vw;
-  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
-  color:#ffb000;
-  text-shadow: 0 0 0.2vw #ffb000;
-  cursor:context-menu;
 }
 h2 { 
   font-weight: normal;
   text-decoration-line: underline;
   margin-left: 2vw;
-
-  font-size: 2vw;
-  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
-  color:#ffb000;
-  text-shadow: 0 0 0.2vw #ffb000;
-  cursor:context-menu;
 }
 h3 { 
   font-weight: normal;
   text-decoration-line: none;
   margin-left: 1vw;
-  
-  font-size: 2vw;
-  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
-  color:#ffb000;
-  text-shadow: 0 0 0.2vw #ffb000;
-  cursor:context-menu;
 }
 
 p,
 code,
-pre { 
+pre,
+h1,
+h2,
+h3 { 
   font-size: 2vw;
-  font-family: "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+  font-family: consolas, "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   color:#ffb000;
   text-shadow: 0 0 0.2vw #ffb000;
   cursor:context-menu;
@@ -85,24 +70,26 @@ pre {
 
 a {
   font-size: 2vw;
-  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+  font-family: consolas, "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   color:#ffb000;
   text-shadow: 0 0 0.2vw #ffb000;
   text-decoration: none; /*remove link underline*/
+  cursor:none;
 }
 
 
 summary {
   font-size: 2vw;
-  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+  font-family: consolas, "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   color:#ffb000;
   text-shadow: 0 0 0.2vw #ffb000;
   cursor:context-menu;
+  cursor:none;
 }
 
 details {
   font-size: 2vw;
-  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+  font-family: consolas, "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   color:#ffb000;
   text-shadow: 0 0 0.2vw #ffb000;
   cursor:context-menu;
@@ -116,7 +103,7 @@ details[open] > summary {
 
 textarea {
   font-size: 2vw;
-  font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+  font-family: consolas, "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   color:#ffb000;
   text-shadow: 0 0 0.2vw #ffb000;
 
@@ -156,18 +143,18 @@ button:hover {
 
 .blink{
   font-size: 2vw;
-  animation: blinker 1.5s linear infinite;
+  animation: blinker 0.33s linear infinite;
   color:#FFB000;
-  font-family: "Lucida Console", "Courier New", monospace;
+  font-family: consolas, "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   text-shadow: 0 0 0.2vw #ffb000;
   cursor:context-menu;
 }
 
 @keyframes blinker {
   0% { opacity: 1;}
-  25% { opacity: 0;}
-  50% { opacity: 0;}
-  75% { opacity: 1;}
+  5% { opacity: 0;}
+  45% { opacity: 0;}
+  50% { opacity: 1;}
   100% { opacity: 1;}
 }
 
