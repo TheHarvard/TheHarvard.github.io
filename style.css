@@ -15,7 +15,7 @@ body {
   background-attachment: fixed;
   
   width: 92vw;
-  height: 1000vh;
+  height: 100vh;
   border: 1px solid transparent;
   margin-left: 2vw;
   margin-top: 2vw;
@@ -26,10 +26,10 @@ body {
 }
 
 body::before{
-  position: absolute;
+  position: fixed;
   content: '';
   width: 100vw;
-  height: 1000vh;
+  height: 100vh;
   pointer-events: none;
   background-attachment: fixed;
   background: repeating-linear-gradient(
@@ -39,6 +39,7 @@ body::before{
     transparent 0.10vw, 
     transparent 0.30vw);
 }
+ 
 
 
 h1 { 
@@ -77,7 +78,7 @@ a {
   font-family: consolas, "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   color:#ffb000;
   text-shadow: 0 0 0.2vw #ffb000;
-  text-decoration: underline; /*link underline*/
+  text-decoration: none; /*link underline*/
   text-decoration-color: #ffb000; 
   text-decoration-style: dashed; 
   cursor:none;
@@ -122,11 +123,11 @@ textarea {
   /*height: 150px;*/
   padding: 0px 0px;
   box-sizing: border-box;
-  border: 1vw solid #FFB000;
+  border: 0.5vw solid #FFB000;
   border-radius: 0px;
   font-size: 2vw;
   resize: none;
-  cursor:crosshair;
+  cursor: none;
 }
 
 button { 
@@ -137,15 +138,18 @@ button {
   text-shadow: 0 0 0.3vw #FFB000;
 
   background-color: transparent;
-  box-shadow:  0 0 0.3vw #ffb000, inset 0 0 0.3vw #ffb000;
+  /*box-shadow:  0 0 0.3vw #ffb000, inset 0 0 0.3vw #ffb000;*/
 
-  border-style: solid;
+  border-style: none;
   border-color: #FFB000;
   
 
   text-decoration: none;
   display: inline-block;
+  
+  cursor: none;
 }
+
 
 a:hover,
 a:focus,
@@ -165,19 +169,63 @@ button:hover {
   box-shadow:  0 0 0.3vw #ffb000, inset 0 0 0.3vw #ffb000;
 }
 
+
 a:hover,
 a:focus {
 text-decoration: none; /*remove link underline*/
+outline: none;
+}
+
+textarea:hover,
+textarea:focus {
+  /*focus for tabindex navigation*/
+  outline: none;
+  color:#202020;
+  background: #ffb000;
+  text-shadow: 0 0 0.2vw #202020;
+  box-shadow:  0 0 0.3vw #ffb000, inset 0 0 0.3vw #ffb000;
+}
+
+
+a:active,
+button:active {
+  box-shadow:  none;
+  background-color: transparent;
+  color:#FFB000;
+  text-shadow: 0 0 0.3vw #FFB000;
+  border: 10px;
+  outline: 10px;
+  border-style: thick;
+  border-color: #FFB000;
+}
+
+/*selection, apparently*/
+
+::selection {
+  background: #FFB000;
+  color:#202020;
+  text-shadow: 0 0 0.3vw #202020;
+  box-shadow:  0 0 0.3vw #ffb000, inset 0 0 0.3vw #ffb000;
 }
 
 
 
 /*classes*/
 
-.blink{
+.blinkshort{
   font-size: 2vw;
   line-height: 2.4vw;
   animation: blinker 0.33s linear infinite;
+  color:#FFB000;
+  font-family: consolas, "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+  text-shadow: 0 0 0.2vw #ffb000;
+  cursor:context-menu;
+}
+
+.blink{
+  font-size: 2vw;
+  line-height: 2.4vw;
+  animation: blinker 1s linear infinite;
   color:#FFB000;
   font-family: consolas, "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   text-shadow: 0 0 0.2vw #ffb000;
@@ -192,13 +240,72 @@ text-decoration: none; /*remove link underline*/
   100% { opacity: 1;}
 }
 
-/*selection, apparently*/
 
-::selection {
-  background: #FFB000;
-  color:#202020;
-  text-shadow: 0 0 0.3vw #202020;
-  box-shadow:  0 0 0.3vw #ffb000, inset 0 0 0.3vw #ffb000;
+.centerfixed{
+  position: absolute;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.noscrollbody {
+  margin: 0; 
+  height: 100vh; 
+  width: 100vb; 
+  overflow: hidden;
 }
 
 
+
+
+
+
+
+
+/*
+type effect 
+https://dev.to/afif/a-multi-line-css-only-typewriter-effect-3op3
+*/
+
+/*
+body {
+  background:#005F6B;
+  color:#fff;
+  max-width:300px;
+}
+*/
+
+/*
+p {
+  margin:5px 0;
+}
+*/
+
+.type {
+  /*outline:2px solid red;  */
+  font-size: 2vw;
+  line-height: 2.5vw;
+  font-family: consolas, "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+  color:#ffb000;
+  /*text-shadow: 0 0 0.2vw #ffb000;*/
+  cursor:context-menu;
+
+  /*font-weight: 700;
+  font-size:35px;*/
+  background:linear-gradient(#ffb000 0 0) 0 0;
+  background-size:calc(var(--n)*1ch) 200%;
+  background-repeat:no-repeat;
+  animation: t calc(var(--n)*.003s) linear forwards alternate;
+}
+@keyframes t{
+  from {background-size:0 200%}
+}
+.clip {
+  color:#0000;
+  -webkit-background-clip:text;
+  background-clip:text;
+}
+.step {
+  animation-timing-function:steps(var(--n))
+}
