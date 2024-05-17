@@ -15,7 +15,7 @@ body {
   background-attachment: fixed;
   
   width: 92vw;
-  height: 100vh;
+  height: 80vh;
   border: 1px solid transparent;
   margin-left: 2vw;
   margin-top: 2vw;
@@ -256,56 +256,12 @@ button:active {
   overflow: hidden;
 }
 
-
-
-
-
-
-
-
-/*
-type effect 
-https://dev.to/afif/a-multi-line-css-only-typewriter-effect-3op3
-*/
-
-/*
-body {
-  background:#005F6B;
-  color:#fff;
-  max-width:300px;
-}
-*/
-
-/*
-p {
-  margin:5px 0;
-}
-*/
-
-.type {
-  /*outline:2px solid red;  */
+.content,
+.display {
   font-size: 2vw;
   line-height: 2.5vw;
   font-family: consolas, "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   color:#ffb000;
-  /*text-shadow: 0 0 0.2vw #ffb000;*/
+  text-shadow: 0 0 0.2vw #ffb000;
   cursor:context-menu;
-
-  /*font-weight: 700;
-  font-size:35px;*/
-  background:linear-gradient(#ffb000 0 0) 0 0;
-  background-size:calc(var(--n)*1ch) 200%;
-  background-repeat:no-repeat;
-  animation: t calc(var(--n)*.003s) linear forwards alternate;
-}
-@keyframes t{
-  from {background-size:0 200%}
-}
-.clip {
-  color:#0000;
-  -webkit-background-clip:text;
-  background-clip:text;
-}
-.step {
-  animation-timing-function:steps(var(--n))
 }
