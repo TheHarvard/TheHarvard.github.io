@@ -56,17 +56,18 @@ document.addEventListener("DOMContentLoaded", function() {
                     else if (tagString.startsWith("<type-")||tagString.startsWith("</type-")) {
                         let closingIndex = htmlString.indexOf(">", index + i);
                         const typeTagString = htmlString.substring(index + i,closingIndex);
-                        console.log(typeTagString, "at index:", index, "-", closingIndex);
+                        //console.log(typeTagString, "at index:", index, "-", closingIndex);
 
 
                         if (typeTagString.startsWith("<type-sleep")) {
                             // delay for one character, then resume standard speed
                             charactersPerRender_override = 1;
-                            renderTime_override = 300;
+                            renderTime_override = 1000;
+                            console.log("sleept at index:", index, "-", closingIndex);
 
                         } else if (typeTagString.startsWith("<type-speed-norm")) {
                             // set the speed going forward - WIP
-                            charactersPerRender = 3;
+                            charactersPerRender = 6;
                             renderTime = 5;
 
                         } else if (typeTagString.startsWith("<type-speed-fast")) {
@@ -106,11 +107,11 @@ document.addEventListener("DOMContentLoaded", function() {
                         
                             // pause rendering until something happens - WIP
                         } else if (typeTagString.startsWith("<type-wait")) {
-                        console.log("<type-wait", index + i);
+                        //console.log("<type-wait", index + i);
 
                     }
                         //skip lenght of tag
-                        console.log("skipped tag:", htmlString.substring(index + i,closingIndex));
+                        //console.log("skipped tag:", htmlString.substring(index + i,closingIndex));
                         index = closingIndex;
                         if (renderTime_override < 4) {
                             renderTime_override = 4;
