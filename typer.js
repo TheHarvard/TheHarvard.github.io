@@ -2,12 +2,13 @@ document.addEventListener("DOMContentLoaded", function() {
     const contentElement = document.getElementById("content");
     const displayElement = document.getElementById("display");
 
-    const htmlString = contentElement.innerHTML;
+    let htmlString = contentElement.innerHTML;
     let index = 0;
     let charactersPerRender_override = 0;
     let renderTime_override = 0;
-    const charactersPerRender = 3; // Number of characters added in each render
-    const renderTime = 4; // Speed in milliseconds
+    let charactersPerRender = 3; // Number of characters added in each render
+    let renderTime = 4; // Speed in milliseconds
+    let doneflag = false;
 
     function typeWriter() {
         let charactersToBeRendered = "";
@@ -26,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function() {
             charactersPerRender_override = 0;
             renderTime_override = 0;
             let i = 0;
-            while (i < charactersToBeRendered.length) {
+            while (i < charactersToBeRendered.length && doneflag == false) {
                 const char = charactersToBeRendered[i];
                 if (char === '<') {
                     // Found the start of an HTML tag
@@ -38,22 +39,84 @@ document.addEventListener("DOMContentLoaded", function() {
                         // Look for the closing </details> tag after the opening <details> tag
                         let closingIndex = htmlString.indexOf("</details>", index + i);
                         if (closingIndex !== -1) {
-                            console.log("Skipped:", closingIndex - index, "characters.");
+                            //console.log("Skipped:", closingIndex - index, "characters.");
                             index = closingIndex;
                             break; // Exit the loop after finding the closing tag
                         }
                     }
-                    else if (tagString.startsWith("<type_")) {
-                        let closingIndex = htmlString.indexOf(">", index + i);
-                        const typeTagString = htmlString.substring(index + i,closingIndex);
+                    else if (tagString.startsWith("<!--")) {
+                        //skip rendering comments
+                        let closingIndex = htmlString.indexOf("-->", index + i);
+                        console.log("skipped comment at:", index + i,closingIndex);
                         index = closingIndex;
-                        console.log(typeTagString, "at index:", index);
-
-                        if (typeTagString.startsWith("<type_sleep")) {
-                            charactersPerRender_override = 1;
-                            renderTime_override = 300;
+                        if (renderTime_override < 4) {
+                            renderTime_override = 4;
                         }
                     }
+                    else if (tagString.startsWith("<type-")||tagString.startsWith("</type-")) {
+                        let closingIndex = htmlString.indexOf(">", index + i);
+                        const typeTagString = htmlString.substring(index + i,closingIndex);
+                        console.log(typeTagString, "at index:", index, "-", closingIndex);
+
+
+                        if (typeTagString.startsWith("<type-sleep")) {
+                            // delay for one character, then resume standard speed
+                            charactersPerRender_override = 1;
+                            renderTime_override = 300;
+
+                        } else if (typeTagString.startsWith("<type-speed-norm")) {
+                            // set the speed going forward - WIP
+                            charactersPerRender = 3;
+                            renderTime = 5;
+
+                        } else if (typeTagString.startsWith("<type-speed-fast")) {
+                            // set the speed going forward - WIP
+                            charactersPerRender = 10;
+                            renderTime = 5;
+
+                        } else if (typeTagString.startsWith("<type-speed-vfast")) {
+                            // set the speed going forward - WIP
+                            charactersPerRender = 160;
+                            renderTime = 5;
+
+                        } else if (typeTagString.startsWith("<type-speed-slow")) {
+                            // set the speed going forward - WIP
+                            charactersPerRender = 1;
+                            renderTime = 40;
+
+                        } else if (typeTagString.startsWith("<type-speed-vslow")) {
+                            // set the speed going forward - WIP
+                            charactersPerRender = 1;
+                            renderTime = 200;
+
+                        } else if (typeTagString.startsWith("</type-forget")) {
+                            // add comment after tag close is hit
+                            let openingIndex = htmlString.lastIndexOf("<type-forget", index + i);
+                            //console.log("<type-forget>:", closingIndex,"</type-forget:", index + i);
+                            htmlString = htmlString.substring(0, index + i) + "-->" + htmlString.substring(index + i);
+                            htmlString = htmlString.substring(0, openingIndex) + "<!--" + htmlString.substring(openingIndex+13);
+                        
+                            // skip the render of the rest of the document, skip to finished - WIP
+                        } else if (typeTagString.startsWith("<type-done")) {
+                            doneflag = true;
+
+                            // restarts the douement render - WIP
+                        } else if (typeTagString.startsWith("<type-loop")) {
+                            index = 0
+                        
+                            // pause rendering until something happens - WIP
+                        } else if (typeTagString.startsWith("<type-wait")) {
+                        console.log("<type-wait", index + i);
+
+                    }
+                        //skip lenght of tag
+                        console.log("skipped tag:", htmlString.substring(index + i,closingIndex));
+                        index = closingIndex;
+                        if (renderTime_override < 4) {
+                            renderTime_override = 4;
+                        }
+                    }
+
                 }
                 i++;
             }
