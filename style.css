@@ -41,7 +41,6 @@ body::before{
 }
  
 
-
 h1 { 
   font-weight: bold;
   text-decoration-line: none;
@@ -71,6 +70,15 @@ h3 {
   text-shadow: 0 0 0.2vw #ffb000;
   cursor:context-menu;
 }
+
+div{
+  font-size: 2vw;
+  line-height: 2.5vw;
+  font-family: consolas, "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+  color:#ffb000;
+  text-shadow: 0 0 0.2vw #ffb000;
+  cursor:context-menu;}
+
 
 mark{
   font-size: 2vw;
@@ -159,6 +167,8 @@ button {
   display: inline-block;
   
   cursor: none;
+  margin: none;
+  padding: 0 0;
 }
 
 
