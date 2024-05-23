@@ -1,0 +1,119 @@
+
+body {
+  background-image: radial-gradient(
+    #252E24, rgb(40, 40, 40)
+  );
+}
+
+body::before{
+  background: repeating-linear-gradient(
+    transparent 0.0px, 
+    #20202040 0.05vw, 
+    #20202040 0.05vw, 
+    transparent 0.10vw, 
+    transparent 0.30vw);
+}
+ 
+p,
+code,
+pre,
+h1,
+h2,
+h3,
+div,
+a,
+summary,
+details { 
+  color:#37FF27;
+  text-shadow: 0 0 0.2vw #30FF20;
+  text-decoration-color: #30FF30; 
+}
+
+mark{
+  color:#202020;
+  background-color: #30FF30;
+  text-shadow: 0 0 0.3vw #202020;
+  box-shadow:  0 0 0.3vw #30FF30, inset 0 0 0.3vw #30FF30;
+}
+
+textarea {
+  color:#30FF30;
+  text-shadow: 0 0 0.2vw #30FF30;
+
+  background-color: transparent;
+  box-shadow:  0 0 0.3vw #30FF30, inset 0 0 0.3vw #30FF30;
+  border-color:#30FF30;
+}
+
+button { 
+  color:#30FF30;
+  text-shadow: 0 0 0.3vw #30FF30;
+  background-color: transparent;
+  border-color: #30FF30;
+}
+
+a:hover,
+a:focus,
+summary:focus,
+summary:hover,
+input:focus,
+input:hover
+textarea:focus,
+textarea:hover,
+button:focus,
+button:hover {
+  /*focus for tabindex navigation*/
+  color:#202020;
+  background: #30FF30;
+  text-shadow: 0 0 0.2vw #202020;
+  box-shadow:  0 0 0.3vw #30FF30, inset 0 0 0.3vw #30FF30;
+}
+
+textarea:hover,
+textarea:focus {
+  /*focus for tabindex navigation*/
+  outline: none;
+  color:#202020;
+  background: #30FF30;
+  text-shadow: 0 0 0.2vw #202020;
+  box-shadow:  0 0 0.3vw #30FF30, inset 0 0 0.3vw #30FF30;
+}
+
+
+a:active,
+button:active {
+  color:#30FF30;
+  text-shadow: 0 0 0.3vw #30FF30;
+  border-color: #30FF30;
+}
+
+/*selection, apparently*/
+
+::selection {
+  background: #30FF30;
+  color:#202020;
+  text-shadow: 0 0 0.3vw #202020;
+  box-shadow:  0 0 0.3vw #30FF30, inset 0 0 0.3vw #30FF30;
+}
+
+/*classes*/
+.blink,
+.blink-fast,
+.blink-slow{
+  color:#30FF30;
+  text-shadow: 0 0 0.2vw #30FF30;
+}
+
+.blink-invert{
+  color:#202020;
+  background-color: #30FF30;
+  text-shadow: 0 0 0.3vw #202020;
+  box-shadow:  0 0 0.3vw #30FF30, inset 0 0 0.3vw #30FF30;
+  text-shadow: 0 0 0.2vw #30FF30;
+}
+
+.content,
+.display {
+  color:#30FF30;
+  text-shadow: 0 0 0.2vw #30FF30;
+}

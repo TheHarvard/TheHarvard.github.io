@@ -1,0 +1,119 @@
+
+body {
+  background-image: radial-gradient(
+    #303030, #303030
+  );
+}
+
+body::before{
+  background: repeating-linear-gradient(
+    transparent 0.0px, 
+    #20202040 0.05vw, 
+    #20202040 0.05vw, 
+    transparent 0.10vw, 
+    transparent 0.30vw);
+}
+ 
+p,
+code,
+pre,
+h1,
+h2,
+h3,
+div,
+a,
+summary,
+details { 
+  color:#eeeeee;
+  text-shadow: 0 0 0.2vw #eeeeee;
+  text-decoration-color: #eeeeee; 
+}
+
+mark{
+  color:#202020;
+  background-color: #eeeeee;
+  text-shadow: 0 0 0.3vw #202020;
+  box-shadow:  0 0 0.3vw #eeeeee, inset 0 0 0.3vw #eeeeee;
+}
+
+textarea {
+  color:#eeeeee;
+  text-shadow: 0 0 0.2vw #eeeeee;
+
+  background-color: transparent;
+  box-shadow:  0 0 0.3vw #eeeeee, inset 0 0 0.3vw #eeeeee;
+  border-color:#eeeeee;
+}
+
+button { 
+  color:#eeeeee;
+  text-shadow: 0 0 0.3vw #eeeeee;
+  background-color: transparent;
+  border-color: #eeeeee;
+}
+
+a:hover,
+a:focus,
+summary:focus,
+summary:hover,
+input:focus,
+input:hover
+textarea:focus,
+textarea:hover,
+button:focus,
+button:hover {
+  /*focus for tabindex navigation*/
+  color:#202020;
+  background: #eeeeee;
+  text-shadow: 0 0 0.2vw #202020;
+  box-shadow:  0 0 0.3vw #eeeeee, inset 0 0 0.3vw #eeeeee;
+}
+
+textarea:hover,
+textarea:focus {
+  /*focus for tabindex navigation*/
+  outline: none;
+  color:#202020;
+  background: #eeeeee;
+  text-shadow: 0 0 0.2vw #202020;
+  box-shadow:  0 0 0.3vw #eeeeee, inset 0 0 0.3vw #eeeeee;
+}
+
+
+a:active,
+button:active {
+  color:#eeeeee;
+  text-shadow: 0 0 0.3vw #eeeeee;
+  border-color: #eeeeee;
+}
+
+/*selection, apparently*/
+
+::selection {
+  background: #eeeeee;
+  color:#202020;
+  text-shadow: 0 0 0.3vw #202020;
+  box-shadow:  0 0 0.3vw #eeeeee, inset 0 0 0.3vw #eeeeee;
+}
+
+/*classes*/
+.blink,
+.blink-fast,
+.blink-slow{
+  color:#eeeeee;
+  text-shadow: 0 0 0.2vw #eeeeee;
+}
+
+.blink-invert{
+  color:#202020;
+  background-color: #eeeeee;
+  text-shadow: 0 0 0.3vw #202020;
+  box-shadow:  0 0 0.3vw #eeeeee, inset 0 0 0.3vw #eeeeee;
+  text-shadow: 0 0 0.2vw #eeeeee;
+}
+
+.content,
+.display {
+  color:#eeeeee;
+  text-shadow: 0 0 0.2vw #eeeeee;
+}

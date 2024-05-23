@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function() {
         let charactersToBeRendered = "";
         if (index < htmlString.length) {
             displayElement.innerHTML = htmlString.substring(0, index + charactersPerRender) 
-            + "<span style=\"white-space: nowrap;color:#ffb000\">█</span>"; // Add charactersToBeRendered to the display
+            + "<span style=\"white-space: nowrap;\">█</span>"; // Add charactersToBeRendered to the display
 
             // Scroll to the bottom of the page
             window.scrollTo({

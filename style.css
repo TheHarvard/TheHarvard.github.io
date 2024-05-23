@@ -28,8 +28,9 @@ body {
 body::before{
   position: fixed;
   content: '';
-  width: 100vw;
+  width: 102vw;
   height: 100vh;
+  margin-left: -2vw;
   pointer-events: none;
   background-attachment: fixed;
   background: repeating-linear-gradient(
