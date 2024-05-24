@@ -1,7 +1,7 @@
 
 body {
   background-image: radial-gradient(
-    #252E24, rgb(40, 40, 40)
+    #212A21, #232323
   );
 }
 
@@ -24,32 +24,32 @@ div,
 a,
 summary,
 details { 
-  color:#37FF27;
-  text-shadow: 0 0 0.2vw #30FF20;
-  text-decoration-color: #30FF30; 
+  color:#30F030;
+  text-shadow: 0 0 0.2vw #30F030;
+  text-decoration-color: #30F030; 
 }
 
 mark{
   color:#202020;
-  background-color: #30FF30;
+  background-color: #30F030;
   text-shadow: 0 0 0.3vw #202020;
-  box-shadow:  0 0 0.3vw #30FF30, inset 0 0 0.3vw #30FF30;
+  box-shadow:  0 0 0.3vw #30F030, inset 0 0 0.3vw #30F030;
 }
 
 textarea {
-  color:#30FF30;
-  text-shadow: 0 0 0.2vw #30FF30;
+  color:#30F030;
+  text-shadow: 0 0 0.2vw #30F030;
 
   background-color: transparent;
-  box-shadow:  0 0 0.3vw #30FF30, inset 0 0 0.3vw #30FF30;
-  border-color:#30FF30;
+  box-shadow:  0 0 0.3vw #30F030, inset 0 0 0.3vw #30F030;
+  border-color:#30F030;
 }
 
 button { 
-  color:#30FF30;
-  text-shadow: 0 0 0.3vw #30FF30;
+  color:#30F030;
+  text-shadow: 0 0 0.3vw #30F030;
   background-color: transparent;
-  border-color: #30FF30;
+  border-color: #30F030;
 }
 
 a:hover,
@@ -64,9 +64,9 @@ button:focus,
 button:hover {
   /*focus for tabindex navigation*/
   color:#202020;
-  background: #30FF30;
+  background: #30F030;
   text-shadow: 0 0 0.2vw #202020;
-  box-shadow:  0 0 0.3vw #30FF30, inset 0 0 0.3vw #30FF30;
+  box-shadow:  0 0 0.3vw #30F030, inset 0 0 0.3vw #30F030;
 }
 
 textarea:hover,
@@ -74,46 +74,46 @@ textarea:focus {
   /*focus for tabindex navigation*/
   outline: none;
   color:#202020;
-  background: #30FF30;
+  background: #30F030;
   text-shadow: 0 0 0.2vw #202020;
-  box-shadow:  0 0 0.3vw #30FF30, inset 0 0 0.3vw #30FF30;
+  box-shadow:  0 0 0.3vw #30F030, inset 0 0 0.3vw #30F030;
 }
 
 
 a:active,
 button:active {
-  color:#30FF30;
-  text-shadow: 0 0 0.3vw #30FF30;
-  border-color: #30FF30;
+  color:#30F030;
+  text-shadow: 0 0 0.3vw #30F030;
+  border-color: #30F030;
 }
 
 /*selection, apparently*/
 
 ::selection {
-  background: #30FF30;
+  background: #30F030;
   color:#202020;
   text-shadow: 0 0 0.3vw #202020;
-  box-shadow:  0 0 0.3vw #30FF30, inset 0 0 0.3vw #30FF30;
+  box-shadow:  0 0 0.3vw #30F030, inset 0 0 0.3vw #30F030;
 }
 
 /*classes*/
 .blink,
 .blink-fast,
 .blink-slow{
-  color:#30FF30;
-  text-shadow: 0 0 0.2vw #30FF30;
+  color:#30F030;
+  text-shadow: 0 0 0.2vw #30F030;
 }
 
 .blink-invert{
   color:#202020;
-  background-color: #30FF30;
+  background-color: #30F030;
   text-shadow: 0 0 0.3vw #202020;
-  box-shadow:  0 0 0.3vw #30FF30, inset 0 0 0.3vw #30FF30;
-  text-shadow: 0 0 0.2vw #30FF30;
+  box-shadow:  0 0 0.3vw #30F030, inset 0 0 0.3vw #30F030;
+  text-shadow: 0 0 0.2vw #30F030;
 }
 
 .content,
 .display {
-  color:#30FF30;
-  text-shadow: 0 0 0.2vw #30FF30;
+  color:#30F030;
+  text-shadow: 0 0 0.2vw #30F030;
 }

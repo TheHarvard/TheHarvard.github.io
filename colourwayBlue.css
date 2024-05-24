@@ -1,7 +1,7 @@
 
 body {
   background-image: radial-gradient(
-    #24252E, rgb(33, 33, 33)
+    #171723, #171717
   );
 }
 
@@ -24,32 +24,32 @@ div,
 a,
 summary,
 details { 
-  color:#096BB2;
-  text-shadow: 0 0 0.2vw #096BB2;
-  text-decoration-color: #096BB2; 
+  color:#1990dd;
+  text-shadow: 0 0 0.2vw #1990dd;
+  text-decoration-color: #1990dd; 
 }
 
 mark{
   color:#202020;
-  background-color: #096BB2;
+  background-color: #1990dd;
   text-shadow: 0 0 0.3vw #202020;
-  box-shadow:  0 0 0.3vw #096BB2, inset 0 0 0.3vw #096BB2;
+  box-shadow:  0 0 0.3vw #1990dd, inset 0 0 0.3vw #1990dd;
 }
 
 textarea {
-  color:#096BB2;
-  text-shadow: 0 0 0.2vw #096BB2;
+  color:#1990dd;
+  text-shadow: 0 0 0.2vw #1990dd;
 
   background-color: transparent;
-  box-shadow:  0 0 0.3vw #096BB2, inset 0 0 0.3vw #096BB2;
-  border-color:#096BB2;
+  box-shadow:  0 0 0.3vw #1990dd, inset 0 0 0.3vw #1990dd;
+  border-color:#1990dd;
 }
 
 button { 
-  color:#096BB2;
-  text-shadow: 0 0 0.3vw #096BB2;
+  color:#1990dd;
+  text-shadow: 0 0 0.3vw #1990dd;
   background-color: transparent;
-  border-color: #096BB2;
+  border-color: #1990dd;
 }
 
 a:hover,
@@ -64,9 +64,9 @@ button:focus,
 button:hover {
   /*focus for tabindex navigation*/
   color:#202020;
-  background: #096BB2;
+  background: #1990dd;
   text-shadow: 0 0 0.2vw #202020;
-  box-shadow:  0 0 0.3vw #096BB2, inset 0 0 0.3vw #096BB2;
+  box-shadow:  0 0 0.3vw #1990dd, inset 0 0 0.3vw #1990dd;
 }
 
 textarea:hover,
@@ -74,46 +74,46 @@ textarea:focus {
   /*focus for tabindex navigation*/
   outline: none;
   color:#202020;
-  background: #096BB2;
+  background: #1990dd;
   text-shadow: 0 0 0.2vw #202020;
-  box-shadow:  0 0 0.3vw #096BB2, inset 0 0 0.3vw #096BB2;
+  box-shadow:  0 0 0.3vw #1990dd, inset 0 0 0.3vw #1990dd;
 }
 
 
 a:active,
 button:active {
-  color:#096BB2;
-  text-shadow: 0 0 0.3vw #096BB2;
-  border-color: #096BB2;
+  color:#1990dd;
+  text-shadow: 0 0 0.3vw #1990dd;
+  border-color: #1990dd;
 }
 
 /*selection, apparently*/
 
 ::selection {
-  background: #096BB2;
+  background: #1990dd;
   color:#202020;
   text-shadow: 0 0 0.3vw #202020;
-  box-shadow:  0 0 0.3vw #096BB2, inset 0 0 0.3vw #096BB2;
+  box-shadow:  0 0 0.3vw #1990dd, inset 0 0 0.3vw #1990dd;
 }
 
 /*classes*/
 .blink,
 .blink-fast,
 .blink-slow{
-  color:#096BB2;
-  text-shadow: 0 0 0.2vw #096BB2;
+  color:#1990dd;
+  text-shadow: 0 0 0.2vw #1990dd;
 }
 
 .blink-invert{
   color:#202020;
-  background-color: #096BB2;
+  background-color: #1990dd;
   text-shadow: 0 0 0.3vw #202020;
-  box-shadow:  0 0 0.3vw #096BB2, inset 0 0 0.3vw #096BB2;
-  text-shadow: 0 0 0.2vw #096BB2;
+  box-shadow:  0 0 0.3vw #1990dd, inset 0 0 0.3vw #1990dd;
+  text-shadow: 0 0 0.2vw #1990dd;
 }
 
 .content,
 .display {
-  color:#096BB2;
-  text-shadow: 0 0 0.2vw #096BB2;
+  color:#1990dd;
+  text-shadow: 0 0 0.2vw #1990dd;
 }

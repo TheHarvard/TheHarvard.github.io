@@ -36,6 +36,6 @@ function setColourwayFromCookie() {
 }
 
 // Apply the saved stylesheet when the page loads
-window.onload = function() {
+window.onpageshow = function() {
     setColourwayFromCookie();
 }

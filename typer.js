@@ -1,6 +1,10 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const contentElement = document.getElementById("content");
-    const displayElement = document.getElementById("display");
+    mainTypeWriter(document.getElementById("content"),document.getElementById("display"));
+});
+
+function mainTypeWriter(contentElement,displayElement) {
+    //const contentElement = document.getElementById("content");
+    //const displayElement = document.getElementById("display");
 
     let htmlString = contentElement.innerHTML;
     let index = 0;
@@ -77,7 +81,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                         } else if (typeTagString.startsWith("<type-speed-vfast")) {
                             // set the speed going forward - WIP
-                            charactersPerRender = 160;
+                            charactersPerRender = 80;
                             renderTime = 5;
 
                         } else if (typeTagString.startsWith("<type-speed-slow")) {
@@ -142,4 +146,4 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     typeWriter();
-});
+};
