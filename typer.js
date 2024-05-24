@@ -1,6 +1,8 @@
-document.addEventListener("DOMContentLoaded", function() {
+console.log("typer.js called");
+
+//document.addEventListener("DOMContentLoaded", function() {
     mainTypeWriter(document.getElementById("content"),document.getElementById("display"));
-});
+//});
 
 function mainTypeWriter(contentElement,displayElement) {
     //const contentElement = document.getElementById("content");

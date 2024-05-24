@@ -39,3 +39,6 @@ function setColourwayFromCookie() {
 window.onpageshow = function() {
     setColourwayFromCookie();
 }
+
+setColourwayFromCookie();
+console.log("setColourwayFromCookie complete");
