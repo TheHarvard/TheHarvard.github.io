@@ -9,9 +9,9 @@ function loadHTML(url, callback) {
 
 
 // Load and insert header
-loadHTML('_header.html', function(data) {
-    document.head.insertAdjacentHTML('beforeend', data);
-});
+//loadHTML('_header.html', function(data) {
+//    document.head.insertAdjacentHTML('beforeend', data);
+//});
 
 
 //<link href="style.css" rel="stylesheet" type="text/css" />
