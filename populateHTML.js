@@ -44,4 +44,15 @@ window.addEventListener('load', () => {
     var script = document.createElement('script');
     script.src = 'typer.js';
     document.head.appendChild(script);
+
+    //remove all init elements
+    window.onload = function() {
+        // Select all elements with the class "init"
+        var elements = document.querySelectorAll('.init');
+
+        // Loop through the NodeList and remove each element
+        elements.forEach(function(element) {
+            element.parentNode.removeChild(element);
+        });
+    };
 });
