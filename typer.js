@@ -1,12 +1,13 @@
 console.log("typer.js called");
 
 //document.addEventListener("DOMContentLoaded", function() {
-    mainTypeWriter(document.getElementById("content"),document.getElementById("display"));
+//    mainTypeWriter(document.getElementById("content"),document.getElementById("display"));
 //});
 
-function mainTypeWriter(contentElement,displayElement) {
-    //const contentElement = document.getElementById("content");
-    //const displayElement = document.getElementById("display");
+//function mainTypeWriter(contentElement,displayElement) {
+//function mainTypeWriter() {
+    const contentElement = document.getElementById("content");
+    const displayElement = document.getElementById("display");
 
     let htmlString = contentElement.innerHTML;
     let index = 0;
@@ -15,9 +16,11 @@ function mainTypeWriter(contentElement,displayElement) {
     let charactersPerRender = 3; // Number of characters added in each render
     let renderTime = 4; // Speed in milliseconds
     let doneflag = false;
+    let stopflag = false;
 
     function typeWriter() {
         let charactersToBeRendered = "";
+        stopflag = false;
         if (index < htmlString.length) {
             displayElement.innerHTML = htmlString.substring(0, index + charactersPerRender) 
             + "<span style=\"white-space: nowrap;\">█</span>"; // Add charactersToBeRendered to the display
@@ -33,7 +36,7 @@ function mainTypeWriter(contentElement,displayElement) {
             charactersPerRender_override = 0;
             renderTime_override = 0;
             let i = 0;
-            while (i < charactersToBeRendered.length && doneflag == false) {
+            while (i < charactersToBeRendered.length) {
                 const char = charactersToBeRendered[i];
                 if (char === '<') {
                     // Found the start of an HTML tag
@@ -72,27 +75,22 @@ function mainTypeWriter(contentElement,displayElement) {
                             console.log("sleept at index:", index, "-", closingIndex);
 
                         } else if (typeTagString.startsWith("<type-speed-norm")) {
-                            // set the speed going forward - WIP
                             charactersPerRender = 6;
                             renderTime = 5;
 
                         } else if (typeTagString.startsWith("<type-speed-fast")) {
-                            // set the speed going forward - WIP
                             charactersPerRender = 10;
                             renderTime = 5;
 
                         } else if (typeTagString.startsWith("<type-speed-vfast")) {
-                            // set the speed going forward - WIP
                             charactersPerRender = 80;
                             renderTime = 5;
 
                         } else if (typeTagString.startsWith("<type-speed-slow")) {
-                            // set the speed going forward - WIP
                             charactersPerRender = 1;
                             renderTime = 40;
 
                         } else if (typeTagString.startsWith("<type-speed-vslow")) {
-                            // set the speed going forward - WIP
                             charactersPerRender = 1;
                             renderTime = 200;
 
@@ -112,8 +110,9 @@ function mainTypeWriter(contentElement,displayElement) {
                             index = 0
                         
                             // pause rendering until something happens - WIP
-                        } else if (typeTagString.startsWith("<type-wait")) {
-                        //console.log("<type-wait", index + i);
+                        } else if (typeTagString.startsWith("<type-stop")) {
+                            stopflag = true;
+                            console.log("<type-stop>:", index + i);
 
                     }
                         //skip lenght of tag
@@ -128,18 +127,24 @@ function mainTypeWriter(contentElement,displayElement) {
                 i++;
             }
 
-            if (charactersPerRender_override < 1) {
-                index += charactersPerRender; // Increment index by charactersPerRender
-            } else {
-                index += charactersPerRender_override; // Increment index by charactersPerRender_override
-            }
+                if (charactersPerRender_override < 1) {
+                    index += charactersPerRender; // Increment index by charactersPerRender
+                } else {
+                    index += charactersPerRender_override; // Increment index by charactersPerRender_override
+                }
+            
 
             
-            if (renderTime_override < 1) {
-                setTimeout(typeWriter, renderTime); // Adjust the speed 
+            if (stopflag==false) {
+                if (renderTime_override < 1) {
+                    setTimeout(typeWriter, renderTime); // Adjust the speed 
+                } else {
+                    setTimeout(typeWriter, renderTime_override); // Adjust the speed 
+                }
             } else {
-                setTimeout(typeWriter, renderTime_override); // Adjust the speed 
+                console.log("Stopped");
             }
+
 
         } else {
             displayElement.innerHTML = htmlString.substring(0, index)
@@ -148,4 +153,7 @@ function mainTypeWriter(contentElement,displayElement) {
     }
 
     typeWriter();
-};
+//};
+
+
+
