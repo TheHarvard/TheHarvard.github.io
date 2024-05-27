@@ -10,7 +10,7 @@ document.head.appendChild(style);
 //<link id="colourwayCss" href="styleAmber.css" rel="stylesheet" type="text/css" />
 var colourwayCss = document.createElement('link');
 colourwayCss.id = 'colourwayCss';
-colourwayCss.href = 'styleAmber.css';
+colourwayCss.href = 'colourwayAmber.css';
 colourwayCss.rel = 'stylesheet';
 colourwayCss.type = 'text/css';
 document.head.appendChild(colourwayCss);
