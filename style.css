@@ -41,6 +41,15 @@ body::before{
     transparent 0.30vw);
 }
  
+/*
+* {
+  font-family: "Noto Sans Mono", "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+ }
+*/
+
+* {
+  font-family: "Noto Sans Mono", "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji";
+ }
 
 h1 { 
   font-weight: bold;
@@ -66,7 +75,6 @@ h2,
 h3 { 
   font-size: 2vw;
   line-height: 2.5vw;
-  font-family: consolas, "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   color:#ffb00000;
   text-shadow: 0 0 0.2vw #ffb00000;
   cursor:context-menu;
@@ -75,7 +83,6 @@ h3 {
 div{
   font-size: 2vw;
   line-height: 2.5vw;
-  font-family: consolas, "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   color:#ffb00000;
   text-shadow: 0 0 0.2vw #ffb00000;
   cursor:context-menu;}
@@ -84,7 +91,6 @@ div{
 mark{
   font-size: 2vw;
   line-height: 2.5vw;
-  font-family: consolas, "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   color:#202020;
   background-color: #ffb00000;
   text-shadow: 0 0 0.3vw #202020;
@@ -95,7 +101,6 @@ mark{
 a {
   font-size: 2vw;
   line-height: 2.4vw;
-  font-family: consolas, "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   color:#ffb00000;
   text-shadow: 0 0 0.2vw #ffb00000;
   text-decoration: none; /*link underline*/
@@ -108,7 +113,6 @@ a {
 summary {
   font-size: 2vw;
   line-height: 2.4vw;
-  font-family: consolas, "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   color:#ffb00000;
   text-shadow: 0 0 0.2vw #ffb00000;
   cursor:context-menu;
@@ -118,7 +122,6 @@ summary {
 details {
   font-size: 2vw;
   line-height: 2.4vw;
-  font-family: consolas, "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   color:#ffb00000;
   text-shadow: 0 0 0.2vw #ffb00000;
   cursor:context-menu;
@@ -133,7 +136,6 @@ details[open] > summary {
 textarea {
   font-size: 2vw;
   line-height: 2.4vw;
-  font-family: consolas, "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   color:#ffb00000;
   text-shadow: 0 0 0.2vw #ffb00000;
 
@@ -153,7 +155,6 @@ textarea {
 button { 
   font-size: 2vw;
   line-height: 2.5vw;
-  font-family: consolas, "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   color:#ffb00000;
   text-shadow: 0 0 0.3vw #ffb00000;
 
@@ -239,7 +240,6 @@ button:active {
   line-height: 2.4vw;
   animation: blinker 0.33s linear infinite;
   color:#ffb00000;
-  font-family: consolas, "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   text-shadow: 0 0 0.2vw #ffb00000;
   cursor:context-menu;
 }
@@ -249,7 +249,6 @@ button:active {
   line-height: 2.4vw;
   animation: blinker 0.5s linear infinite;
   color:#ffb00000;
-  font-family: consolas, "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   text-shadow: 0 0 0.2vw #ffb00000;
   cursor:context-menu;
 }
@@ -259,8 +258,7 @@ button:active {
   line-height: 2.4vw;
   animation: blinker 1s linear infinite;
   color:#ffb00000;
-  font-family: consolas, "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
-  text-shadow: 0 0 0.2vw #ffb00000;
+ text-shadow: 0 0 0.2vw #ffb00000;
   cursor:context-menu;
 }
 
@@ -272,7 +270,6 @@ button:active {
   background-color: #ffb00000;
   text-shadow: 0 0 0.3vw #202020;
   box-shadow:  0 0 0.3vw #ffb00000, inset 0 0 0.3vw #ffb00000;
-  font-family: consolas, "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   text-shadow: 0 0 0.2vw #ffb00000;
   cursor:context-menu;
 }
@@ -314,7 +311,6 @@ button:active {
 .display {
   font-size: 2vw;
   line-height: 2.5vw;
-  font-family: consolas, "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   color:#ffb00000;
   text-shadow: 0 0 0.2vw #ffb00000;
   cursor:context-menu;

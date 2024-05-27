@@ -1,5 +1,13 @@
 
 // Head
+
+
+//<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&family=Noto+Color+Emoji&family=Noto+Emoji&family=Noto+Music&family=Noto+Sans+Math&family=Noto+Sans+SignWriting&family=Noto+Sans+Symbols&family=Noto+Sans+Symbols+2&display=swap" rel="stylesheet">
+var style = document.createElement('link');
+style.href = 'https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&family=Noto+Color+Emoji&family=Noto+Emoji&family=Noto+Music&family=Noto+Sans+Math&family=Noto+Sans+SignWriting&family=Noto+Sans+Symbols&family=Noto+Sans+Symbols+2&display=swap';
+style.rel = 'stylesheet';
+document.head.appendChild(style);
+
 //<link href="style.css" rel="stylesheet" type="text/css" />
 var style = document.createElement('link');
 style.href = 'style.css';
