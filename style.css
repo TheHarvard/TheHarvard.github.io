@@ -49,6 +49,8 @@ body::before{
 
 * {
   font-family: "Noto Sans Mono", "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji";
+  font-size: 2vw;
+  line-height: 2.6vw;
  }
 
 h1 { 
@@ -73,24 +75,18 @@ pre,
 h1,
 h2,
 h3 { 
-  font-size: 2vw;
-  line-height: 2.5vw;
   color:#ffb00000;
   text-shadow: 0 0 0.2vw #ffb00000;
   cursor:context-menu;
 }
 
 div{
-  font-size: 2vw;
-  line-height: 2.5vw;
   color:#ffb00000;
   text-shadow: 0 0 0.2vw #ffb00000;
   cursor:context-menu;}
 
 
 mark{
-  font-size: 2vw;
-  line-height: 2.5vw;
   color:#202020;
   background-color: #ffb00000;
   text-shadow: 0 0 0.3vw #202020;
@@ -99,8 +95,6 @@ mark{
 }
 
 a {
-  font-size: 2vw;
-  line-height: 2.4vw;
   color:#ffb00000;
   text-shadow: 0 0 0.2vw #ffb00000;
   text-decoration: none; /*link underline*/
@@ -111,8 +105,6 @@ a {
 
 
 summary {
-  font-size: 2vw;
-  line-height: 2.4vw;
   color:#ffb00000;
   text-shadow: 0 0 0.2vw #ffb00000;
   cursor:context-menu;
@@ -120,8 +112,6 @@ summary {
 }
 
 details {
-  font-size: 2vw;
-  line-height: 2.4vw;
   color:#ffb00000;
   text-shadow: 0 0 0.2vw #ffb00000;
   cursor:context-menu;
@@ -134,8 +124,6 @@ details[open] > summary {
 }
 
 textarea {
-  font-size: 2vw;
-  line-height: 2.4vw;
   color:#ffb00000;
   text-shadow: 0 0 0.2vw #ffb00000;
 
@@ -153,8 +141,6 @@ textarea {
 }
 
 button { 
-  font-size: 2vw;
-  line-height: 2.5vw;
   color:#ffb00000;
   text-shadow: 0 0 0.3vw #ffb00000;
 
@@ -236,8 +222,6 @@ button:active {
 /*classes*/
 
 .blink-fast{
-  font-size: 2vw;
-  line-height: 2.4vw;
   animation: blinker 0.33s linear infinite;
   color:#ffb00000;
   text-shadow: 0 0 0.2vw #ffb00000;
@@ -245,8 +229,6 @@ button:active {
 }
 
 .blink{
-  font-size: 2vw;
-  line-height: 2.4vw;
   animation: blinker 0.5s linear infinite;
   color:#ffb00000;
   text-shadow: 0 0 0.2vw #ffb00000;
@@ -254,8 +236,6 @@ button:active {
 }
 
 .blink-slow{
-  font-size: 2vw;
-  line-height: 2.4vw;
   animation: blinker 1s linear infinite;
   color:#ffb00000;
  text-shadow: 0 0 0.2vw #ffb00000;
@@ -263,8 +243,6 @@ button:active {
 }
 
 .blink-invert{
-  font-size: 2vw;
-  line-height: 2.4vw;
   animation: blinker-invert 0.5s linear infinite;
   color:#202020;
   background-color: #ffb00000;
@@ -309,8 +287,6 @@ button:active {
 
 .content,
 .display {
-  font-size: 2vw;
-  line-height: 2.5vw;
   color:#ffb00000;
   text-shadow: 0 0 0.2vw #ffb00000;
   cursor:context-menu;
