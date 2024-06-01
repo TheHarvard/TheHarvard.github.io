@@ -24,6 +24,7 @@ colourwayCss.type = 'text/css';
 document.head.appendChild(colourwayCss);
 
 window.addEventListener('load', () => {
+
     // body
     // move html body to be inside <div id="content" style="display: none;">
     const bodyDiv = document.createElement('div');
@@ -44,6 +45,15 @@ window.addEventListener('load', () => {
     displayDiv.id = 'display'; 
     document.body.insertAdjacentElement('afterbegin', displayDiv);
 
+
+    //Body Header (is not typed)
+    //
+    const bodyHeader = document.createElement('pre');
+    bodyHeader.id = 'dynamicHeader'; 
+    //bodyHeader.textContent = "Header " + "" + "================================================================================";
+    document.body.insertAdjacentElement('afterbegin', bodyHeader);
+
+
     // add scripts
     var script = document.createElement('script');
     script.src = 'colourwaySelector.js';
@@ -53,7 +63,11 @@ window.addEventListener('load', () => {
     script.src = 'typer.js';
     document.head.appendChild(script);
 
-    //remove all init elements
+    var script = document.createElement('script');
+    script.src = 'dynamicHeader.js';
+    document.head.appendChild(script);
+
+    //remove all init elements last
     window.onload = function() {
         // Select all elements with the class "init"
         var elements = document.querySelectorAll('.init');

@@ -40,7 +40,7 @@ body::before{
     transparent 0.10vw, 
     transparent 0.30vw);
 }
- 
+
 /*
 * {
   font-family: "Noto Sans Mono", "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
@@ -142,7 +142,7 @@ textarea {
 
 button { 
   color:#ffb00000;
-  text-shadow: 0 0 0.3vw #ffb00000;
+  text-shadow: 0 0 0.2vw #ffb00000;
 
   background-color: transparent;
   /*box-shadow:  0 0 0.3vw #ffb00000, inset 0 0 0.3vw #ffb00000;*/
