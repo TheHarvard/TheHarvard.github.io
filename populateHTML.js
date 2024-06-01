@@ -48,7 +48,7 @@ window.addEventListener('load', () => {
 
     //Body Header (is not typed)
     //
-    const bodyHeader = document.createElement('pre');
+    const bodyHeader = document.createElement('p');
     bodyHeader.id = 'dynamicHeader'; 
     //bodyHeader.textContent = "Header " + "" + "================================================================================";
     document.body.insertAdjacentElement('afterbegin', bodyHeader);
