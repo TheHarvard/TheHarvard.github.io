@@ -40,6 +40,7 @@ function setDH(name, URL, size) {
         dhList.push({ name: name, URL: URL, size: size });
     }
     DHsetCookie("DH_list", JSON.stringify(dhList), 365);
+    dynamicHeader_update();
 }
 
 // getDH returns the values stored in a DH. If the DH does not exist it returns null.
@@ -63,6 +64,7 @@ function clearDH(name) {
         }
     }
     DHsetCookie("DH_list", JSON.stringify(dhList), 365);
+    dynamicHeader_update();
 }
 
 // Utility function to get DH list from cookie
@@ -71,50 +73,99 @@ function getDHList() {
     return dhListCookie ? JSON.parse(dhListCookie) : [];
 }
 
-
-
+// Function to clear all DHs
+function clearAllDH() {
+    DHsetCookie("DH_list", "", -1); // Set cookie with an expired date to clear it
+    dynamicHeader_update();
+}
 
 
 //==============================================================================
 
-
-setDH("1", "WWW.Something.com", 2222)
-setDH("2", "WWW.Something.com", 2)
-setDH("3", "WWW.Something.com", 2)
-
 // Set up header
-{
+function dynamicHeader_update() {
     let cookieName = "dynamicHeader";
     let cookieValue = DHgetCookie(cookieName);
 
     let headerContent = ''; // Initialize header content
-
-    if (cookieValue) {
-        let newValue = parseInt(cookieValue) + 1;
-        DHsetCookie(cookieName, newValue, 365); // Update cookie with new value
-        headerContent += newValue + '<br>'; // Add incrementing number to header content
-    } else {
-        let initialValue = 1;
-        DHsetCookie(cookieName, initialValue, 365); // Set cookie for 1 year
-        headerContent += initialValue + '<br>'; // Add initial value to header content
-    }
+    let sumSize = 0; // Initialize sum of size integers
+    let totalSize = 16; // Initialize total size
+    let targetWidth = 30; // Target width for DH name and size
 
     // Retrieve DH list
     let dhList = getDHList();
+    
+    headerContent += "<summary>VNA DECK A33.76<br>================================================================================</summary>";
 
- // Add each formatted DH element to header content
- dhList.forEach(function(dh) {
-    let nameLength = dh.name.length;
-    let sizeLength = dh.size.toString().length;
-    let targetLength = 30; // Adjust this value as needed
-    let dashes = '-'.repeat(targetLength - nameLength - sizeLength - 3); // Calculate number of dashes
+    // Add details and summary for each DH element to header content
+    console.log("starting...")
+    dhList.forEach(function(dh) {
+        // Check if name exceeds target width
+        let truncatedName = dh.name.length > targetWidth - 10 ? dh.name.substring(0, targetWidth - 13) + "..." : dh.name;
+        let nameSize = `├─${truncatedName} - ${dh.size} KB`;
+        let paddingLength = targetWidth - nameSize.length;
+        let padding = '-'.repeat(paddingLength);
+        let summaryContent = `<summary>├─${truncatedName} ${padding} ${dh.size} KB</summary>`;
+        let linkContent = `│ ├─<a href="${dh.URL}">[ Open ]</a><br>`;
+        linkContent += `│ └─<button onclick="clearDH('${dh.name}')">[ Delete ]</button><br>`;
+        headerContent += `<details>${summaryContent}${linkContent}</details>`;
+        sumSize += parseInt(dh.size); // Update sum of size integers
+        console.log("name: ",dh.name," size: ",dh.size, " sumSize: ",sumSize)
+    });
+    console.log("done! sumSize: ",sumSize)
 
-    headerContent += `${dh.name} ${dashes} ${dh.size} KB<br>`; // Add formatted DH to header content
-});
+    // Calculate padding for the last item
+    let lastItemPadding = '-'.repeat(targetWidth - `├─ <Free> - ${totalSize-sumSize}KB/${totalSize}KB`.length);
 
-headerContent += `================================================================================`;
+    // Construct HTML string for the last item
+    let lastItem = `├─ &lt;Free&gt; ${lastItemPadding} ${totalSize-sumSize}KB/${totalSize}KB<br>`;
 
+    // Add last item to header content
+    headerContent += `│<br>`;
+    headerContent += lastItem;
+    headerContent += `│ Current File:<br>`;
+
+    // Generate entry for current document
+    let dh = {
+        name: "",
+        url: window.location.href,
+        size: 0
+    };
+    
+    {
+        // Scoped block
+        const nameElement = document.querySelector('title');
+        if (nameElement) {
+        dh.name = nameElement.textContent;
+        } 
+        const sizeElement = document.querySelector('size');
+        if (sizeElement) {
+        dh.size = sizeElement.textContent;
+        } 
+    }
+
+    let truncatedName = dh.name.length > targetWidth - 10 ? dh.name.substring(0, targetWidth - 13) + "..." : dh.name;
+    let nameSize = `└─${truncatedName} - ${dh.size} KB`;
+    let paddingLength = targetWidth - nameSize.length;
+    let padding = '-'.repeat(paddingLength);
+    let summaryContent = `<summary>└─${truncatedName} ${padding} ${dh.size} KB</summary>`;
+    let linkContent = `&nbsp; └─<button onclick="setDH('${dh.name}','${dh.url}','${dh.size}')">[ Save ]</button><br>`;
+    headerContent += `<details>${summaryContent}${linkContent}</details>`;
+
+    //add seperating line
+    headerContent += `================================================================================`;
 
     // Update dynamicHeader element with header content
     document.getElementById("dynamicHeader").innerHTML = headerContent;
 }
+
+
+
+
+
+//clearAllDH();
+//setDH("boot.img", "index.html", 10);
+//setDH("shutdown.exe", "index.html", 1);
+//setDH("scan.exe", "index.html", 3);
+
+dynamicHeader_update();
