@@ -89,8 +89,8 @@ function dynamicHeader_update() {
 
     let headerContent = ''; // Initialize header content
     let sumSize = 0; // Initialize sum of size integers
-    let totalSize = 16; // Initialize total size
-    let targetWidth = 30; // Target width for DH name and size
+    let totalSize = 64; // Initialize total size
+    let targetWidth = 60; // Target width for DH name and size
 
     // Retrieve DH list
     let dhList = getDHList();
@@ -131,6 +131,16 @@ function dynamicHeader_update() {
         url: window.location.href,
         size: 0
     };
+
+    let element = document.getElementById("content");
+    if (element) {
+        let htmlContent = element.outerHTML;
+        let sizeInBytes = new TextEncoder().encode(htmlContent).length;
+        let sizeInKB = (sizeInBytes / 1024).toFixed(0);
+        console.log("Calculated size: ",sizeInKB);
+        dh.size = sizeInKB;
+    }
+
     
     {
         // Scoped block
