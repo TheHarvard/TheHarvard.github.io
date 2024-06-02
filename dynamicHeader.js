@@ -98,7 +98,7 @@ function dynamicHeader_update() {
     headerContent += "<summary>VNA DECK A33.76<br>================================================================================</summary>";
 
     // Add details and summary for each DH element to header content
-    console.log("starting...")
+    //console.log("starting...")
     dhList.forEach(function(dh) {
         // Check if name exceeds target width
         let truncatedName = dh.name.length > targetWidth - 10 ? dh.name.substring(0, targetWidth - 13) + "..." : dh.name;
@@ -110,9 +110,9 @@ function dynamicHeader_update() {
         linkContent += `│ └─<button onclick="clearDH('${dh.name}')">[ Delete ]</button><br>`;
         headerContent += `<details>${summaryContent}${linkContent}</details>`;
         sumSize += parseInt(dh.size); // Update sum of size integers
-        console.log("name: ",dh.name," size: ",dh.size, " sumSize: ",sumSize)
+        //console.log("name: ",dh.name," size: ",dh.size, " sumSize: ",sumSize)
     });
-    console.log("done! sumSize: ",sumSize)
+    //console.log("done! sumSize: ",sumSize)
 
     // Calculate padding for the last item
     let lastItemPadding = '-'.repeat(targetWidth - `├─ <Free> - ${totalSize-sumSize}KB/${totalSize}KB`.length);

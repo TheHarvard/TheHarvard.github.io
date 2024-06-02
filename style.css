@@ -41,6 +41,10 @@ body::before{
     transparent 0.30vw);
 }
 
+size {
+  display: none;
+}
+
 /*
 * {
   font-family: "Noto Sans Mono", "Noto Sans Symbols", "Noto Sans Symbols 2", "Noto Music", "Noto Sans SignWriting", "Noto Emoji", "Noto Sans Math", "Noto Color Emoji", Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;

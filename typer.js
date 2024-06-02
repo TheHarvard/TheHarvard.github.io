@@ -17,13 +17,33 @@ console.log("typer.js called");
     let renderTime = 4; // Speed in milliseconds
     let doneflag = false;
     let stopflag = false;
+    let singleScreenStopFlag = false;
 
     function typeWriter() {
         let charactersToBeRendered = "";
+        let charactersToBeAppended = "";
         stopflag = false;
+
+        if(!singleScreenStopFlag) { //Scroll checker pauses before document once before scrolling
+            const contentHeight = document.documentElement.scrollHeight;
+            const viewportHeight = window.innerHeight;
+            const buffer = 2; // You can adjust this buffer as needed
+            //console.log("Content: ", contentHeight, " View: ", viewportHeight);
+        
+            if (contentHeight > viewportHeight+buffer) {
+                console.log("overflow detected");
+                singleScreenStopFlag = true;
+                stopflag = true;
+                index-=2*charactersPerRender;
+                charactersToBeAppended = '<br> <span style=\"white-space: nowrap;\"><button class="blink" onclick="typeWriter()">[ continue ]</button></span>';
+            }
+        }
+
+        
         if (index < htmlString.length) {
+
             displayElement.innerHTML = htmlString.substring(0, index + charactersPerRender) 
-            + "<span style=\"white-space: nowrap;\">█</span>"; // Add charactersToBeRendered to the display
+            + charactersToBeAppended + '<span class="blink" style=\"white-space: nowrap;\">█</span>'; // Add charactersToBeRendered to the display
 
             // Scroll to the bottom of the page
             window.scrollTo({
@@ -148,7 +168,7 @@ console.log("typer.js called");
 
         } else {
             displayElement.innerHTML = htmlString.substring(0, index)
-            console.log("Done"); // Print "Done" when rendering is complete
+            console.log("typer.js done"); // Print "Done" when rendering is complete
         }
     }
 
