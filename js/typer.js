@@ -162,7 +162,7 @@ console.log("typer.js called");
                     setTimeout(typeWriter, renderTime_override); // Adjust the speed 
                 }
             } else {
-                console.log("Stopped");
+                console.log("Typer.js Paused");
             }
 
 

@@ -8,17 +8,17 @@ style.href = 'https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&family=Not
 style.rel = 'stylesheet';
 document.head.appendChild(style);
 
-//<link href="style.css" rel="stylesheet" type="text/css" />
-var style = document.createElement('link');
-style.href = 'style.css';
-style.rel = 'stylesheet';
-style.type = 'text/css';
-document.head.appendChild(style);
+//<link href="../css/style.css" rel="stylesheet" type="text/css" />
+//var style = document.createElement('link');
+//style.href = '../css/style.css';
+//style.rel = 'stylesheet';
+//style.type = 'text/css';
+//document.head.appendChild(style);
 
 //<link id="colourwayCss" href="styleAmber.css" rel="stylesheet" type="text/css" />
 var colourwayCss = document.createElement('link');
 colourwayCss.id = 'colourwayCss';
-colourwayCss.href = 'colourwayAmber.css';
+colourwayCss.href = '../css/colourwayAmber.css';
 colourwayCss.rel = 'stylesheet';
 colourwayCss.type = 'text/css';
 document.head.appendChild(colourwayCss);
@@ -56,15 +56,15 @@ window.addEventListener('load', () => {
 
     // add scripts
     var script = document.createElement('script');
-    script.src = 'colourwaySelector.js';
+    script.src = '../js/colourwaySelector.js';
     document.head.appendChild(script);
 
     var script = document.createElement('script');
-    script.src = 'typer.js';
+    script.src = '../js/typer.js';
     document.head.appendChild(script);
 
     var script = document.createElement('script');
-    script.src = 'dynamicHeader.js';
+    script.src = '../js/dynamicHeader.js';
     document.head.appendChild(script);
 
     //remove all init elements last

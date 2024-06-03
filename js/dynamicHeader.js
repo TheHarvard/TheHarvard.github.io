@@ -137,7 +137,7 @@ function dynamicHeader_update() {
         let htmlContent = element.outerHTML;
         let sizeInBytes = new TextEncoder().encode(htmlContent).length;
         let sizeInKB = (sizeInBytes / 1024).toFixed(0);
-        console.log("Calculated size: ",sizeInKB);
+        //console.log("Calculated size: ",sizeInKB);
         dh.size = sizeInKB;
     }
 
@@ -177,5 +177,6 @@ function dynamicHeader_update() {
 //setDH("boot.img", "index.html", 10);
 //setDH("shutdown.exe", "index.html", 1);
 //setDH("scan.exe", "index.html", 3);
-
+console.log("dynamicHeader.js called")
 dynamicHeader_update();
+console.log("dynamicHeader.js complete")
