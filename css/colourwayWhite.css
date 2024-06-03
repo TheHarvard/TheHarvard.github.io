@@ -60,8 +60,8 @@ input:focus,
 input:hover
 textarea:focus,
 textarea:hover,
-button:focus,
-button:hover {
+button:not([disabled]):focus,
+button:not([disabled]):hover {
   /*focus for tabindex navigation*/
   color:#202020;
   background: #dddddd;

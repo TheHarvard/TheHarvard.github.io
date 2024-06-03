@@ -31,7 +31,7 @@ console.log("typer.js called");
             //console.log("Content: ", contentHeight, " View: ", viewportHeight);
         
             if (contentHeight > viewportHeight+buffer) {
-                console.log("overflow detected");
+                //console.log("overflow detected");
                 singleScreenStopFlag = true;
                 stopflag = true;
                 index-=2*charactersPerRender;

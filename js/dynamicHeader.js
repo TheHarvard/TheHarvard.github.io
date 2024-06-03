@@ -107,7 +107,7 @@ function dynamicHeader_update() {
         let padding = '-'.repeat(paddingLength);
         let summaryContent = `<summary>├─${truncatedName} ${padding} ${dh.size} KB</summary>`;
         let linkContent = `│ ├─<a href="${dh.URL}">[ Open ]</a><br>`;
-        linkContent += `│ └─<button onclick="clearDH('${dh.name}')">[ Delete ]</button><br>`;
+        linkContent += `│ └─<button onclick="clearDH_buttonWithConfirm('${dh.name}')">[ Delete ]</button><br>`;
         headerContent += `<details>${summaryContent}${linkContent}</details>`;
         sumSize += parseInt(dh.size); // Update sum of size integers
         //console.log("name: ",dh.name," size: ",dh.size, " sumSize: ",sumSize)
@@ -143,7 +143,7 @@ function dynamicHeader_update() {
 
     
     {
-        // Scoped block
+        // Scoped block to check/calculate title and size
         const nameElement = document.querySelector('title');
         if (nameElement) {
         dh.name = nameElement.textContent;
@@ -154,12 +154,30 @@ function dynamicHeader_update() {
         } 
     }
 
+    {
+    //add parameter to url
+    // Check if the URL already contains a query string, and select the right seperator
+    const separator = dh.url.includes('?') ? '&' : '?';
+
+    // Append the "internal" parameter to the URL
+    dh.url = `${dh.url}${separator}fromDH`;
+    }
+
+    //check if there is enough memory available to store this file, otherwise
+    //disable the save button on this refresh
+    let saveButtonDisableAttribute  = "";
+    let saveButtonText  = "Save";
+    if (sumSize+dh.size > totalSize){
+        saveButtonDisableAttribute  = "disabled";
+        saveButtonText  = "Save: MEMORY ERROR";
+    }
+
     let truncatedName = dh.name.length > targetWidth - 10 ? dh.name.substring(0, targetWidth - 13) + "..." : dh.name;
     let nameSize = `└─${truncatedName} - ${dh.size} KB`;
     let paddingLength = targetWidth - nameSize.length;
     let padding = '-'.repeat(paddingLength);
     let summaryContent = `<summary>└─${truncatedName} ${padding} ${dh.size} KB</summary>`;
-    let linkContent = `&nbsp; └─<button onclick="setDH('${dh.name}','${dh.url}','${dh.size}')">[ Save ]</button><br>`;
+    let linkContent = `&nbsp; └─<button onclick="setDH('${dh.name}','${dh.url}','${dh.size}')" ${saveButtonDisableAttribute}>[ ${saveButtonText} ]</button><br>`;
     headerContent += `<details>${summaryContent}${linkContent}</details>`;
 
     //add seperating line
@@ -170,7 +188,16 @@ function dynamicHeader_update() {
 }
 
 
-
+//"Are you sure?" delete button behaviour
+function clearDH_buttonWithConfirm(dhName) {
+    var button = document.querySelector('button[onclick="clearDH_buttonWithConfirm(\'' + dhName + '\')"]');
+    
+    if (button.innerHTML === '[ Delete ]') {
+        button.innerHTML = '[ Are you sure? ]';
+    } else {
+        clearDH(dhName)
+    }
+}
 
 
 //clearAllDH();

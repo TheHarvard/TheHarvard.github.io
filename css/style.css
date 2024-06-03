@@ -172,8 +172,8 @@ input:focus,
 input:hover
 textarea:focus,
 textarea:hover,
-button:focus,
-button:hover {
+button:not([disabled]):focus,
+button:not([disabled]):hover {
   /*focus for tabindex navigation*/
   outline: none;
   color:#202020;
@@ -201,7 +201,7 @@ textarea:focus {
 
 
 a:active,
-button:active {
+button:not([disabled]):active {
   box-shadow:  none;
   background-color: transparent;
   color:#ffb00000;
@@ -210,6 +210,10 @@ button:active {
   outline: 10px;
   border-style: thick;
   border-color: #ffb00000;
+}
+
+button:disabled{
+  cursor:context-menu;
 }
 
 /*selection, apparently*/

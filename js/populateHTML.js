@@ -45,12 +45,14 @@ window.addEventListener('load', () => {
     displayDiv.id = 'display'; 
     document.body.insertAdjacentElement('afterbegin', displayDiv);
 
-
-    //Body Header (is not typed)
-    //
+    //insert dynamicHeader (is not typed)
     const bodyHeader = document.createElement('details');
     bodyHeader.id = 'dynamicHeader'; 
-    //bodyHeader.textContent = "Header " + "" + "================================================================================";
+    // Check if the 'fromDH' URL parameter is present
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('fromDH')) {
+        bodyHeader.open = true; // Set the 'open' attribute to make it open by default
+    }
     document.body.insertAdjacentElement('afterbegin', bodyHeader);
 
 
