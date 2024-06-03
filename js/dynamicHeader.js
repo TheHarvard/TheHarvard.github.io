@@ -167,7 +167,7 @@ function dynamicHeader_update() {
     //disable the save button on this refresh
     let saveButtonDisableAttribute  = "";
     let saveButtonText  = "Save";
-    if (sumSize+dh.size > totalSize){
+    if (sumSize+parseInt(dh.size) > totalSize){
         saveButtonDisableAttribute  = "disabled";
         saveButtonText  = "Save: MEMORY ERROR";
     }
