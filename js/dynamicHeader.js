@@ -25,20 +25,24 @@ function DHgetCookie(name) {
 // setDH sets a DH of specified name to a provided value.
 // If the specified DH does not exist, it is created and set to the value.
 // DHs are stored in the cookie "DH_list"
-function setDH(name, URL, size) {
+function setDH(name, URL, size, actions) {
     var dhList = getDHList();
     var found = false;
     for (var i = 0; i < dhList.length; i++) {
         if (dhList[i].name === name) {
             dhList[i].URL = URL;
             dhList[i].size = size;
+            dhList[i].actions = actions;
             found = true;
             break;
         }
     }
     if (!found) {
-        dhList.push({ name: name, URL: URL, size: size });
+        dhList.push({ name: name, URL: URL, size: size, actions: actions, });
     }
+    console.log("setDH actions", actions);
+    //console.log("setDH dhList", dhList);
+    //console.log("setDH JSON.stringify(dhList))", JSON.stringify(dhList));
     DHsetCookie("DH_list", JSON.stringify(dhList), 365);
     dynamicHeader_update();
 }
@@ -82,6 +86,10 @@ function clearAllDH() {
 
 //==============================================================================
 
+
+
+var currentPage_actions = "";
+
 // Set up header
 function dynamicHeader_update() {
     let cookieName = "dynamicHeader";
@@ -90,12 +98,15 @@ function dynamicHeader_update() {
     let headerContent = ''; // Initialize header content
     let sumSize = 0; // Initialize sum of size integers
     let totalSize = 64; // Initialize total size
-    let targetWidth = 60; // Target width for DH name and size
+    let targetWidth = 25; // Target width for DH name and size
 
     // Retrieve DH list
     let dhList = getDHList();
     
     headerContent += "<summary>VNA DECK A33.76<br>================================================================================</summary>";
+    //headerContent += "A:// M-DISK drive 1<br>";
+    //headerContent += "B:// M-DISK drive 2<br>";
+    //headerContent += "C:// Paralelle Delay-Line Memory<br>";
 
     // Add details and summary for each DH element to header content
     //console.log("starting...")
@@ -107,6 +118,18 @@ function dynamicHeader_update() {
         let padding = '-'.repeat(paddingLength);
         let summaryContent = `<summary>├─${truncatedName} ${padding} ${dh.size} KB</summary>`;
         let linkContent = `│ ├─<a href="${dh.URL}">[ Open ]</a><br>`;
+
+        //add dh actions
+            console.log(dh.name,dh.actions);
+        if (Array.isArray(dh.actions)){
+            console.log("IS AN ARRAY!");
+            dh.actions.forEach(function(dhAction){
+
+                linkContent +=`│ ├─<button onclick="${dhAction.script}">[ ${dhAction.name} ]</button><br>`;
+
+            })
+        }
+
         linkContent += `│ └─<button onclick="clearDH_buttonWithConfirm('${dh.name}')">[ Delete ]</button><br>`;
         headerContent += `<details>${summaryContent}${linkContent}</details>`;
         sumSize += parseInt(dh.size); // Update sum of size integers
@@ -118,18 +141,23 @@ function dynamicHeader_update() {
     let lastItemPadding = '-'.repeat(targetWidth - `├─ <Free> - ${totalSize-sumSize}KB/${totalSize}KB`.length);
 
     // Construct HTML string for the last item
-    let lastItem = `├─ &lt;Free&gt; ${lastItemPadding} ${totalSize-sumSize}KB/${totalSize}KB<br>`;
+    let lastItem = `└─ &lt;Free&gt; ${lastItemPadding} ${totalSize-sumSize}KB/${totalSize}KB<br>`;
 
     // Add last item to header content
-    headerContent += `│<br>`;
+    //headerContent += `│<br>`;
     headerContent += lastItem;
-    headerContent += `│ Current File:<br>`;
+
+    //headerContent += "H:// Network Interface 1<br>";
+    //headerContent += "N:// Network Interface 2<br>";
+
+    headerContent += `Current Open File:<br>`;
 
     // Generate entry for current document
     let dh = {
         name: "",
         url: window.location.href,
-        size: 0
+        size: 0,
+        actions:[]
     };
 
     let element = document.getElementById("content");
@@ -143,7 +171,7 @@ function dynamicHeader_update() {
 
     
     {
-        // Scoped block to check/calculate title and size
+        // Scoped block to check/calculate title, size and actions
         const nameElement = document.querySelector('title');
         if (nameElement) {
         dh.name = nameElement.textContent;
@@ -152,15 +180,22 @@ function dynamicHeader_update() {
         if (sizeElement) {
         dh.size = sizeElement.textContent;
         } 
+        const actionsElement = document.querySelector('actions');
+        if (actionsElement) {
+        //console.log("actions: ",actionsElement.textContent)
+        dh.actions = JSON.parse(actionsElement.textContent);
+        //console.log("actions parsed: ",dh.actions)
+        } 
     }
 
     {
-    //add parameter to url
-    // Check if the URL already contains a query string, and select the right seperator
-    const separator = dh.url.includes('?') ? '&' : '?';
-
-    // Append the "internal" parameter to the URL
-    dh.url = `${dh.url}${separator}fromDH`;
+    //add parameter to url (skip if allready there)
+    const urlObj = new URL(dh.url);
+    if (!urlObj.searchParams.has('fromDH')) {
+        // Append the "fromDH" parameter to the URL
+        urlObj.searchParams.append('fromDH', '');
+        dh.url = urlObj.toString();
+    }
     }
 
     //check if there is enough memory available to store this file, otherwise
@@ -177,7 +212,20 @@ function dynamicHeader_update() {
     let paddingLength = targetWidth - nameSize.length;
     let padding = '-'.repeat(paddingLength);
     let summaryContent = `<summary>└─${truncatedName} ${padding} ${dh.size} KB</summary>`;
-    let linkContent = `&nbsp; └─<button onclick="setDH('${dh.name}','${dh.url}','${dh.size}')" ${saveButtonDisableAttribute}>[ ${saveButtonText} ]</button><br>`;
+    
+    //console.log("button actions", dh.actions);
+    //console.log("button JSON.stringify(dh.actions)", JSON.stringify(dh.actions));
+    //currentPage_actions = JSON.stringify(dh.actions).replaceAll("\"","\'");
+    currentPage_actions = dh.actions;
+    //console.log("currentPage_actions", currentPage_actions);
+
+    //let actionsContent = JSON.stringify(dh.actions).replaceAll("\"","\'");
+    //let linkContent = `&nbsp; └─<button onclick="setDH('${dh.name}','${dh.url}','${dh.size}','`++`')' ${saveButtonDisableAttribute}>[ ${saveButtonText} ]</button><br>`;
+    //let linkContent = `&nbsp; └─<button onclick="setDH('${dh.name}','${dh.url}','${dh.size}','${currentPage_actions}')" ${saveButtonDisableAttribute}>[ ${saveButtonText} ]</button><br>`;
+    
+    //Original: let linkContent = `&nbsp; └─<button onclick="setDH('${dh.name}','${dh.url}','${dh.size}')" ${saveButtonDisableAttribute}>[ ${saveButtonText} ]</button><br>`;
+    let linkContent = `&nbsp; └─<button onclick="setDH('${dh.name}','${dh.url}','${dh.size}',currentPage_actions)" ${saveButtonDisableAttribute}>[ ${saveButtonText} ]</button><br>`;
+    
     headerContent += `<details>${summaryContent}${linkContent}</details>`;
 
     //add seperating line
@@ -201,9 +249,6 @@ function clearDH_buttonWithConfirm(dhName) {
 
 
 //clearAllDH();
-//setDH("boot.img", "index.html", 10);
-//setDH("shutdown.exe", "index.html", 1);
-//setDH("scan.exe", "index.html", 3);
 console.log("dynamicHeader.js called")
 dynamicHeader_update();
 console.log("dynamicHeader.js complete")

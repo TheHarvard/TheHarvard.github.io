@@ -41,6 +41,7 @@ body::before{
     transparent 0.30vw);
 }
 
+actions,
 size {
   display: none;
 }
