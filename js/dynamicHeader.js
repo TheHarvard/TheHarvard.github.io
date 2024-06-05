@@ -25,20 +25,24 @@ function DHgetCookie(name) {
 // setDH sets a DH of specified name to a provided value.
 // If the specified DH does not exist, it is created and set to the value.
 // DHs are stored in the cookie "DH_list"
-function setDH(name, URL, size, actions) {
+function setDH(name, URL, size, actions, driveLetter) {
     var dhList = getDHList();
     var found = false;
+    if (typeof driveLetter === 'undefined') {
+        driveLetter = "C"
+    }
     for (var i = 0; i < dhList.length; i++) {
         if (dhList[i].name === name) {
             dhList[i].URL = URL;
             dhList[i].size = size;
             dhList[i].actions = actions;
+            dhList[i].driveLetter = driveLetter;
             found = true;
             break;
         }
     }
     if (!found) {
-        dhList.push({ name: name, URL: URL, size: size, actions: actions, });
+        dhList.push({ name: name, URL: URL, size: size, actions: actions, driveLetter: driveLetter, });
     }
     //console.log("setDH actions", actions);
     //console.log("setDH dhList", dhList);
@@ -104,40 +108,91 @@ function dynamicHeader_update() {
     let dhList = getDHList();
     
     headerContent += "<summary>VNA DECK A33.76<br>================================================================================</summary>";
-    //headerContent += "A:// M-DISK drive 1<br>";
-    //headerContent += "B:// M-DISK drive 2<br>";
-    //headerContent += "C:// Paralelle Delay-Line Memory<br>";
+    headerContent += "A: (M-DISK drive 1)<br>";
+
+    // set up A: disk
+
+    dhList.forEach(function(dh) {
+        
+        
+        if (dh.driveLetter==="A"){
+            
+            
+            // Check if name exceeds target width
+            let staticLength = 6 + dh.size.toString().length + 4; // length of "├─ - KB"
+            let availableWidth = targetWidth - staticLength;
+            
+            // Check if name exceeds available width
+            let truncatedName = dh.name.length > availableWidth ? dh.name.substring(0, availableWidth - 3) + "..." : dh.name;
+            let nameSize = `├─${truncatedName} - ${dh.size} KB`;
+            let paddingLength = targetWidth - nameSize.length;
+            let padding = '-'.repeat(paddingLength);
+            let summaryContent = `<summary>├─${truncatedName} ${padding} ${dh.size} KB</summary>`;
+            let linkContent ="";
+            //add dh actions
+            //console.log(dh.name,dh.actions);
+            if (Array.isArray(dh.actions)){
+                //console.log("IS AN ARRAY!");
+                dh.actions.forEach(function(dhAction){
+                    
+                    linkContent +=`│ ├─<button onclick="${dhAction.script}">[ ${dhAction.name} ]</button><br>`;
+                    
+                })
+            }
+            
+            linkContent += `│ └─<a href="${dh.URL}">[ Open ]</a><br>`;
+
+            //linkContent += `│ └─<button onclick="clearDH_buttonWithConfirm('${dh.name}')">[ Delete ]</button><br>`;
+            headerContent += `<details>${summaryContent}${linkContent}</details>`;
+            //sumSize += parseInt(dh.size); // Update sum of size integers
+            //console.log("name: ",dh.name," size: ",dh.size, " sumSize: ",sumSize)
+        }
+    });
+    headerContent += `└─<button onclick="">[ Eject ]</button><br>`;
+    
+    headerContent += "B: (M-DISK drive 2)<br>";
+
+    headerContent += `└─<button onclick="">[ Eject ]</button><br>`;
+    
+    headerContent += "C: (Paralelle Delay-Line Memory)<br>";
 
     // Add details and summary for each DH element to header content
     //console.log("starting...")
     dhList.forEach(function(dh) {
-        // Check if name exceeds target width
-        let staticLength = 6 + dh.size.toString().length + 4; // length of "├─ - KB"
-        let availableWidth = targetWidth - staticLength;
         
-        // Check if name exceeds available width
-        let truncatedName = dh.name.length > availableWidth ? dh.name.substring(0, availableWidth - 3) + "..." : dh.name;
-        let nameSize = `├─${truncatedName} - ${dh.size} KB`;
-        let paddingLength = targetWidth - nameSize.length;
-        let padding = '-'.repeat(paddingLength);
-        let summaryContent = `<summary>├─${truncatedName} ${padding} ${dh.size} KB</summary>`;
-        let linkContent = `│ ├─<a href="${dh.URL}">[ Open ]</a><br>`;
+        
+        if (dh.driveLetter==="C"){
 
-        //add dh actions
-            //console.log(dh.name,dh.actions);
-        if (Array.isArray(dh.actions)){
-            //console.log("IS AN ARRAY!");
-            dh.actions.forEach(function(dhAction){
+            
+            // Check if name exceeds target width
+            let staticLength = 6 + dh.size.toString().length + 4; // length of "├─ - KB"
+            let availableWidth = targetWidth - staticLength;
+            
+            // Check if name exceeds available width
+            let truncatedName = dh.name.length > availableWidth ? dh.name.substring(0, availableWidth - 3) + "..." : dh.name;
+            let nameSize = `├─${truncatedName} - ${dh.size} KB`;
+            let paddingLength = targetWidth - nameSize.length;
+            let padding = '-'.repeat(paddingLength);
+            let summaryContent = `<summary>├─${truncatedName} ${padding} ${dh.size} KB</summary>`;
+            let linkContent = `│ ├─<a href="${dh.URL}">[ Open ]</a><br>`;
 
-                linkContent +=`│ ├─<button onclick="${dhAction.script}">[ ${dhAction.name} ]</button><br>`;
+            //add dh actions
+                //console.log(dh.name,dh.actions);
+            if (Array.isArray(dh.actions)){
+                //console.log("IS AN ARRAY!");
+                dh.actions.forEach(function(dhAction){
 
-            })
+                    linkContent +=`│ ├─<button onclick="${dhAction.script}">[ ${dhAction.name} ]</button><br>`;
+
+                })
+            }
+        
+
+            linkContent += `│ └─<button onclick="clearDH_buttonWithConfirm('${dh.name}')">[ Delete ]</button><br>`;
+            headerContent += `<details>${summaryContent}${linkContent}</details>`;
+            sumSize += parseInt(dh.size); // Update sum of size integers
+            //console.log("name: ",dh.name," size: ",dh.size, " sumSize: ",sumSize)
         }
-
-        linkContent += `│ └─<button onclick="clearDH_buttonWithConfirm('${dh.name}')">[ Delete ]</button><br>`;
-        headerContent += `<details>${summaryContent}${linkContent}</details>`;
-        sumSize += parseInt(dh.size); // Update sum of size integers
-        //console.log("name: ",dh.name," size: ",dh.size, " sumSize: ",sumSize)
     });
     //console.log("done! sumSize: ",sumSize)
 
@@ -183,9 +238,9 @@ function dynamicHeader_update() {
     let linkContent="";
 
     //add dh actions
-    console.log(dh.name,dh.actions);
+    //console.log(dh.name,dh.actions);
     if (Array.isArray(dh.actions)){
-        console.log("IS AN ARRAY!");
+        //console.log("IS AN ARRAY!");
         dh.actions.forEach(function(dhAction){
 
             linkContent +=`&nbsp; ├─<button onclick="${dhAction.script}">[ ${dhAction.name} ]</button><br>`;
@@ -213,7 +268,8 @@ function DH_get_currentPage(){
         name: "",
         url: window.location.href,
         size: 0,
-        actions:[]
+        actions:[],
+        driveLetter:"C"
     };
     
     let element = document.getElementById("content");
@@ -263,7 +319,8 @@ function DH_get_externalPage(url) {
         name: "",
         url: url,
         size: 0,
-        actions: []
+        actions: [],
+        driveLetter: "C"
     };
 
     // Use XMLHttpRequest to fetch the external page content synchronously
@@ -317,15 +374,11 @@ function DH_get_externalPage(url) {
 }
 
 
-function DH_save_urls(){
-
-}
-
 
 //save the current page to "memory" - html button friendly macro
 function DH_save_currentPage(){
     let dh=DH_get_currentPage();
-    setDH(dh.name,dh.url,dh.size,dh.actions)
+    setDH(dh.name,dh.url,dh.size,dh.actions, "C")
 }
 
 //"Are you sure?" delete button behaviour
@@ -406,7 +459,8 @@ function processOnDiskParameter() {
                     if (dh) {
                         //add dh as a disk entry
                         console.log("added: ", dh);
-                        setDH("A:"+dh.name,dh.url,dh.size,dh.actions)
+                        dh.driveLetter = "A:"
+                        setDH("A:"+dh.name,dh.url,dh.size,dh.actions,dh.driveLetter)
                         console.log("Success!");
                     }
 
@@ -427,7 +481,7 @@ function processOnDiskParameter() {
 }
 
 // Call the function on page load or setup
-processOnDiskParameter();
+//processOnDiskParameter();
 
 
 function removeOnDiskParameter() {
@@ -445,9 +499,13 @@ function removeOnDiskParameter() {
 
 //file:///C:/Users/Haavard/Documents/GitHub/TheHarvard.github.io/p/scan.html?fromDH=&onDisk=["https://example.com/page1","https://example.com/page2","https://example.com/page3"]
 // Call the function on page load or setup
-//processOnDiskParameter();
+processOnDiskParameter();
 //removeOnDiskParameter();
 
+setDH("test1","url1","1",[],"A")
+setDH("test2","url2","2",[],"A")
+setDH("test3","url3","3",[],"A")
+setDH("test4","url4","4",[],"A")
 
 //clearAllDH();
 console.log("dynamicHeader.js called")
