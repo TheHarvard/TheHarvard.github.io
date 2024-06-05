@@ -406,7 +406,7 @@ function processOnDiskParameter() {
                     if (dh) {
                         //add dh as a disk entry
                         console.log("added: ", dh);
-                        setDH(dh.name,dh.url,dh.size,dh.actions)
+                        setDH("A:"+dh.name,dh.url,dh.size,dh.actions)
                         console.log("Success!");
                     }
 
@@ -452,4 +452,18 @@ function removeOnDiskParameter() {
 //clearAllDH();
 console.log("dynamicHeader.js called")
 dynamicHeader_update();
+
+
+// update dynamic header on window load, show and visibility change
+window.onpageshow = function() {
+    dynamicHeader_update();
+}
+window.onfocus = function() {
+    dynamicHeader_update();
+};
+document.addEventListener("visibilitychange", function() {
+        dynamicHeader_update();
+});
+
+
 console.log("dynamicHeader.js complete")
