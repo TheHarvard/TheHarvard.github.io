@@ -87,6 +87,18 @@ function clearAllDH() {
     dynamicHeader_update();
 }
 
+// Function to clear all DHs of given drive letter
+function clearDriveLetter(driveLetter) {
+
+    // Retrieve DH list
+    let dhList = getDHList();
+    dhList.forEach(function(dh) {
+        if (dh.driveLetter===driveLetter){
+            clearDH(dh.name);
+        }
+    });
+}
+
 
 //==============================================================================
 
@@ -148,11 +160,13 @@ function dynamicHeader_update() {
             //console.log("name: ",dh.name," size: ",dh.size, " sumSize: ",sumSize)
         }
     });
-    headerContent += `└─<button onclick="">[ Eject ]</button><br>`;
+    headerContent += `└─<button onclick="clearDriveLetter('A')">[ Eject ]</button><br>`;
+    headerContent += `<br>`;
     
     headerContent += "B: (M-DISK drive 2)<br>";
 
-    headerContent += `└─<button onclick="">[ Eject ]</button><br>`;
+    headerContent += `└─<button onclick="clearDriveLetter('B')">[ Eject ]</button><br>`;
+    headerContent += `<br>`;
     
     headerContent += "C: (Paralelle Delay-Line Memory)<br>";
 
@@ -202,6 +216,7 @@ function dynamicHeader_update() {
     // Construct HTML string for the last item
     let lastItem = `└─ &lt;Free&gt; ${lastItemPadding} ${totalSize-sumSize}KB/${totalSize}KB<br>`;
 
+
     // Add last item to header content
     //headerContent += `│<br>`;
     headerContent += lastItem;
@@ -209,6 +224,7 @@ function dynamicHeader_update() {
     //headerContent += "H:// Network Interface 1<br>";
     //headerContent += "N:// Network Interface 2<br>";
 
+    headerContent += `<br>`;
     headerContent += `Current Open File:<br>`;
 
     // Generate entry for current document
@@ -434,6 +450,7 @@ function processOnDiskParameter() {
             }
 
             //Remove old disk dh entries
+            clearDriveLetter('A');
 
             // Loop over each URL in the list
             urlList.forEach(url => {
@@ -474,6 +491,10 @@ function processOnDiskParameter() {
             // Not a valid JSON array
             console.log("onDisk error:", e);
         }
+
+        //Clear the "onDisk" parameter once it is processed
+        removeOnDiskParameter();
+
     } else {
         // Log "B" if the parameter is not present
         console.log("onDisk not present");
@@ -497,7 +518,7 @@ function removeOnDiskParameter() {
 
 
 
-//file:///C:/Users/Haavard/Documents/GitHub/TheHarvard.github.io/p/scan.html?fromDH=&onDisk=["https://example.com/page1","https://example.com/page2","https://example.com/page3"]
+//file:///C:/Users/Haavard/Documents/GitHub/TheHarvard.github.io/p/scan.html?fromDH=&?onDisk=[%22/p/scan.html%22,%22/c/index.html%22,%22/c/map.html%22]
 // Call the function on page load or setup
 processOnDiskParameter();
 //removeOnDiskParameter();
