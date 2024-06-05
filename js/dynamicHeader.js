@@ -28,9 +28,16 @@ function DHgetCookie(name) {
 function setDH(name, URL, size, actions, driveLetter) {
     var dhList = getDHList();
     var found = false;
+    
     if (typeof driveLetter === 'undefined') {
         driveLetter = "C"
     }
+    if (driveLetter==="C") {
+        //do nothing
+    }else{
+        name = "((("+driveLetter+")))"+name;
+    }
+
     for (var i = 0; i < dhList.length; i++) {
         if (dhList[i].name === name) {
             dhList[i].URL = URL;
@@ -52,8 +59,18 @@ function setDH(name, URL, size, actions, driveLetter) {
 }
 
 // getDH returns the values stored in a DH. If the DH does not exist it returns null.
-function getDH(name) {
+function getDH(name, driveLetter) {
     var dhList = getDHList();
+    
+    if (typeof driveLetter === 'undefined') {
+        driveLetter = "C"
+    }
+    if (driveLetter==="C") {
+        //do nothing
+    }else{
+        name = "((("+driveLetter+")))"+name;
+    }
+
     for (var i = 0; i < dhList.length; i++) {
         if (dhList[i].name === name) {
             return dhList[i];
@@ -148,6 +165,8 @@ function dynamicHeader_update() {
         
         if (dh.driveLetter==="A"){
             
+            //Don't render any part of the name that is inside "(((" here ")))" 
+            dh.name = dh.name.replace(/\(\(\(.*?\)\)\)/g, '');
             
             // Check if name exceeds target width
             let staticLength = 6 + dh.size.toString().length + 4; // length of "├─ - KB"
@@ -215,6 +234,9 @@ function dynamicHeader_update() {
         if (dh.driveLetter==="C"){
 
             
+            //Don't render any part of the name that is inside "(((" here ")))" 
+            dh.name = dh.name.replace(/\(\(\(.*?\)\)\)/g, '');
+            
             // Check if name exceeds target width
             let staticLength = 6 + dh.size.toString().length + 4; // length of "├─ - KB"
             let availableWidth = targetWidth - staticLength;
@@ -269,7 +291,9 @@ function dynamicHeader_update() {
     //headerContent += "H:// Network Interface 1<br>";
     //headerContent += "N:// Network Interface 2<br>";
 
-    headerContent += `<br>`;
+    //add seperating line
+    headerContent += `================================================================================<br>`;
+
     headerContent += `Open:<br>`;
 
     // Generate entry for current document
@@ -288,12 +312,15 @@ function dynamicHeader_update() {
     let staticLength = 6 + dh.size.toString().length + 4; // length of "├─ - KB"
     let availableWidth = targetWidth - staticLength;
     
+    //Don't render any part of the name that is inside "(((" here ")))" 
+    let renderName = dh.name.replace(/\(\(\(.*?\)\)\)/g, '');
+    
     // Check if name exceeds available width
-    let truncatedName = dh.name.length > availableWidth ? dh.name.substring(0, availableWidth - 3) + "..." : dh.name;
-    let nameSize = `└─${truncatedName} - ${dh.size} KB`;
+    let truncatedName = renderName.length > availableWidth ? renderName.substring(0, availableWidth - 3) + "..." : renderName;
+    let nameSize = `──${truncatedName} - ${dh.size} KB`;
     let paddingLength = targetWidth - nameSize.length;
     let padding = '-'.repeat(paddingLength);
-    let summaryContent = `<summary>└─${truncatedName} ${padding} ${dh.size} KB</summary>`;
+    let summaryContent = `<summary>&nbsp;&nbsp;${truncatedName} ${padding} ${dh.size} KB</summary>`;
     
 
     let linkContent="";
@@ -568,7 +595,8 @@ function removeOnDiskParameter() {
 processOnDiskParameter();
 //removeOnDiskParameter();
 
-//setDH("test1","url1","1",[],"A")
+//setDH("scan.exe","url1","1",[],"A")
+//setDH("test ((())) (()) ()","url1","1",[],"A")
 //setDH("test2","url2","2",[],"A")
 //setDH("test3","url3","3",[],"A")
 //setDH("test4","url4","4",[],"A")

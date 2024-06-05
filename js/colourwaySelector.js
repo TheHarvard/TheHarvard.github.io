@@ -40,5 +40,13 @@ window.onpageshow = function() {
     setColourwayFromCookie();
 }
 
+// and on focus and visibility changes
+window.onfocus = function() {
+    setColourwayFromCookie();
+};
+document.addEventListener("visibilitychange", function() {
+    setColourwayFromCookie();
+});
+
 setColourwayFromCookie();
 console.log("setColourwayFromCookie complete");
