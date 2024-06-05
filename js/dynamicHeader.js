@@ -40,7 +40,7 @@ function setDH(name, URL, size, actions) {
     if (!found) {
         dhList.push({ name: name, URL: URL, size: size, actions: actions, });
     }
-    console.log("setDH actions", actions);
+    //console.log("setDH actions", actions);
     //console.log("setDH dhList", dhList);
     //console.log("setDH JSON.stringify(dhList))", JSON.stringify(dhList));
     DHsetCookie("DH_list", JSON.stringify(dhList), 365);
@@ -88,7 +88,7 @@ function clearAllDH() {
 
 
 
-var currentPage_actions = "";
+//var currentPage_actions = "";
 
 // Set up header
 function dynamicHeader_update() {
@@ -112,7 +112,11 @@ function dynamicHeader_update() {
     //console.log("starting...")
     dhList.forEach(function(dh) {
         // Check if name exceeds target width
-        let truncatedName = dh.name.length > targetWidth - 10 ? dh.name.substring(0, targetWidth - 13) + "..." : dh.name;
+        let staticLength = 6 + dh.size.toString().length + 4; // length of "├─ - KB"
+        let availableWidth = targetWidth - staticLength;
+        
+        // Check if name exceeds available width
+        let truncatedName = dh.name.length > availableWidth ? dh.name.substring(0, availableWidth - 3) + "..." : dh.name;
         let nameSize = `├─${truncatedName} - ${dh.size} KB`;
         let paddingLength = targetWidth - nameSize.length;
         let padding = '-'.repeat(paddingLength);
@@ -120,9 +124,9 @@ function dynamicHeader_update() {
         let linkContent = `│ ├─<a href="${dh.URL}">[ Open ]</a><br>`;
 
         //add dh actions
-            console.log(dh.name,dh.actions);
+            //console.log(dh.name,dh.actions);
         if (Array.isArray(dh.actions)){
-            console.log("IS AN ARRAY!");
+            //console.log("IS AN ARRAY!");
             dh.actions.forEach(function(dhAction){
 
                 linkContent +=`│ ├─<button onclick="${dhAction.script}">[ ${dhAction.name} ]</button><br>`;
@@ -153,13 +157,65 @@ function dynamicHeader_update() {
     headerContent += `Current Open File:<br>`;
 
     // Generate entry for current document
+    let dh = DH_get_currentPage()
+
+    //check if there is enough memory available to store this file, otherwise
+    //disable the save button on this refresh
+    let saveButtonDisableAttribute  = "";
+    let saveButtonText  = "Save";
+    if (sumSize+parseInt(dh.size) > totalSize){
+        saveButtonDisableAttribute  = "disabled";
+        saveButtonText  = "Save: MEMORY ERROR";
+    }
+
+    // Check if name exceeds target width
+    let staticLength = 6 + dh.size.toString().length + 4; // length of "├─ - KB"
+    let availableWidth = targetWidth - staticLength;
+    
+    // Check if name exceeds available width
+    let truncatedName = dh.name.length > availableWidth ? dh.name.substring(0, availableWidth - 3) + "..." : dh.name;
+    let nameSize = `└─${truncatedName} - ${dh.size} KB`;
+    let paddingLength = targetWidth - nameSize.length;
+    let padding = '-'.repeat(paddingLength);
+    let summaryContent = `<summary>└─${truncatedName} ${padding} ${dh.size} KB</summary>`;
+    
+
+    let linkContent="";
+
+    //add dh actions
+    console.log(dh.name,dh.actions);
+    if (Array.isArray(dh.actions)){
+        console.log("IS AN ARRAY!");
+        dh.actions.forEach(function(dhAction){
+
+            linkContent +=`&nbsp; ├─<button onclick="${dhAction.script}">[ ${dhAction.name} ]</button><br>`;
+
+        })
+    }
+
+    linkContent += `&nbsp; └─<button onclick="DH_save_currentPage()" ${saveButtonDisableAttribute}>[ ${saveButtonText} ]</button><br>`;
+    
+    headerContent += `<details>${summaryContent}${linkContent}</details>`;
+
+    //add seperating line
+    headerContent += `================================================================================`;
+
+    // Update dynamicHeader element with header content
+    document.getElementById("dynamicHeader").innerHTML = headerContent;
+}
+
+
+
+
+//create DH entry from current page
+function DH_get_currentPage(){
     let dh = {
         name: "",
         url: window.location.href,
         size: 0,
         actions:[]
     };
-
+    
     let element = document.getElementById("content");
     if (element) {
         let htmlContent = element.outerHTML;
@@ -187,54 +243,90 @@ function dynamicHeader_update() {
         //console.log("actions parsed: ",dh.actions)
         } 
     }
-
+    
     {
-    //add parameter to url (skip if allready there)
-    const urlObj = new URL(dh.url);
-    if (!urlObj.searchParams.has('fromDH')) {
-        // Append the "fromDH" parameter to the URL
-        urlObj.searchParams.append('fromDH', '');
-        dh.url = urlObj.toString();
-    }
-    }
+        //add parameter to url (skip if allready there)
+        const urlObj = new URL(dh.url);
+        if (!urlObj.searchParams.has('fromDH')) {
+            // Append the "fromDH" parameter to the URL
+            urlObj.searchParams.append('fromDH', '');
+            dh.url = urlObj.toString();
+        }
+        }
 
-    //check if there is enough memory available to store this file, otherwise
-    //disable the save button on this refresh
-    let saveButtonDisableAttribute  = "";
-    let saveButtonText  = "Save";
-    if (sumSize+parseInt(dh.size) > totalSize){
-        saveButtonDisableAttribute  = "disabled";
-        saveButtonText  = "Save: MEMORY ERROR";
-    }
-
-    let truncatedName = dh.name.length > targetWidth - 10 ? dh.name.substring(0, targetWidth - 13) + "..." : dh.name;
-    let nameSize = `└─${truncatedName} - ${dh.size} KB`;
-    let paddingLength = targetWidth - nameSize.length;
-    let padding = '-'.repeat(paddingLength);
-    let summaryContent = `<summary>└─${truncatedName} ${padding} ${dh.size} KB</summary>`;
-    
-    //console.log("button actions", dh.actions);
-    //console.log("button JSON.stringify(dh.actions)", JSON.stringify(dh.actions));
-    //currentPage_actions = JSON.stringify(dh.actions).replaceAll("\"","\'");
-    currentPage_actions = dh.actions;
-    //console.log("currentPage_actions", currentPage_actions);
-
-    //let actionsContent = JSON.stringify(dh.actions).replaceAll("\"","\'");
-    //let linkContent = `&nbsp; └─<button onclick="setDH('${dh.name}','${dh.url}','${dh.size}','`++`')' ${saveButtonDisableAttribute}>[ ${saveButtonText} ]</button><br>`;
-    //let linkContent = `&nbsp; └─<button onclick="setDH('${dh.name}','${dh.url}','${dh.size}','${currentPage_actions}')" ${saveButtonDisableAttribute}>[ ${saveButtonText} ]</button><br>`;
-    
-    //Original: let linkContent = `&nbsp; └─<button onclick="setDH('${dh.name}','${dh.url}','${dh.size}')" ${saveButtonDisableAttribute}>[ ${saveButtonText} ]</button><br>`;
-    let linkContent = `&nbsp; └─<button onclick="setDH('${dh.name}','${dh.url}','${dh.size}',currentPage_actions)" ${saveButtonDisableAttribute}>[ ${saveButtonText} ]</button><br>`;
-    
-    headerContent += `<details>${summaryContent}${linkContent}</details>`;
-
-    //add seperating line
-    headerContent += `================================================================================`;
-
-    // Update dynamicHeader element with header content
-    document.getElementById("dynamicHeader").innerHTML = headerContent;
+    return dh;
 }
 
+// Create DH entry from an external page
+function DH_get_externalPage(url) {
+    let dh = {
+        name: "",
+        url: url,
+        size: 0,
+        actions: []
+    };
+
+    // Use XMLHttpRequest to fetch the external page content synchronously
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', url, false); // `false` makes the request synchronous
+    xhr.send(null);
+
+    if (xhr.status === 200) {
+        let htmlContent = xhr.responseText;
+
+        // Create a DOM parser to parse the fetched HTML content
+        let parser = new DOMParser();
+        let doc = parser.parseFromString(htmlContent, 'text/html');
+
+        // Calculate the size of the content
+        let sizeInBytes = new TextEncoder().encode(htmlContent).length;
+        let sizeInKB = (sizeInBytes / 1024).toFixed(0);
+        dh.size = sizeInKB;
+
+        // Extract the title, size, and actions
+        const nameElement = doc.querySelector('title');
+        if (nameElement) {
+            dh.name = nameElement.textContent;
+        }
+        const sizeElement = doc.querySelector('size');
+        if (sizeElement) {
+            dh.size = sizeElement.textContent;
+        }
+        const actionsElement = doc.querySelector('actions');
+        if (actionsElement) {
+            dh.actions = JSON.parse(actionsElement.textContent);
+        }
+
+        // Add parameter to URL (skip if already there)
+        const urlObj = new URL(dh.url);
+        if (!urlObj.searchParams.has('fromDH')) {
+            // Append the "fromDH" parameter to the URL
+            urlObj.searchParams.append('fromDH', '');
+            dh.url = urlObj.toString();
+        }
+    } else {
+        console.error('Failed to fetch the page:', xhr.statusText);
+    }
+
+    return dh;
+
+    // Example usage:
+    //let dhEntry = DH_get_externalPage('https://example.com/page');
+    //console.log(dhEntry);
+
+}
+
+
+function DH_save_urls(){
+
+}
+
+
+//save the current page to "memory" - html button friendly macro
+function DH_save_currentPage(){
+    let dh=DH_get_currentPage();
+    setDH(dh.name,dh.url,dh.size,dh.actions)
+}
 
 //"Are you sure?" delete button behaviour
 function clearDH_buttonWithConfirm(dhName) {
@@ -246,6 +338,111 @@ function clearDH_buttonWithConfirm(dhName) {
         clearDH(dhName)
     }
 }
+
+
+
+
+
+//update url parameters - to be used by DH actions
+function updateUrlAndReload(params) {
+    // Get the current URL
+    let currentUrl = new URL(window.location.href);
+    
+    // Add each parameter to the URL
+    Object.keys(params).forEach(key => {
+        currentUrl.searchParams.set(key, params[key]);
+    });
+
+    // Reload the page with the new URL
+    window.location.href = currentUrl.toString();
+
+    // Example usage:
+    // updateUrlAndReload({ param1: 'value1', param2: 'value2' });
+}
+
+
+
+
+//check for "onDisk" url parameter, and process it
+// Main function to process the "onDisk" parameter
+function processOnDiskParameter() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const onDiskParam = urlParams.get('onDisk');
+
+    if (onDiskParam) {
+        console.log("onDisk is present! processing:");
+        try {
+            // Attempt to parse as JSON array
+            let urlList = JSON.parse(onDiskParam);
+
+            // If onDiskParam is not an array, create an array with the single value
+            if (!Array.isArray(urlList)) {
+                urlList = [onDiskParam];
+            }
+
+            //Remove old disk dh entries
+
+            // Loop over each URL in the list
+            urlList.forEach(url => {
+                if (typeof url === 'string') {
+                    console.log(`Processing URL from list: ${url}`);
+                    // Add your URL processing logic here
+                    
+                    //console.log(`url:`, url);
+                    let fullUrl = window.location.href.replace(/\?.*/, ''); // Remove anything after "?"
+                    fullUrl = fullUrl.replace(/\/[^\/]*\/[^\/]*$/, ''); // Remove last two path segments
+                    //console.log(`base url:`, fullUrl);
+                    fullUrl = fullUrl + url;
+                    
+
+                    //console.log(`window.location.origin:`, window.location.origin);
+                    //console.log(`window.location.host:`, window.location.host);
+                    //console.log(`window.location.href:`, window.location.href);
+
+                    console.log(`full Url:`, fullUrl);
+
+                    let dh = DH_get_externalPage(fullUrl);
+                    if (dh) {
+                        //add dh as a disk entry
+                    }
+
+                } else {
+                    // Not a string
+                    console.log(`"${url}" is not a string`);
+                }
+            });
+
+        } catch (e) {
+            // Not a valid JSON array
+            console.log("onDisk error:", e);
+        }
+    } else {
+        // Log "B" if the parameter is not present
+        console.log("onDisk not present");
+    }
+}
+
+// Call the function on page load or setup
+processOnDiskParameter();
+
+
+function removeOnDiskParameter() {
+    // Get the current URL
+    const url = new URL(window.location.href);
+
+    // Remove the 'onDisk' parameter
+    url.searchParams.delete('onDisk');
+
+    // Update the URL and reload the page
+    window.location.href = url.toString();
+}
+
+
+
+//file:///C:/Users/Haavard/Documents/GitHub/TheHarvard.github.io/p/scan.html?fromDH=&onDisk=["https://example.com/page1","https://example.com/page2","https://example.com/page3"]
+// Call the function on page load or setup
+//processOnDiskParameter();
+//removeOnDiskParameter();
 
 
 //clearAllDH();
