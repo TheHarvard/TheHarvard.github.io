@@ -402,8 +402,12 @@ function processOnDiskParameter() {
                     console.log(`full Url:`, fullUrl);
 
                     let dh = DH_get_externalPage(fullUrl);
+                    console.log("dh: ", dh);
                     if (dh) {
                         //add dh as a disk entry
+                        console.log("added: ", dh);
+                        setDH(dh.name,dh.url,dh.size,dh.actions)
+                        console.log("Success!");
                     }
 
                 } else {
