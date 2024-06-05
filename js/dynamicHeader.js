@@ -99,6 +99,19 @@ function clearDriveLetter(driveLetter) {
     });
 }
 
+// returns true if drive letter has entries in it
+function hasDriveLetter(driveLetter) {
+
+    // Retrieve DH list
+    let dhList = getDHList();
+    dhList.forEach(function(dh) {
+        if (dh.driveLetter===driveLetter){
+            return true;
+        }
+    });
+    return false;
+}
+
 
 //==============================================================================
 
@@ -120,7 +133,14 @@ function dynamicHeader_update() {
     let dhList = getDHList();
     
     headerContent += "<summary>VNA DECK A33.76<br>================================================================================</summary>";
-    headerContent += "A: (M-DISK drive 1)<br>";
+    //headerContent += "A: (M-DISK drive 1)<br>";
+
+    //Start with A open if there are A files
+    if (hasDriveLetter("A")) {
+        headerContent += `<details open=""><summary>A: (M-DISK)</summary>`;
+    }else{
+        headerContent += `<details><summary>A: (M-DISK)</summary>`;
+    }
 
     // set up A: disk
 
@@ -161,14 +181,18 @@ function dynamicHeader_update() {
         }
     });
     headerContent += `└─<button onclick="clearDriveLetter('A')">[ Eject ]</button><br>`;
-    headerContent += `<br>`;
+    headerContent += `</details>`;
+    //headerContent += `<br>`;
     
-    headerContent += "B: (M-DISK drive 2)<br>";
+    //headerContent += "B: (M-DISK drive 2)<br>";
+    headerContent += "<details><summary>B: (M-DISK)</summary>";
 
     headerContent += `└─<button onclick="clearDriveLetter('B')">[ Eject ]</button><br>`;
-    headerContent += `<br>`;
+    headerContent += `</details>`;
+    //headerContent += `<br>`;
     
-    headerContent += "C: (Paralelle Delay-Line Memory)<br>";
+    //headerContent += "C: (Paralelle Delay-Line Memory)<br>";
+    headerContent += `<details open=""><summary>C: (Internal)</summary>`;
 
     // Add details and summary for each DH element to header content
     //console.log("starting...")
@@ -220,12 +244,20 @@ function dynamicHeader_update() {
     // Add last item to header content
     //headerContent += `│<br>`;
     headerContent += lastItem;
+    headerContent += `</details>`;
+
+        //headerContent += "B: (M-DISK drive 2)<br>";
+        headerContent += "<details><summary>D: (Network)</summary>";
+
+        headerContent += `└─&lt;Disconnected&gt`;
+        headerContent += `</details>`;
+        //headerContent += `<br>`;
 
     //headerContent += "H:// Network Interface 1<br>";
     //headerContent += "N:// Network Interface 2<br>";
 
     headerContent += `<br>`;
-    headerContent += `Current Open File:<br>`;
+    headerContent += `Open:<br>`;
 
     // Generate entry for current document
     let dh = DH_get_currentPage()
