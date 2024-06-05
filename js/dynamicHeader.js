@@ -101,14 +101,13 @@ function clearDriveLetter(driveLetter) {
 
 // returns true if drive letter has entries in it
 function hasDriveLetter(driveLetter) {
-
     // Retrieve DH list
     let dhList = getDHList();
-    dhList.forEach(function(dh) {
-        if (dh.driveLetter===driveLetter){
+    for (let dh of dhList) {
+        if (dh.driveLetter === driveLetter) {
             return true;
         }
-    });
+    }
     return false;
 }
 
@@ -180,14 +179,28 @@ function dynamicHeader_update() {
             //console.log("name: ",dh.name," size: ",dh.size, " sumSize: ",sumSize)
         }
     });
-    headerContent += `└─<button onclick="clearDriveLetter('A')">[ Eject ]</button><br>`;
+
+    //Eject or empty depending on if drive bay is empty
+     if (hasDriveLetter("A")) {
+        headerContent += `└─<button onclick="clearDriveLetter('A')">[ Eject ]</button><br>`;
+    }else{
+        headerContent += `└─&lt;Empty&gt`;
+    }
+    
     headerContent += `</details>`;
     //headerContent += `<br>`;
     
     //headerContent += "B: (M-DISK drive 2)<br>";
     headerContent += "<details><summary>B: (M-DISK)</summary>";
+    
+    //Eject or empty depending on if drive bay is empty
+    if (hasDriveLetter("B")) {
+        headerContent += `└─<button onclick="clearDriveLetter('B')">[ Eject ]</button><br>`;
+    }else{
+        headerContent += `└─&lt;Empty&gt`;
+    }
 
-    headerContent += `└─<button onclick="clearDriveLetter('B')">[ Eject ]</button><br>`;
+    //headerContent += `└─<button onclick="clearDriveLetter('B')">[ Eject ]</button><br>`;
     headerContent += `</details>`;
     //headerContent += `<br>`;
     
@@ -555,10 +568,10 @@ function removeOnDiskParameter() {
 processOnDiskParameter();
 //removeOnDiskParameter();
 
-setDH("test1","url1","1",[],"A")
-setDH("test2","url2","2",[],"A")
-setDH("test3","url3","3",[],"A")
-setDH("test4","url4","4",[],"A")
+//setDH("test1","url1","1",[],"A")
+//setDH("test2","url2","2",[],"A")
+//setDH("test3","url3","3",[],"A")
+//setDH("test4","url4","4",[],"A")
 
 //clearAllDH();
 console.log("dynamicHeader.js called")
