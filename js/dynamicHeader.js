@@ -166,14 +166,14 @@ function dynamicHeader_update() {
         if (dh.driveLetter==="A"){
             
             //Don't render any part of the name that is inside "(((" here ")))" 
-            dh.name = dh.name.replace(/\(\(\(.*?\)\)\)/g, '');
+            let renderName = dh.name.replace(/\(\(\(.*?\)\)\)/g, '');
             
             // Check if name exceeds target width
             let staticLength = 6 + dh.size.toString().length + 4; // length of "├─ - KB"
             let availableWidth = targetWidth - staticLength;
             
             // Check if name exceeds available width
-            let truncatedName = dh.name.length > availableWidth ? dh.name.substring(0, availableWidth - 3) + "..." : dh.name;
+            let truncatedName = renderName.length > availableWidth ? renderName.substring(0, availableWidth - 3) + "..." : renderName;
             let nameSize = `├─${truncatedName} - ${dh.size} KB`;
             let paddingLength = targetWidth - nameSize.length;
             let padding = '-'.repeat(paddingLength);
@@ -239,14 +239,14 @@ function dynamicHeader_update() {
 
             
             //Don't render any part of the name that is inside "(((" here ")))" 
-            dh.name = dh.name.replace(/\(\(\(.*?\)\)\)/g, '');
+            let renderName = dh.name.replace(/\(\(\(.*?\)\)\)/g, '');
             
             // Check if name exceeds target width
             let staticLength = 6 + dh.size.toString().length + 4; // length of "├─ - KB"
             let availableWidth = targetWidth - staticLength;
             
             // Check if name exceeds available width
-            let truncatedName = dh.name.length > availableWidth ? dh.name.substring(0, availableWidth - 3) + "..." : dh.name;
+            let truncatedName = renderName.length > availableWidth ? renderName.substring(0, availableWidth - 3) + "..." : renderName;
             let nameSize = `├─${truncatedName} - ${dh.size} KB`;
             let paddingLength = targetWidth - nameSize.length;
             let padding = '-'.repeat(paddingLength);
