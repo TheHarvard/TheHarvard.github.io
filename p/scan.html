@@ -6,15 +6,37 @@
         <title>scan.exe(((hello!)))</title>
         <size>12</size>
         <actions>[
-            {"name":"action1","script":"console.log('action1')"},
-            {"name":"action2","script":"console.log('action2')"},
-            {"name":"scan","script":"updateUrlAndReload({ scan1: 'scan.exe', scan2: 'scan.exe' })"}
+            {"name":"Scan","script":"updateUrlAndReload({ fromDH: '',scan1: 'scan.exe' })"}
             ]</actions>
     </head>
     <body>
         
-<pre>scan</pre>
-            
+<p showIf="scan1">[<span replaceWith="scan1"></span>: This is the readme for the scan.exe program ]</p>
+
+<pre>
+Welcome to the scan.exe program!
+
+This program analyzes any file you run it on, and notifies the user
+of any number of practicable or anomolous aspects of the file! 
+</pre>
+
+<pre>
+Try it on this ReadME file! it should uncover some information for you.
+
+Simply click "scan.exe" in your file system and select the action "Scan".
+</pre>
+
+<pre showIf="scan1">
+================================================================================
+<span replaceWith="scan1"></span>
+    > ! Anomaly detected !
+    > "Secret message"
+    > 
+    > Congratulation!
+    > You succesfully scanned this file!
+    > 
+
+</pre>
 
 
 </html>

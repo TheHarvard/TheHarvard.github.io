@@ -69,6 +69,10 @@ window.addEventListener('load', () => {
     script.src = '../js/dynamicHeader.js';
     document.head.appendChild(script);
 
+    var script = document.createElement('script');
+    script.src = '../js/conditionalFormatting.js';
+    document.head.appendChild(script);
+
     //remove all init elements last
     window.onload = function() {
         // Select all elements with the class "init"
