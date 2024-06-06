@@ -17,34 +17,40 @@ function conditionalFormatting_update() {
     // remove elements with hideIf attribute
     document.querySelectorAll('[hideIf]').forEach(element => {
         const paramName = element.getAttribute('hideIf');
-        console.log("[hideIf]: ",element)
+        console.log("[hideIf]: ",element);
         if (params[paramName] !== undefined) {
             //element.style.display = 'none';
             element.remove();
+            console.log("Removed!");
+
         }
     });
 
     // keep elements with showIf attribute
     document.querySelectorAll('[showIf]').forEach(element => {
         const paramName = element.getAttribute('showIf');
-        console.log("[showIf]: ",element)
+        console.log("[showIf]: ",element);
         if (params[paramName] !== undefined) {
             //element.style.display = 'block';
+            console.log("Spared.");
         } else {
             //element.style.display = 'none';
             element.remove();
+            console.log("Removed!");
         }
     });
 
     // Replace content based on replaceWith attribute
     document.querySelectorAll('[replaceWith]').forEach(element => {
         const paramName = element.getAttribute('replaceWith');
-        console.log("[replaceWith]: ",element)
+        console.log("[replaceWith]: ",element);
         if (params.hasOwnProperty(paramName)) {
             element.textContent = params[paramName];
+            console.log("Replaced!");
         } else {
             // If the parameter is not in the URL, do not change the content
             // element.textContent remains as is
+            console.log("not replaced.");
         }
     });
 }
