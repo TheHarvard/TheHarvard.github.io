@@ -32,6 +32,8 @@ function setColourwayFromCookie() {
     var cookieColourway = getCookie('colourwayCss');
     if (cookieColourway) {
         document.getElementById('colourwayCss').href = cookieColourway;
+    } else {
+        document.getElementById('colourwayCss').href = '../css/colourwayAmber.css';
     }
 }
 

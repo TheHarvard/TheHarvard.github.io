@@ -18,7 +18,8 @@ document.head.appendChild(style);
 //<link id="colourwayCss" href="styleAmber.css" rel="stylesheet" type="text/css" />
 var colourwayCss = document.createElement('link');
 colourwayCss.id = 'colourwayCss';
-colourwayCss.href = '../css/colourwayAmber.css';
+//colourwayCss.href = '../css/colourwayAmber.css';
+colourwayCss.href = '../css/style.css';
 colourwayCss.rel = 'stylesheet';
 colourwayCss.type = 'text/css';
 document.head.appendChild(colourwayCss);
@@ -57,9 +58,6 @@ window.addEventListener('load', () => {
 
 
     // add scripts
-    var script = document.createElement('script');
-    script.src = '../js/colourwaySelector.js';
-    document.head.appendChild(script);
 
     var script = document.createElement('script');
     script.src = '../js/conditionalFormatting.js';
@@ -71,6 +69,10 @@ window.addEventListener('load', () => {
 
     var script = document.createElement('script');
     script.src = '../js/dynamicHeader.js';
+    document.head.appendChild(script);
+
+    var script = document.createElement('script');
+    script.src = '../js/colourwaySelector.js';
     document.head.appendChild(script);
 
     //remove all init elements last
