@@ -12,10 +12,12 @@ function cf_getUrlParameters() {
 // Function to show or hide elements based on URL parameters
 function conditionalFormatting_update() {
     const params = cf_getUrlParameters();
+    console.log("params: ",params)
     
     // remove elements with hideIf attribute
     document.querySelectorAll('[hideIf]').forEach(element => {
         const paramName = element.getAttribute('hideIf');
+        console.log("[hideIf]: ",element)
         if (params[paramName] !== undefined) {
             //element.style.display = 'none';
             element.remove();
@@ -25,6 +27,7 @@ function conditionalFormatting_update() {
     // keep elements with showIf attribute
     document.querySelectorAll('[showIf]').forEach(element => {
         const paramName = element.getAttribute('showIf');
+        console.log("[showIf]: ",element)
         if (params[paramName] !== undefined) {
             //element.style.display = 'block';
         } else {
@@ -36,6 +39,7 @@ function conditionalFormatting_update() {
     // Replace content based on replaceWith attribute
     document.querySelectorAll('[replaceWith]').forEach(element => {
         const paramName = element.getAttribute('replaceWith');
+        console.log("[replaceWith]: ",element)
         if (params.hasOwnProperty(paramName)) {
             element.textContent = params[paramName];
         } else {
@@ -45,5 +49,7 @@ function conditionalFormatting_update() {
     });
 }
 
+console.log("conditionalFormatting.js called")
 // Call the cf_toggleElements function only on page load.
 conditionalFormatting_update();
+console.log("conditionalFormatting.js complete")
