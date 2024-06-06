@@ -565,7 +565,7 @@ function processOnDiskParameter() {
         }
 
         //Clear the "onDisk" parameter once it is processed
-        //removeOnDiskParameter();
+        removeOnDiskParameter();
 
     } else {
         // Log "B" if the parameter is not present
