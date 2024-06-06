@@ -497,28 +497,6 @@ function clearDH_buttonWithConfirm(dhName) {
 
 
 
-
-
-//update url parameters - to be used by DH actions
-function updateUrlAndReload(params) {
-    // Get the current URL
-    let currentUrl = new URL(window.location.href);
-    
-    // Add each parameter to the URL
-    Object.keys(params).forEach(key => {
-        currentUrl.searchParams.set(key, params[key]);
-    });
-
-    // Reload the page with the new URL
-    window.location.href = currentUrl.toString();
-
-    // Example usage:
-    // updateUrlAndReload({ param1: 'value1', param2: 'value2' });
-}
-
-
-
-
 //check for "onDisk" url parameter, and process it
 // Main function to process the "onDisk" parameter
 function processOnDiskParameter() {
@@ -564,7 +542,7 @@ function processOnDiskParameter() {
                         //add dh as a disk entry
                         dh.driveLetter = "A"
                         console.log("added: ", dh);
-                        setDH("A:"+dh.name,dh.url,dh.size,dh.actions,dh.driveLetter)
+                        setDH(dh.name,dh.url,dh.size,dh.actions,dh.driveLetter)
                         console.log("Success!");
                     }
 
@@ -634,3 +612,22 @@ document.addEventListener("visibilitychange", function() {
 
 
 console.log("dynamicHeader.js complete")
+
+
+
+//update url parameters - to be used by DH actions
+function updateUrlAndReload(params) {
+    // Get the current URL
+    let currentUrl = new URL(window.location.href);
+    
+    // Add each parameter to the URL
+    Object.keys(params).forEach(key => {
+        currentUrl.searchParams.set(key, params[key]);
+    });
+
+    // Reload the page with the new URL
+    window.location.href = currentUrl.toString();
+
+    // Example usage:
+    // updateUrlAndReload({ param1: 'value1', param2: 'value2' });
+}
