@@ -547,8 +547,8 @@ function processOnDiskParameter() {
                     console.log("dh: ", dh);
                     if (dh) {
                         //add dh as a disk entry
+                        dh.driveLetter = "A"
                         console.log("added: ", dh);
-                        dh.driveLetter = "A:"
                         setDH("A:"+dh.name,dh.url,dh.size,dh.actions,dh.driveLetter)
                         console.log("Success!");
                     }
@@ -590,7 +590,7 @@ function removeOnDiskParameter() {
 
 
 
-//file:///C:/Users/Haavard/Documents/GitHub/TheHarvard.github.io/p/scan.html?fromDH=&?onDisk=[%22/p/scan.html%22,%22/c/index.html%22,%22/c/map.html%22]
+//file:///C:/Users/Haavard/Documents/GitHub/TheHarvard.github.io/p/scan.html?fromDH=&onDisk=[%22/p/scan.html%22,%22/c/index.html%22,%22/c/map.html%22]
 // Call the function on page load or setup
 processOnDiskParameter();
 //removeOnDiskParameter();
