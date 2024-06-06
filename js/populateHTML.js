@@ -62,15 +62,15 @@ window.addEventListener('load', () => {
     document.head.appendChild(script);
 
     var script = document.createElement('script');
+    script.src = '../js/conditionalFormatting.js';
+    document.head.appendChild(script);
+
+    var script = document.createElement('script');
     script.src = '../js/typer.js';
     document.head.appendChild(script);
 
     var script = document.createElement('script');
     script.src = '../js/dynamicHeader.js';
-    document.head.appendChild(script);
-
-    var script = document.createElement('script');
-    script.src = '../js/conditionalFormatting.js';
     document.head.appendChild(script);
 
     //remove all init elements last
