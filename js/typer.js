@@ -34,8 +34,8 @@ console.log("typer.js called");
                 //console.log("overflow detected");
                 singleScreenStopFlag = true;
                 stopflag = true;
-                index-=2*charactersPerRender;
-                charactersToBeAppended = '<br> <span style=\"white-space: nowrap;\"><button class="blink" onclick="typeWriter()">[ continue ]</button></span>';
+                index-=(2*charactersPerRender)+12;
+                charactersToBeAppended = ' <span style=\"white-space: nowrap;\"><button class="blink" onclick="typeWriter()">[ continue ]</button></span>';
             }
         }
 

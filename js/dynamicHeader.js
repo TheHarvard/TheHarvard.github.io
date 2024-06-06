@@ -143,7 +143,7 @@ function dynamicHeader_update() {
     let headerContent = ''; // Initialize header content
     let sumSize = 0; // Initialize sum of size integers
     let totalSize = 64; // Initialize total size
-    let targetWidth = 25; // Target width for DH name and size
+    let targetWidth = 40; // Target width for DH name and size (min25)
 
     // Retrieve DH list
     let dhList = getDHList();
@@ -155,7 +155,7 @@ function dynamicHeader_update() {
     if (hasDriveLetter("A")) {
         headerContent += `<details open=""><summary>A: (M-DISK)</summary>`;
     }else{
-        headerContent += `<details><summary>A: (M-DISK)</summary>`;
+        headerContent += `<details><summary>A: (M-Drive)</summary>`;
     }
 
     // set up A: disk
@@ -208,7 +208,9 @@ function dynamicHeader_update() {
     
     headerContent += `</details>`;
     //headerContent += `<br>`;
-    
+
+    /*
+
     //headerContent += "B: (M-DISK drive 2)<br>";
     headerContent += "<details><summary>B: (M-DISK)</summary>";
     
@@ -222,6 +224,8 @@ function dynamicHeader_update() {
     //headerContent += `└─<button onclick="clearDriveLetter('B')">[ Eject ]</button><br>`;
     headerContent += `</details>`;
     //headerContent += `<br>`;
+
+    */
     
     //headerContent += "C: (Paralelle Delay-Line Memory)<br>";
     headerContent += `<details open=""><summary>C: (Internal)</summary>`;
@@ -281,6 +285,9 @@ function dynamicHeader_update() {
     headerContent += lastItem;
     headerContent += `</details>`;
 
+    
+    /*
+
         //headerContent += "B: (M-DISK drive 2)<br>";
         headerContent += "<details><summary>D: (Network)</summary>";
 
@@ -291,10 +298,15 @@ function dynamicHeader_update() {
     //headerContent += "H:// Network Interface 1<br>";
     //headerContent += "N:// Network Interface 2<br>";
 
-    //add seperating line
-    headerContent += `================================================================================<br>`;
+    */
 
-    headerContent += `Open:<br>`;
+    //add seperating line
+    //headerContent += `================================================================================<br>`;
+
+    //headerContent += `Open:<br>`;
+
+    headerContent += `==Open:=========================================================================<br>`;
+
 
     // Generate entry for current document
     let dh = DH_get_currentPage()
@@ -396,7 +408,10 @@ function DH_get_currentPage(){
             urlObj.searchParams.append('fromDH', '');
             dh.url = urlObj.toString();
         }
-        }
+    }
+
+    //Add the url parameters to the name to make uniqe names for different url parameters
+    dh.name = dh.name + "(((" + dh.url.slice(dh.url.indexOf('?') + 1) + ")))";
 
     return dh;
 }
