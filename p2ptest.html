@@ -6,7 +6,10 @@
 <title>P2P Ping Example</title>
 <script>
     let peerConnection;
-    let successCount = 0;
+    let pingSentCount = 0;
+    let pingReceivedCount = 0;
+    let pongSentCount = 0;
+    let pongReceivedCount = 0;
 
     // Function to start the peer connection
     function startPeerConnection(ip, port) {
@@ -28,13 +31,15 @@
         dataChannel.onopen = () => {
             // Send a ping message to the other peer
             dataChannel.send("ping");
+            pingSentCount++;
+            updateDisplay();
         };
 
         dataChannel.onmessage = event => {
             // If "pong" is received, increment success count and display
             if (event.data === "pong") {
-                successCount++;
-                document.getElementById("successCount").innerText = "Success Count: " + successCount;
+                pingReceivedCount++;
+                updateDisplay();
             }
         };
 
@@ -51,6 +56,14 @@
         ws.onopen = () => {
             ws.send(JSON.stringify({ type: "candidate", candidate: candidate }));
         };
+    }
+
+    // Function to update the display with running totals
+    function updateDisplay() {
+        document.getElementById("pingSent").innerText = "Pings Sent: " + pingSentCount;
+        document.getElementById("pingReceived").innerText = "Pings Received: " + pingReceivedCount;
+        document.getElementById("pongSent").innerText = "Pongs Sent: " + pongSentCount;
+        document.getElementById("pongReceived").innerText = "Pongs Received: " + pongReceivedCount;
     }
 
     // Function to start the ping process
@@ -71,6 +84,9 @@
 <label for="portNumber">Enter Port Number:</label>
 <input type="text" id="portNumber" placeholder="Port Number">
 <button onclick="startPing()">Ping</button>
-<div id="successCount">Success Count: 0</div>
+<div id="pingSent">Pings Sent: 0</div>
+<div id="pingReceived">Pings Received: 0</div>
+<div id="pongSent">Pongs Sent: 0</div>
+<div id="pongReceived">Pongs Received: 0</div>
 </body>
 </html>
