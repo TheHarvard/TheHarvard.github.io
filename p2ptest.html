@@ -32,18 +32,29 @@
         // Set up event listeners for the data channel
         dataChannel.onopen = () => {
             console.log("Data channel is open");
-            // Send a ping message to the other peer
-            dataChannel.send("ping");
-            pingSentCount++;
-            updateDisplay();
+            // If this is the initiating peer, send a ping message
+            if (isInitiator) {
+                console.log("Initiator sending ping message");
+                dataChannel.send("ping");
+                pingSentCount++;
+                updateDisplay();
+            }
         };
 
         dataChannel.onmessage = event => {
-            // If "pong" is received, increment success count and display
-            if (event.data === "pong") {
-                pingReceivedCount++;
+            // If "ping" is received, respond with a "pong" message
+            if (event.data === "ping") {
+                console.log("Received 'ping' message");
+                dataChannel.send("pong");
+                pongSentCount++;
                 updateDisplay();
+                console.log("Sent 'pong' message");
+            }
+            // If "pong" is received, increment pongReceivedCount
+            else if (event.data === "pong") {
                 console.log("Received 'pong' message");
+                pongReceivedCount++;
+                updateDisplay();
             }
         };
 
