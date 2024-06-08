@@ -6,23 +6,16 @@
 <title>P2P Ping Example</title>
 <script>
     let peerConnection;
+    let successCount = 0;
 
     // Function to start the peer connection
     function startPeerConnection(ip, port) {
-        // Log debug information
-        console.log("Starting peer connection...");
-
         // Create a new RTCPeerConnection
         const peerConnection = new RTCPeerConnection();
         
-        // Log debug information
-        console.log("Created RTCPeerConnection");
-
         // Add an event listener for when the ICE candidate is found
         peerConnection.onicecandidate = event => {
             if (event.candidate) {
-                // Log debug information
-                console.log("Found ICE candidate:", event.candidate);
                 // Send the ICE candidate to the other peer
                 sendICECandidate(ip, port, event.candidate);
             }
@@ -33,17 +26,16 @@
 
         // Set up event listeners for the data channel
         dataChannel.onopen = () => {
-            // Log debug information
-            console.log("Data channel is open");
             // Send a ping message to the other peer
             dataChannel.send("ping");
-            // Log debug information
-            console.log("Sent 'ping' message");
         };
 
         dataChannel.onmessage = event => {
-            // Log debug information
-            console.log("Received message:", event.data);
+            // If "pong" is received, increment success count and display
+            if (event.data === "pong") {
+                successCount++;
+                document.getElementById("successCount").innerText = "Success Count: " + successCount;
+            }
         };
 
         // Return the peer connection
@@ -52,48 +44,23 @@
 
     // Function to send the ICE candidate to the other peer
     function sendICECandidate(ip, port, candidate) {
-        // Log debug information
-        console.log("Sending ICE candidate:", candidate);
-
         // Create a WebSocket connection to the other peer's signaling server
         const ws = new WebSocket("ws://" + ip + ":" + port);
 
         // When the WebSocket connection is open, send the ICE candidate
         ws.onopen = () => {
-            // Log debug information
-            console.log("WebSocket connection opened");
             ws.send(JSON.stringify({ type: "candidate", candidate: candidate }));
-            // Log debug information
-            console.log("Sent ICE candidate over WebSocket");
         };
-    }
-
-    // Function to handle receiving an ICE candidate
-    function handleICECandidate(candidate) {
-        // Log debug information
-        console.log("Received ICE candidate:", candidate);
-        // Add the received ICE candidate to the peer connection
-        peerConnection.addIceCandidate(candidate);
     }
 
     // Function to start the ping process
     function startPing() {
-        // Log debug information
-        console.log("Starting ping process...");
-
         // Get the IP address and port of the other device
         const ip = document.getElementById("ipAddress").value;
         const port = document.getElementById("portNumber").value;
 
-        // Log debug information
-        console.log("IP address:", ip);
-        console.log("Port number:", port);
-
         // Start the peer connection
         peerConnection = startPeerConnection(ip, port);
-
-        // Log debug information
-        console.log("Peer connection started");
     }
 </script>
 </head>
@@ -104,5 +71,6 @@
 <label for="portNumber">Enter Port Number:</label>
 <input type="text" id="portNumber" placeholder="Port Number">
 <button onclick="startPing()">Ping</button>
+<div id="successCount">Success Count: 0</div>
 </body>
 </html>
