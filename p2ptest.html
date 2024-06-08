@@ -20,6 +20,7 @@
 
         // Add an event listener for when the ICE candidate is found
         peerConnection.onicecandidate = event => {
+            console.log("ICE candidate found:", event.candidate);
             if (event.candidate) {
                 // Send the ICE candidate to the other peer
                 sendICECandidate(ip, port, event.candidate);
