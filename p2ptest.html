@@ -13,9 +13,11 @@
 
     // Function to start the peer connection
     function startPeerConnection(ip, port) {
+        console.log("Starting peer connection with IP:", ip, "and port:", port);
+        
         // Create a new RTCPeerConnection
         const peerConnection = new RTCPeerConnection();
-        
+
         // Add an event listener for when the ICE candidate is found
         peerConnection.onicecandidate = event => {
             if (event.candidate) {
@@ -29,6 +31,7 @@
 
         // Set up event listeners for the data channel
         dataChannel.onopen = () => {
+            console.log("Data channel is open");
             // Send a ping message to the other peer
             dataChannel.send("ping");
             pingSentCount++;
@@ -40,8 +43,11 @@
             if (event.data === "pong") {
                 pingReceivedCount++;
                 updateDisplay();
+                console.log("Received 'pong' message");
             }
         };
+
+        console.log("Peer connection started");
 
         // Return the peer connection
         return peerConnection;
@@ -49,17 +55,24 @@
 
     // Function to send the ICE candidate to the other peer
     function sendICECandidate(ip, port, candidate) {
+        console.log("Sending ICE candidate with IP:", ip, "and port:", port);
+        
         // Create a WebSocket connection to the other peer's signaling server
         const ws = new WebSocket("ws://" + ip + ":" + port);
 
         // When the WebSocket connection is open, send the ICE candidate
         ws.onopen = () => {
             ws.send(JSON.stringify({ type: "candidate", candidate: candidate }));
+            console.log("Sent ICE candidate over WebSocket");
         };
+
+        console.log("ICE candidate sent");
     }
 
     // Function to update the display with running totals
     function updateDisplay() {
+        console.log("Updating display...");
+        
         document.getElementById("pingSent").innerText = "Pings Sent: " + pingSentCount;
         document.getElementById("pingReceived").innerText = "Pings Received: " + pingReceivedCount;
         document.getElementById("pongSent").innerText = "Pongs Sent: " + pongSentCount;
@@ -68,12 +81,19 @@
 
     // Function to start the ping process
     function startPing() {
+        console.log("Starting ping process...");
+
         // Get the IP address and port of the other device
         const ip = document.getElementById("ipAddress").value;
         const port = document.getElementById("portNumber").value;
 
+        console.log("IP address:", ip);
+        console.log("Port number:", port);
+
         // Start the peer connection
         peerConnection = startPeerConnection(ip, port);
+
+        console.log("Ping process started");
     }
 </script>
 </head>
