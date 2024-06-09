@@ -14,7 +14,7 @@ console.log("typer.js called");
     let charactersPerRender_override = 0;
     let renderTime_override = 0;
     let charactersPerRender = 3; // Number of characters added in each render
-    let renderTime = 4; // Speed in milliseconds
+    let renderTime = 15; // Speed in milliseconds
     let doneflag = false;
     let stopflag = false;
     let singleScreenStopFlag = false;
@@ -95,16 +95,16 @@ console.log("typer.js called");
                             console.log("sleept at index:", index, "-", closingIndex);
 
                         } else if (typeTagString.startsWith("<type-speed-norm")) {
-                            charactersPerRender = 6;
-                            renderTime = 5;
+                            charactersPerRender = 3;
+                            renderTime = 15;
 
                         } else if (typeTagString.startsWith("<type-speed-fast")) {
                             charactersPerRender = 10;
-                            renderTime = 5;
+                            renderTime = 15;
 
                         } else if (typeTagString.startsWith("<type-speed-vfast")) {
                             charactersPerRender = 80;
-                            renderTime = 5;
+                            renderTime = 15;
 
                         } else if (typeTagString.startsWith("<type-speed-slow")) {
                             charactersPerRender = 1;
