@@ -30,7 +30,7 @@ function setColourway(sheet) {
 // Function to apply the saved stylesheet on page load
 function setColourwayFromCookie() {
     var cookieColourway = getCookie('colourwayCss');
-    if (cookieColourway) {
+    if (cookieColourway && cookieColourway.startsWith('../css/') && cookieColourway.endsWith('.css')) {
         document.getElementById('colourwayCss').href = cookieColourway;
     } else {
         document.getElementById('colourwayCss').href = '../css/colourwayAmber.css';
