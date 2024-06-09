@@ -4,47 +4,44 @@
         <link class="init" href="../css/style.css" rel="stylesheet" type="text/css" />
         <script src="../js/populateHTML.js"></script>
         <title>AutoLexi.exe</title>
-        <size>12</size>
+        <size>23</size>
         <actions>[
-            {"name":"Scan","script":"updateUrlAndReload({ fromDH: '',scan1: 'AutoLexi.exe' })"}
+            {"name":"Run","script":"updateUrlAndReload({ fromDH: '',translate1: 'AutoLexi.exe' })"}
             ]</actions>
     </head>
     <body>
         
 <p showIf="scan1">[<span replaceWith="scan1"></span>: This is the readme for the AutoLexi.exe program ]</p>
 
-<pre>AutoLexi.exe Readme
+<pre>AutoLexi.exe is a terminal tool designed for efficient translation of files
+from one language to another. It can be run directly from the control bar
+and operates seamlessly on open files.
 
-    AutoLexi.exe is a terminal tool designed for efficient translation of files
-    from one language to another. It can be run directly from the control bar
-    and operates seamlessly on open files.
-    
-    Key Features:
-    - Effortlessly translates text documents between languages.
-    - Intuitive terminal interface for quick and easy operation.
-    - Supports a wide range of file formats, ensuring versatility.
-    - Delivers accurate translations while preserving formatting.
-    - Large language compatibility at a small size.
-    
-    Usage:
-    1. Ensure the file to be translated is open.
-    2. Run AutoLexi.exe from the control bar.
-    3. Follow any on-screen prompts or instructions as needed.
-    4. Let AutoLexi.exe handle the translation process seamlessly.
-    
-    For detailed instructions and troubleshooting, refer to the documentation
-    included with the installation package.
-        
-    (C) 3189 VNA software solutions LLT. All rights reserved.
+Key Features:
+- Effortlessly translates text documents between languages.
+- Supports a wide range of file formats, ensuring versatility.
+- Large language compatibility at a small memory footprint.
 
+Usage:
+1. Ensure the file to be translated is open.
+2. Run AutoLexi.exe from the control bar above.
+3. Save the translated file if desired.
+
+For detailed instructions and troubleshooting, contact your it department.
 </pre>
 
-<pre>
-Try it on this ReadME file! it should uncover some information for you.
+<p>
+هذا مثال ترجمة.<span showIf="translate1"> (<span replaceWith="translate1"></span> MSA: "This is an example translation.")<br></span><br>
+Ceci est un exemple de traduction.<span showIf="translate1"> (<span replaceWith="translate1"></span> FR: "This is a translation example.")<br></span><br>
+これは翻訳の例です。<span showIf="translate1"> (<span replaceWith="translate1"></span> JA: "This is an example of translation.")<br></span><br>
+这是一个翻译示例。<span showIf="translate1"> (<span replaceWith="translate1"></span> CH: "This is a translation example.")<br></span><br>
+Это пример перевода.<span showIf="translate1"> (<span replaceWith="translate1"></span> RU: "This is a translation example.")<br></span><br>
+Dette er et oversettelseseksempel.<span showIf="translate1"> (<span replaceWith="translate1"></span> NO: "This is a translation example.")<br></span><br>
+</p>
+<p>
+(C) 3189 VNA software solutions LLT. All rights reserved.
+</p>
 
-Simply click "AutoLexi.exe" in your file system and select the action "Scan".
-</pre>
 
-
-
+</body>
 </html>
