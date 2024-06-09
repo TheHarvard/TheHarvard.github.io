@@ -43,7 +43,7 @@ console.log("typer.js called");
         if (index < htmlString.length) {
 
             displayElement.innerHTML = htmlString.substring(0, index + charactersPerRender) 
-            + charactersToBeAppended + '<span class="blink" style=\"white-space: nowrap;\">█</span>'; // Add charactersToBeRendered to the display
+            + '</a></details>' + charactersToBeAppended + '<span class="blink" style=\"white-space: nowrap;\">█</span>'; // Add charactersToBeRendered to the display
 
             // Scroll to the bottom of the page
             window.scrollTo({
@@ -103,7 +103,7 @@ console.log("typer.js called");
                             renderTime = 15;
 
                         } else if (typeTagString.startsWith("<type-speed-vfast")) {
-                            charactersPerRender = 80;
+                            charactersPerRender = 81;
                             renderTime = 15;
 
                         } else if (typeTagString.startsWith("<type-speed-slow")) {
