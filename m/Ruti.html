@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link class="init" href="../css/style.css" rel="stylesheet" type="text/css" />
+        <link class="init" href="../css/colourwayAmber.css" rel="stylesheet" type="text/css" />
+        <!-- <script src="../js/populateHTML.js"></script>
+        -->
+        <title>Ruti</title>
+
+        <!-- konva.js -->
+        <script src="https://cdn.rawgit.com/konvajs/konva/4.0.0/konva.min.js"></script>
+        
+        
+        <style>
+            body { margin: 0; }
+            #konvaContainer { width: 20vw; height: 20vh; outline-style:double; outline-color:purple; }
+        </style>
+
+    </head>
+    <body>
+
+        <pre>
+TEXT TEXT TEXT
+</pre>
+
+        <div id="konvaContainer">konvaContainer?</div>
+
+
+        <br>
+        <pre>
+TEXT TEXT TEXT
+</pre>
+
+
+
+<script>
+    // Initialize Konva.js Stage
+    const stage = new Konva.Stage({
+      container: 'konvaContainer', // id of container div
+      width: 1*window.innerWidth,
+    //  width: window.innerWidth,
+      height: 1*window.innerHeight
+    //  height: window.innerHeight
+    });
+
+
+    // Initialize Konva.js Layer
+    const layer = new Konva.Layer();
+    stage.add(layer);
+
+    // Create a circle with drop shadow
+    const circle = new Konva.Circle({
+      x: stage.width() / 2,
+      y: stage.height() / 4,
+      radius: 100,
+      stroke: "rgb(255, 176, 0)",
+    //  fill: "rgb(255, 176, 0)",
+    //  fill: 'red',
+      shadowColor: "rgb(255, 176, 0)",
+      shadowBlur: 4,
+      shadowOffsetX: 0,
+      shadowOffsetY: 0
+    });
+
+    
+
+    // Add the circle to the layer
+    layer.add(circle);
+
+
+    const animation = new Konva.Animation(function(frame) {
+        // Calculate new radius based on animation progress (e.g., over 2 seconds)
+        const newRadius = 120 + Math.sin(frame.time / 500*2) * 20; // Example: oscillating radius change
+        // Update the circle's radius
+        circle.radius(newRadius);
+    }, layer);
+//animation.start();
+
+
+
+    // Draw the layer
+    layer.draw();
+
+    
+
+
+
+    // Function to scale stage based on screen width
+    function scaleStage() {
+        //const scale = stage.width() / initialScreenWidth;  // Calculate scale factor based on initial screen width
+        const scale = window.innerWidth / initialScreenWidth;  // Calculate scale factor based on initial screen width
+        console.log("stage.width: ", stage.width());
+        console.log("scale: ", scale);
+      stage.scaleX(scale);  // Apply scale to X axis
+      stage.scaleY(scale);  // Apply scale to Y axis
+      stage.width(window.innerWidth);
+      stage.height(window.innerHeight);
+      stage.draw();  // Redraw the stage
+    }
+
+    // Initial screen width (you can set this to the base width you want to scale from)
+    //const initialScreenWidth = window.innerWidth;  // Example: base screen width
+    const initialScreenWidth = 1000;  // Example: base screen width
+
+    // Call scaleStage function initially and on window resize
+    scaleStage();
+    window.addEventListener('resize', scaleStage);
+
+
+  </script>
+
+    </body>
+    </html>
