@@ -60,6 +60,10 @@ window.addEventListener('load', () => {
     // add scripts
 
     var script = document.createElement('script');
+    script.src = '../js/programs.js';
+    document.head.appendChild(script);
+
+    var script = document.createElement('script');
     script.src = '../js/conditionalFormatting.js';
     document.head.appendChild(script);
 
