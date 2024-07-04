@@ -53,6 +53,7 @@ TEXT TEXT TEXT
     const layer = new Konva.Layer();
     stage.add(layer);
 
+/*
     // Create a circle with drop shadow
     const circle = new Konva.Circle({
       //x: stage.width() / 2,
@@ -74,24 +75,234 @@ TEXT TEXT TEXT
     // Add the circle to the layer
     layer.add(circle);
 
+    // Create an Ellipse
+    let major_axis = 100;  // Half the length of the major axis
+    let minor_axis = 90;   // Half the length of the minor axis
+    let focal_axis_offset = 45; // Rotation in degrees
+    let c = Math.sqrt(Math.pow(major_axis, 2) - Math.pow(minor_axis, 2));
+
+    const ellipse = new Konva.Ellipse({
+      //x: stage.width() / 2,
+      x: stage.width() / 2,
+      //y: stage.height() / 2,
+      y: stage.height() / 2,
+      radiusX: major_axis,
+      radiusY: minor_axis,
+      stroke: "rgb(255, 176, 0)",
+      shadowColor: "rgb(255, 176, 0)",
+      shadowBlur: 4,
+      shadowOffsetX: 0,
+      shadowOffsetY: 0,
+      rotation: focal_axis_offset,  // Apply the rotation
+      offset: {
+                x: c,  // Offset to rotate around the right focal point
+                y: 0
+            }
+    });
+
+    // Add the Ellipse to the Layer
+    layer.add(ellipse);
+
+
+    
+    // Create a circle with drop shadow
+    const origin = new Konva.Circle({
+      //x: stage.width() / 2,
+      //y: stage.height() / 4,
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2,
+      radius: 1,
+      stroke: "rgb(255, 176, 0)",
+    //  fill: "rgb(255, 176, 0)",
+    //  fill: 'red',
+      shadowColor: "rgb(255, 176, 0)",
+      shadowBlur: 4,
+      shadowOffsetX: 0,
+      shadowOffsetY: 0
+    });
+
+    
+
+    // Add the circle to the layer
+    layer.add(origin);
+
 
     const animation = new Konva.Animation(function(frame) {
         // Calculate new radius based on animation progress (e.g., over 2 seconds)
         const newRadius = 400 + Math.sin(frame.time / 1500*2) * 300; // Example: oscillating radius change
         // Update the circle's radius
         circle.radius(newRadius);
+        //ellipse.rotation(Math.sin(frame.time / 1500*2)*90);
     }, layer);
-animation.start();
-  
-    // Draw the layer
+    animation.start();
+*/
+      
+    const staticOrbits = {
+
+    "Star 1": {
+      "label": "Star",
+      "icon_r": 45,
+      "period": 99999999999,
+      "period_offset": 0,
+      "major_axis": 1,
+      "minor_axis": 1,
+      "focal_axis_offset": 0,
+      "satellites":
+      {  }
+    },
+
+    "Planet 1": {
+      "label": "Planet",
+      "icon_r": 10,
+      "period": 100,
+      "period_offset": 0,
+      "major_axis": 110,
+      "minor_axis": 100,
+      "focal_axis_offset": 20,
+      "satellites":
+      {  
+
+        "moon 1": {
+          "label": "Planet",
+          "icon_r": 4,
+          "period": 30,
+          "period_offset": 90,
+          "major_axis": 30,
+          "minor_axis": 30,
+          "focal_axis_offset": 0,
+          "satellites":{}
+        }
+
+
+      }
+    },
+    
+    "Planet 2": {
+      "label": "Planet",
+      "icon_r": 20,
+      "period": 500,
+      "period_offset": 0,
+      "major_axis": 270,
+      "minor_axis": 260,
+      "focal_axis_offset": -30,
+      "satellites":
+      {
+        
+        "moon 1": {
+          "label": "Planet",
+          "icon_r": 2,
+          "period": 35,
+          "period_offset": 90,
+          "major_axis": 36,
+          "minor_axis": 35,
+          "focal_axis_offset": 2,
+          "satellites":{}
+        },
+
+        "moon 2": {
+          "label": "Planet",
+          "icon_r": 4,
+          "period": 50,
+          "period_offset": 90,
+          "major_axis": 60,
+          "minor_axis": 59,
+          "focal_axis_offset": 2,
+          "satellites":{}
+        },
+
+      }
+    },
+    
+    "Planet 3": {
+      "label": "Planet",
+      "icon_r": 6,
+      "period": -1200,
+      "period_offset": 0,
+      "major_axis": 405,
+      "minor_axis": 400,
+      "focal_axis_offset": -60,
+      "satellites":
+      {  }
+    }
+    
+
+    }
+
+    stage.destroyChildren();
+    stage.add(layer);
+    renderOrbits(staticOrbits);
     layer.draw();
 
+
+    const animation = new Konva.Animation(function(frame) {
+      //layer.clear();
+      //renderOrbits(staticOrbits,frame.time / 1500)
+      //layer.draw();
+      stage.destroyChildren();
+      stage.add(layer);
+      renderOrbits(staticOrbits,frame.time / 70);
+      layer.draw();
+    }, layer);
+    animation.start();
+
+
+    //renders orbits
+    function renderOrbits(orbits, time = 0, offset = {"x":0,"y":0}){
+
+      //draw each static orbit
+      for (let key in orbits) {
+        
+        console.log(key, orbits[key]);
+        
+        //calculate offsets
+        let new_offset = getPositionFromOrbit(orbits[key],time);
+        total_offset = {"x":0,"y":0};
+        total_offset.x = offset.x + new_offset.x;
+        total_offset.y = offset.y + new_offset.y;
+        console.log("old offset", offset);
+        console.log("new offset", new_offset);
+        console.log("total offset", total_offset);
+        
+        //render the orbit
+        orbits[key].konva_orbit = getEllipseFromOrbit(orbits[key]);
+        orbits[key].konva_orbit.x((stage.width() / 2)+offset.x);
+        orbits[key].konva_orbit.y((stage.height() / 2)+offset.y);
+        layer.add(orbits[key].konva_orbit);
+        
+        //render the icon
+        orbits[key].konva_icon = getIconFromOrbit(orbits[key]);
+        orbits[key].konva_icon.x((stage.width() / 2)+total_offset.x);
+        orbits[key].konva_icon.y((stage.height() / 2)+total_offset.y);
+        layer.add(orbits[key].konva_icon);
+
+        //recursively iterate over satellites
+        if (orbits[key].satellites && Object.keys(orbits[key].satellites).length > 0) {
+            console.log("Recursing...");
+            renderOrbits(orbits[key].satellites,time,total_offset);
+        }
+
+      }
+
+    } 
+
+
+
+
+
+
+
+
+    // Initial screen width (you can set this to the base width you want to scale from)
+    //const initialScreenWidth = window.innerWidth;  // Example: base screen width
+    const initialScreenWidth = 1000;  // Example: base screen width
+
+    
     // Function to scale stage based on screen width
     function scaleStage() {
-        //const scale = stage.width() / initialScreenWidth;  // Calculate scale factor based on initial screen width
-        const scale = window.innerWidth / initialScreenWidth;  // Calculate scale factor based on initial screen width
-        console.log("stage.width: ", stage.width());
-        console.log("scale: ", scale);
+      //const scale = stage.width() / initialScreenWidth;  // Calculate scale factor based on initial screen width
+      const scale = window.innerWidth / initialScreenWidth;  // Calculate scale factor based on initial screen width
+      console.log("stage.width: ", stage.width());
+      console.log("scale: ", scale);
       stage.scaleX(scale);  // Apply scale to X axis
       stage.scaleY(scale);  // Apply scale to Y axis
       stage.width(window.innerWidth);
@@ -99,13 +310,109 @@ animation.start();
       stage.draw();  // Redraw the stage
     }
 
-    // Initial screen width (you can set this to the base width you want to scale from)
-    //const initialScreenWidth = window.innerWidth;  // Example: base screen width
-    const initialScreenWidth = 1000;  // Example: base screen width
-
+  
     // Call scaleStage function initially and on window resize
     scaleStage();
     window.addEventListener('resize', scaleStage);
+
+
+
+  //creates Konva.Ellipse from orbit data
+  function getEllipseFromOrbit(orbitParams) {
+  const { major_axis, minor_axis, focal_axis_offset } = orbitParams;
+
+  // Calculate the distance to the focal point
+  const c = Math.sqrt(Math.pow(major_axis, 2) - Math.pow(minor_axis, 2));
+
+  // Create and return the Konva.Ellipse
+  return new Konva.Ellipse({
+    //x: 0,  // Initial position, can be updated later
+    //y: 0,  // Initial position, can be updated later
+    x: stage.width() / 2,
+    y: stage.height() / 2,
+    radiusX: major_axis,
+    radiusY: minor_axis,
+    stroke: "rgb(255, 176, 0)",
+    shadowColor: "rgb(255, 176, 0)",
+    shadowBlur: 4,
+    shadowOffsetX: 0,
+    shadowOffsetY: 0,
+    //dashEnabled: true,
+    //dash: [10, 10],
+    strokeWidth: 1.2,
+    rotation: focal_axis_offset,  // Apply the rotation
+    offset: {
+      x: c,  // Offset to rotate around the right focal point
+      y: 0
+    }
+  });
+}
+
+//creates Konva.Ellipse from orbit data
+function getIconFromOrbit(orbitParams) {
+const { major_axis, minor_axis, focal_axis_offset, icon_r } = orbitParams;
+
+// Calculate the distance to the focal point
+const c = Math.sqrt(Math.pow(major_axis, 2) - Math.pow(minor_axis, 2));
+
+// Create and return the Konva.Ellipse
+return new Konva.Circle({
+  //x: 0,  // Initial position, can be updated later
+  //y: 0,  // Initial position, can be updated later
+  //x: (stage.width() / 2)+major_axis,
+  x: stage.width() / 2,
+  y: stage.height() / 2,
+  radius: icon_r,
+  stroke: "rgb(255, 176, 0)",
+  fill: "rgb(255, 176, 0)",
+  shadowColor: "rgb(255, 176, 0)",
+  shadowBlur: 4,
+  shadowOffsetX: 0,
+  shadowOffsetY: 0,
+});
+}
+
+
+//chat gpt got this working in one try... 
+function getPositionFromOrbit(orbitParams, time) {
+  const { period = 1, period_offset = 0, major_axis = 1, minor_axis = 1, focal_axis_offset = 0 } = orbitParams;
+
+  // Calculate the eccentricity of the ellipse
+  const eccentricity = Math.sqrt(1 - Math.pow(minor_axis / major_axis, 2));
+
+  // Calculate the mean anomaly
+  const meanAnomaly = (((-time) + period_offset) / period) * 2 * Math.PI;
+
+  // Using Newton's method to solve Kepler's equation: E - e*sin(E) = M
+  let eccentricAnomaly = meanAnomaly;
+  for (let i = 0; i < 5; i++) {  // 5 iterations should be sufficient for convergence
+    eccentricAnomaly = meanAnomaly + eccentricity * Math.sin(eccentricAnomaly);
+  }
+
+  // Calculate the true anomaly from the eccentric anomaly
+  const trueAnomaly = 2 * Math.atan2(
+    Math.sqrt(1 + eccentricity) * Math.sin(eccentricAnomaly / 2),
+    Math.sqrt(1 - eccentricity) * Math.cos(eccentricAnomaly / 2)
+  );
+
+  // Calculate the distance from the focus to the point
+  const distance = major_axis * (1 - eccentricity * Math.cos(eccentricAnomaly));
+
+  // Calculate the x and y positions in the orbital plane
+  const x = distance * Math.cos(trueAnomaly);
+  const y = distance * Math.sin(trueAnomaly);
+
+  // Rotate the point around the ellipse's center by the focal axis offset
+  const rotatedX = x * Math.cos(focal_axis_offset * Math.PI / 180) - y * Math.sin(focal_axis_offset * Math.PI / 180);
+  const rotatedY = x * Math.sin(focal_axis_offset * Math.PI / 180) + y * Math.cos(focal_axis_offset * Math.PI / 180);
+
+  // Return the calculated position
+  return {
+    x: rotatedX,
+    y: rotatedY
+  };
+}
+
 
 
   </script>
