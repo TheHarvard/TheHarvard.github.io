@@ -18,11 +18,14 @@ console.log("typer.js called");
     let doneflag = false;
     let stopflag = false;
     let singleScreenStopFlag = false;
+    let scrollFlag = false;
 
     function typeWriter() {
         let charactersToBeRendered = "";
         let charactersToBeAppended = "";
         stopflag = false;
+        //set scroll flag the loop after singleScreenStopFlag is set
+        scrollFlag = singleScreenStopFlag;
 
         if(!singleScreenStopFlag) { //Scroll checker pauses before document once before scrolling
             const contentHeight = document.documentElement.scrollHeight;
@@ -34,8 +37,9 @@ console.log("typer.js called");
                 //console.log("overflow detected");
                 singleScreenStopFlag = true;
                 stopflag = true;
-                index-=(2*charactersPerRender)+12;
-                charactersToBeAppended = ' <span style=\"white-space: nowrap;\"><button class="blink" onclick="typeWriter()">[ continue ]</button></span>';
+                //index-=(2*charactersPerRender)+12;
+                index-=(charactersPerRender)+1;
+                charactersToBeAppended = ' <br><span style=\"white-space: nowrap;\"><button class="blink" onclick="typeWriter()">[ continue ]</button></span>';
             }
         }
 
@@ -45,11 +49,14 @@ console.log("typer.js called");
             displayElement.innerHTML = htmlString.substring(0, index + charactersPerRender) 
             + '</a></details>' + charactersToBeAppended + '<span class="blink" style=\"white-space: nowrap;\">█</span>'; // Add charactersToBeRendered to the display
 
-            // Scroll to the bottom of the page
-            window.scrollTo({
-                top: document.body.scrollHeight,
-                behavior: 'instant' // Optional: Smooth scrolling animation
-            });
+            //only scroll when scroll flag is set
+            if (scrollFlag) {
+                // Scroll to the bottom of the page
+                window.scrollTo({
+                    top: document.body.scrollHeight,
+                    behavior: 'instant' // Optional: Smooth scrolling animation
+                });
+            }
 
             charactersToBeRendered = htmlString.substring(index, index + charactersPerRender);
 

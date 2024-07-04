@@ -11,27 +11,32 @@
         <script src="https://cdn.rawgit.com/konvajs/konva/4.0.0/konva.min.js"></script>
         
         
+        <!-- body { margin: 0; } -->
         <style>
-            body { margin: 0; }
-            #konvaContainer { width: 20vw; height: 20vh; outline-style:double; outline-color:purple; }
+            #konvaContainer { width: 0vw; height: 0vh; outline-style:double; outline-color:purple; }
         </style>
 
     </head>
     <body>
 
-        <pre>
+<pre>
 TEXT TEXT TEXT
 </pre>
 
-        <div id="konvaContainer">konvaContainer?</div>
+<div id="konvaContainer">
+  Star 1
+  Star 2
+  Planet 1
+  Planet 2
+</div>
 
 
-        <br>
-        <pre>
+<br>
+<pre>
 TEXT TEXT TEXT
 </pre>
 
-
+</body>
 
 <script>
     // Initialize Konva.js Stage
@@ -50,8 +55,10 @@ TEXT TEXT TEXT
 
     // Create a circle with drop shadow
     const circle = new Konva.Circle({
-      x: stage.width() / 2,
-      y: stage.height() / 4,
+      //x: stage.width() / 2,
+      //y: stage.height() / 4,
+      x: 0,
+      y: 0,
       radius: 100,
       stroke: "rgb(255, 176, 0)",
     //  fill: "rgb(255, 176, 0)",
@@ -70,20 +77,14 @@ TEXT TEXT TEXT
 
     const animation = new Konva.Animation(function(frame) {
         // Calculate new radius based on animation progress (e.g., over 2 seconds)
-        const newRadius = 120 + Math.sin(frame.time / 500*2) * 20; // Example: oscillating radius change
+        const newRadius = 400 + Math.sin(frame.time / 1500*2) * 300; // Example: oscillating radius change
         // Update the circle's radius
         circle.radius(newRadius);
     }, layer);
-//animation.start();
-
-
-
+animation.start();
+  
     // Draw the layer
     layer.draw();
-
-    
-
-
 
     // Function to scale stage based on screen width
     function scaleStage() {
@@ -109,5 +110,4 @@ TEXT TEXT TEXT
 
   </script>
 
-    </body>
     </html>
