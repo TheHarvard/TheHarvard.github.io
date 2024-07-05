@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link class="init" href="../css/style.css" rel="stylesheet" type="text/css" />
-        <link class="init" href="../css/colourwayAmber.css" rel="stylesheet" type="text/css" />
-        <!-- <script src="../js/populateHTML.js"></script>
+      <link class="init" href="../css/style.css" rel="stylesheet" type="text/css" />
+      <link class="init" href="../css/colourwayAmber.css" rel="stylesheet" type="text/css" />
+      <!-- 
+        <script src="../js/populateHTML.js"></script>
         -->
         <title>Ruti</title>
 
@@ -11,47 +12,161 @@
         <script src="https://cdn.rawgit.com/konvajs/konva/4.0.0/konva.min.js"></script>
         
         
-        <!-- body { margin: 0; } -->
+        <!-- body { margin: 0; } 
         <style>
-            #konvaContainer { width: 0vw; height: 0vh; outline-style:double; outline-color:purple; }
+            #orbitalSystemMap { width: 0vw; height: 0vh; outline-style:double; outline-color:purple; }
         </style>
-
+-->
     </head>
     <body>
 
 <pre>
-TEXT TEXT TEXT
+  TEXT TEXT TEXT
+  TEXT TEXT TEXT
+  TEXT TEXT TEXT
+  TEXT TEXT TEXT
+  TEXT TEXT TEXT
+  TEXT TEXT TEXT
+  TEXT TEXT TEXT
+  TEXT TEXT TEXT
+  TEXT TEXT TEXT
 </pre>
 
-<div id="konvaContainer">
-  Star 1
-  Star 2
-  Planet 1
-  Planet 2
+<div id="orbitalSystemMap">
+  {
+
+    "Star 1": {
+      "label": "Star",
+      "icon_r": 6,
+      "period": 0,
+      "period_offset": 0,
+      "major_axis": 0,
+      "minor_axis": 0,
+      "focal_axis_offset": 0,
+      "satellites":
+      {  }
+    },
+
+    "Planet 1": {
+      "label": "Planet",
+      "icon_r": 1,
+      "period": 100,
+      "period_offset": 0,
+      "major_axis": 15,
+      "minor_axis": 15,
+      "focal_axis_offset": 20,
+      "satellites":
+      {  
+
+        "moon 1": {
+          "label": "Planet",
+          "icon_r": 0.4,
+          "period": 30,
+          "period_offset": 0,
+          "major_axis": 5,
+          "minor_axis": 5,
+          "focal_axis_offset": 0,
+          "satellites":{}
+        }
+
+
+      }
+    },
+    
+    "Planet 2": {
+      "label": "Planet",
+      "icon_r": 2,
+      "period": 500,
+      "period_offset": 0,
+      "major_axis": 30,
+      "minor_axis": 30,
+      "focal_axis_offset": 30,
+      "satellites":
+      {
+        
+        "moon 1": {
+          "label": "Planet",
+          "icon_r": 0.2,
+          "period": 35,
+          "period_offset": 0,
+          "major_axis": 6,
+          "minor_axis": 6,
+          "focal_axis_offset": 202,
+          "satellites":{}
+        },
+
+        "moon 2": {
+          "label": "Planet",
+          "icon_r": 0.4,
+          "period": 50,
+          "period_offset": 0,
+          "major_axis": 10,
+          "minor_axis": 10,
+          "focal_axis_offset": 200,
+          "satellites":{}
+        }
+
+      }
+    },
+    
+    "Planet 3": {
+      "label": "Planet",
+      "icon_r": 0.6,
+      "period": -1200,
+      "period_offset": 0,
+      "major_axis": 60,
+      "minor_axis": 60,
+      "focal_axis_offset": 160,
+      "satellites":
+      {  }
+    },
+
+    
+    "Spike gate 1": {
+      "label": "spike gate",
+      "icon_r": 0.6,
+      "period": 0,
+      "period_offset": -30,
+      "major_axis": 100,
+      "minor_axis": 100,
+      "focal_axis_offset": 0,
+      "satellites":
+      {  }
+    }
+    
+
+    }
 </div>
 
 
 <br>
 <pre>
-TEXT TEXT TEXT
+  TEXT TEXT TEXT
+  TEXT TEXT TEXT
+  TEXT TEXT TEXT
+  TEXT TEXT TEXT
+  TEXT TEXT TEXT
+  TEXT TEXT TEXT
+  TEXT TEXT TEXT
+  TEXT TEXT TEXT
 </pre>
 
 </body>
 
 <script>
-    // Initialize Konva.js Stage
-    const stage = new Konva.Stage({
-      container: 'konvaContainer', // id of container div
-      width: 1*window.innerWidth,
-    //  width: window.innerWidth,
-      height: 1*window.innerHeight
-    //  height: window.innerHeight
-    });
+    //// Initialize Konva.js Stage
+    //const stage = new Konva.Stage({
+    //  container: 'orbitalSystemMap', // id of container div
+    //  width: 1,
+    ////  width: window.innerWidth,
+    //  height: 1
+    ////  height: window.innerHeight
+    //});
 
 
     // Initialize Konva.js Layer
-    const layer = new Konva.Layer();
-    stage.add(layer);
+    //const layer = new Konva.Layer();
+    //stage.add(layer);
 
 /*
     // Create a circle with drop shadow
@@ -137,113 +252,153 @@ TEXT TEXT TEXT
     animation.start();
 */
       
-    const staticOrbits = {
+//    const staticOrbits = {
+//
+//    "Star 1": {
+//      "label": "Star",
+//      "icon_r": 6,
+//      "period": 0,
+//      "period_offset": 0,
+//      "major_axis": 0,
+//      "minor_axis": 0,
+//      "focal_axis_offset": 0,
+//      "satellites":
+//      {  }
+//    },
+//
+//    "Planet 1": {
+//      "label": "Planet",
+//      "icon_r": 1,
+//      "period": 100,
+//      "period_offset": 0,
+//      "major_axis": 15,
+//      "minor_axis": 15,
+//      "focal_axis_offset": 20,
+//      "satellites":
+//      {  
+//
+//        "moon 1": {
+//          "label": "Planet",
+//          "icon_r": 0.4,
+//          "period": 30,
+//          "period_offset": 0,
+//          "major_axis": 5,
+//          "minor_axis": 5,
+//          "focal_axis_offset": 0,
+//          "satellites":{}
+//        }
+//
+//
+//      }
+//    },
+//    
+//    "Planet 2": {
+//      "label": "Planet",
+//      "icon_r": 2,
+//      "period": 500,
+//      "period_offset": 0,
+//      "major_axis": 30,
+//      "minor_axis": 30,
+//      "focal_axis_offset": 30,
+//      "satellites":
+//      {
+//        
+//        "moon 1": {
+//          "label": "Planet",
+//          "icon_r": 0.2,
+//          "period": 35,
+//          "period_offset": 0,
+//          "major_axis": 6,
+//          "minor_axis": 6,
+//          "focal_axis_offset": 202,
+//          "satellites":{}
+//        },
+//
+//        "moon 2": {
+//          "label": "Planet",
+//          "icon_r": 0.4,
+//          "period": 50,
+//          "period_offset": 0,
+//          "major_axis": 10,
+//          "minor_axis": 10,
+//          "focal_axis_offset": 200,
+//          "satellites":{}
+//        },
+//
+//      }
+//    },
+//    
+//    "Planet 3": {
+//      "label": "Planet",
+//      "icon_r": 0.6,
+//      "period": -1200,
+//      "period_offset": 0,
+//      "major_axis": 60,
+//      "minor_axis": 60,
+//      "focal_axis_offset": 160,
+//      "satellites":
+//      {  }
+//    },
+//
+//    
+//    "Spike gate 1": {
+//      "label": "spike gate",
+//      "icon_r": 0.6,
+//      "period": 0,
+//      "period_offset": -30,
+//      "major_axis": 100,
+//      "minor_axis": 100,
+//      "focal_axis_offset": 0,
+//      "satellites":
+//      {  }
+//    }
+//    
+//
+//    }
+//
 
-    "Star 1": {
-      "label": "Star",
-      "icon_r": 45,
-      "period": 99999999999,
-      "period_offset": 0,
-      "major_axis": 1,
-      "minor_axis": 1,
-      "focal_axis_offset": 0,
-      "satellites":
-      {  }
-    },
-
-    "Planet 1": {
-      "label": "Planet",
-      "icon_r": 10,
-      "period": 100,
-      "period_offset": 0,
-      "major_axis": 110,
-      "minor_axis": 100,
-      "focal_axis_offset": 20,
-      "satellites":
-      {  
-
-        "moon 1": {
-          "label": "Planet",
-          "icon_r": 4,
-          "period": 30,
-          "period_offset": 90,
-          "major_axis": 30,
-          "minor_axis": 30,
-          "focal_axis_offset": 0,
-          "satellites":{}
-        }
-
-
-      }
-    },
+    // Get all elements with id="orbitalSystemMap"
+    const orbitalSystemMaps = document.querySelectorAll('#orbitalSystemMap');
+    //const stage = new Konva.Stage();
+    let layer = new Konva.Layer();
     
-    "Planet 2": {
-      "label": "Planet",
-      "icon_r": 20,
-      "period": 500,
-      "period_offset": 0,
-      "major_axis": 270,
-      "minor_axis": 260,
-      "focal_axis_offset": -30,
-      "satellites":
-      {
-        
-        "moon 1": {
-          "label": "Planet",
-          "icon_r": 2,
-          "period": 35,
-          "period_offset": 90,
-          "major_axis": 36,
-          "minor_axis": 35,
-          "focal_axis_offset": 2,
-          "satellites":{}
-        },
 
-        "moon 2": {
-          "label": "Planet",
-          "icon_r": 4,
-          "period": 50,
-          "period_offset": 90,
-          "major_axis": 60,
-          "minor_axis": 59,
-          "focal_axis_offset": 2,
-          "satellites":{}
-        },
-
-      }
-    },
-    
-    "Planet 3": {
-      "label": "Planet",
-      "icon_r": 6,
-      "period": -1200,
-      "period_offset": 0,
-      "major_axis": 405,
-      "minor_axis": 400,
-      "focal_axis_offset": -60,
-      "satellites":
-      {  }
+    // If there are no elements with id="orbitalSystemMap"
+    if (orbitalSystemMaps.length === 0) {
+        console.log('No elements with id "orbitalSystemMap" found.');
+        // Add any additional logic here
+        //return; // Exit the function early if no elements are found
     }
-    
 
-    }
-
-    stage.destroyChildren();
-    stage.add(layer);
-    renderOrbits(staticOrbits);
-    layer.draw();
-
-
-    const animation = new Konva.Animation(function(frame) {
-      //layer.clear();
-      //renderOrbits(staticOrbits,frame.time / 1500)
-      //layer.draw();
-      stage.destroyChildren();
+    // Iterate over each element
+    orbitalSystemMaps.forEach((element, index) => {
+    // Parse the content of the element as JSON
+      let staticOrbits = JSON.parse(element.textContent);
+      
+      //const stage = new Konva.Stage({container: 'orbitalSystemMap'});
+      const stage = new Konva.Stage({container: element});
+      
+      layer = new Konva.Layer();
       stage.add(layer);
-      renderOrbits(staticOrbits,frame.time / 70);
+
+      console.log(staticOrbits);
+      
+      //stage.destroyChildren();
+      renderOrbits(staticOrbits);
       layer.draw();
-    }, layer);
-    animation.start();
+      
+    });
+
+    //const animation = new Konva.Animation(function(frame) {
+    //  //layer.clear();
+    //  //renderOrbits(staticOrbits,frame.time / 1500)
+    //  //layer.draw();
+    //  stage.destroyChildren();
+    //  stage.add(layer);
+    //  renderOrbits(staticOrbits,frame.time / 70);
+    //  layer.draw();
+    //}, layer);
+    //animation.start();
 
 
     //renders orbits
@@ -252,32 +407,36 @@ TEXT TEXT TEXT
       //draw each static orbit
       for (let key in orbits) {
         
-        console.log(key, orbits[key]);
+        //console.log(key, orbits[key]);
         
         //calculate offsets
         let new_offset = getPositionFromOrbit(orbits[key],time);
         total_offset = {"x":0,"y":0};
         total_offset.x = offset.x + new_offset.x;
         total_offset.y = offset.y + new_offset.y;
-        console.log("old offset", offset);
-        console.log("new offset", new_offset);
-        console.log("total offset", total_offset);
+        //console.log("old offset", offset);
+        //console.log("new offset", new_offset);
+        //console.log("total offset", total_offset);
         
         //render the orbit
         orbits[key].konva_orbit = getEllipseFromOrbit(orbits[key]);
-        orbits[key].konva_orbit.x((stage.width() / 2)+offset.x);
-        orbits[key].konva_orbit.y((stage.height() / 2)+offset.y);
+        //orbits[key].konva_orbit.x((stage.width() / 2)+offset.x);
+        //orbits[key].konva_orbit.y((stage.height() / 2)+offset.y);
+        orbits[key].konva_orbit.x(110+offset.x);
+        orbits[key].konva_orbit.y(110+offset.y);
         layer.add(orbits[key].konva_orbit);
         
         //render the icon
         orbits[key].konva_icon = getIconFromOrbit(orbits[key]);
-        orbits[key].konva_icon.x((stage.width() / 2)+total_offset.x);
-        orbits[key].konva_icon.y((stage.height() / 2)+total_offset.y);
+        //orbits[key].konva_icon.x((stage.width() / 2)+total_offset.x);
+        //orbits[key].konva_icon.y((stage.height() / 2)+total_offset.y);
+        orbits[key].konva_icon.x(110+total_offset.x);
+        orbits[key].konva_icon.y(110+total_offset.y);
         layer.add(orbits[key].konva_icon);
 
         //recursively iterate over satellites
         if (orbits[key].satellites && Object.keys(orbits[key].satellites).length > 0) {
-            console.log("Recursing...");
+            //console.log("Recursing...");
             renderOrbits(orbits[key].satellites,time,total_offset);
         }
 
@@ -294,26 +453,26 @@ TEXT TEXT TEXT
 
     // Initial screen width (you can set this to the base width you want to scale from)
     //const initialScreenWidth = window.innerWidth;  // Example: base screen width
-    const initialScreenWidth = 1000;  // Example: base screen width
+    const initialScreenWidth = 220;  // Example: base screen width
 
     
-    // Function to scale stage based on screen width
-    function scaleStage() {
-      //const scale = stage.width() / initialScreenWidth;  // Calculate scale factor based on initial screen width
-      const scale = window.innerWidth / initialScreenWidth;  // Calculate scale factor based on initial screen width
-      console.log("stage.width: ", stage.width());
-      console.log("scale: ", scale);
-      stage.scaleX(scale);  // Apply scale to X axis
-      stage.scaleY(scale);  // Apply scale to Y axis
-      stage.width(window.innerWidth);
-      stage.height(window.innerHeight);
-      stage.draw();  // Redraw the stage
-    }
-
-  
-    // Call scaleStage function initially and on window resize
-    scaleStage();
-    window.addEventListener('resize', scaleStage);
+//    // Function to scale stage based on screen width
+//    function scaleStage() {
+//      //const scale = stage.width() / initialScreenWidth;  // Calculate scale factor based on initial screen width
+//      const scale = window.innerWidth / initialScreenWidth;  // Calculate scale factor based on initial screen width
+//      //console.log("stage.width: ", stage.width());
+//      //console.log("scale: ", scale);
+//      stage.scaleX(scale);  // Apply scale to X axis
+//      stage.scaleY(scale);  // Apply scale to Y axis
+//      stage.width(window.innerWidth);
+//      stage.height(window.innerHeight);
+//      stage.draw();  // Redraw the stage
+//    }
+//
+//  
+//    // Call scaleStage function initially and on window resize
+//    scaleStage();
+//    window.addEventListener('resize', scaleStage);
 
 
 
@@ -326,20 +485,20 @@ TEXT TEXT TEXT
 
   // Create and return the Konva.Ellipse
   return new Konva.Ellipse({
-    //x: 0,  // Initial position, can be updated later
-    //y: 0,  // Initial position, can be updated later
-    x: stage.width() / 2,
-    y: stage.height() / 2,
+    x: 0,  // Initial position, can be updated later
+    y: 0,  // Initial position, can be updated later
+    //x: stage.width() / 2,
+    //y: stage.height() / 2,
     radiusX: major_axis,
     radiusY: minor_axis,
     stroke: "rgb(255, 176, 0)",
     shadowColor: "rgb(255, 176, 0)",
-    shadowBlur: 4,
+    shadowBlur: 1,
     shadowOffsetX: 0,
     shadowOffsetY: 0,
     //dashEnabled: true,
     //dash: [10, 10],
-    strokeWidth: 1.2,
+    strokeWidth: 0.4,
     rotation: focal_axis_offset,  // Apply the rotation
     offset: {
       x: c,  // Offset to rotate around the right focal point
@@ -360,13 +519,15 @@ return new Konva.Circle({
   //x: 0,  // Initial position, can be updated later
   //y: 0,  // Initial position, can be updated later
   //x: (stage.width() / 2)+major_axis,
-  x: stage.width() / 2,
-  y: stage.height() / 2,
+  //x: stage.width() / 2,
+  //y: stage.height() / 2,
+  x: 0,
+  y: 0,
   radius: icon_r,
   stroke: "rgb(255, 176, 0)",
   fill: "rgb(255, 176, 0)",
   shadowColor: "rgb(255, 176, 0)",
-  shadowBlur: 4,
+  shadowBlur: 1,
   shadowOffsetX: 0,
   shadowOffsetY: 0,
 });
@@ -375,10 +536,24 @@ return new Konva.Circle({
 
 //chat gpt got this working in one try... 
 function getPositionFromOrbit(orbitParams, time) {
-  const { period = 1, period_offset = 0, major_axis = 1, minor_axis = 1, focal_axis_offset = 0 } = orbitParams;
+  let { period = 1, period_offset = 0, major_axis = 1, minor_axis = 1, focal_axis_offset = 0 } = orbitParams;
 
   // Calculate the eccentricity of the ellipse
   const eccentricity = Math.sqrt(1 - Math.pow(minor_axis / major_axis, 2));
+
+  //if both axis are 0, return 0.
+  if (major_axis===0 & minor_axis===0 ){
+    return {
+      x: 0,
+      y: 0
+    };
+  };
+
+  //set time to 0 if period is 0, then set period to 360 to prevent div/zero
+  if (period===0){
+    time=0;
+    period=360;
+  };
 
   // Calculate the mean anomaly
   const meanAnomaly = (((-time) + period_offset) / period) * 2 * Math.PI;
