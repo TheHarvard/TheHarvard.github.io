@@ -17,13 +17,18 @@ console.log("typer.js called");
     let renderTime = 15; // Speed in milliseconds
     let doneflag = false;
     let stopflag = false;
+    let stopOnNextLoopflag = false;
     let singleScreenStopFlag = false;
     let scrollFlag = false;
+
+    const typer_osm_event = new CustomEvent('typer_osm', {});
+
 
     function typeWriter() {
         let charactersToBeRendered = "";
         let charactersToBeAppended = "";
-        stopflag = false;
+        stopflag = stopOnNextLoopflag;
+        stopOnNextLoopflag = false;
         //set scroll flag the loop after singleScreenStopFlag is set
         scrollFlag = singleScreenStopFlag;
 
@@ -46,8 +51,11 @@ console.log("typer.js called");
         
         if (index < htmlString.length) {
 
-            displayElement.innerHTML = htmlString.substring(0, index + charactersPerRender) 
-            + '</a></details>' + charactersToBeAppended + '<span class="blink" style=\"white-space: nowrap;\">█</span>'; // Add charactersToBeRendered to the display
+            if (stopflag) {
+            displayElement.innerHTML = htmlString.substring(0, index + charactersPerRender)  + '</a></details>' + charactersToBeAppended;
+            } else {
+                displayElement.innerHTML = htmlString.substring(0, index + charactersPerRender) + '</a></details>' + charactersToBeAppended + '<span class="blink" style=\"white-space: nowrap;\">█</span>'; // Add charactersToBeRendered to the display
+            }
 
             //only scroll when scroll flag is set
             if (scrollFlag) {
@@ -80,6 +88,7 @@ console.log("typer.js called");
                             break; // Exit the loop after finding the closing tag
                         }
                     }
+
                     else if (tagString.startsWith("<!--")) {
                         //skip rendering comments
                         let closingIndex = htmlString.indexOf("-->", index + i);
@@ -89,6 +98,17 @@ console.log("typer.js called");
                             renderTime_override = 4;
                         }
                     }
+
+                    else if (tagString.startsWith("<type-osm")) {
+                        //skip rendering osm tags (orbitSystemMap)
+                        let closingIndex = htmlString.indexOf("</type-osm", index + i);
+                        console.log("skipped osm at:", index + i,closingIndex);
+                        index = closingIndex;
+                        if (renderTime_override < 4) {
+                            renderTime_override = 4;
+                        }
+                    }
+
                     else if (tagString.startsWith("<type-")||tagString.startsWith("</type-")) {
                         let closingIndex = htmlString.indexOf(">", index + i);
                         const typeTagString = htmlString.substring(index + i,closingIndex);
@@ -140,6 +160,12 @@ console.log("typer.js called");
                         } else if (typeTagString.startsWith("<type-stop")) {
                             stopflag = true;
                             console.log("<type-stop>:", index + i);
+                            
+                            // on of osm, complete osm, pause typer, and call up osm renderer
+                        } else if (typeTagString.startsWith("<type-osm")) {
+                            //stopOnNextLoopflag = true;
+                            //console.log('<type-osm>: ', index + i);
+                            //document.dispatchEvent(typer_osm_event);
 
                     }
                         //skip lenght of tag
@@ -175,6 +201,23 @@ console.log("typer.js called");
 
         } else {
             displayElement.innerHTML = htmlString.substring(0, index)
+
+            //fire the completion event "typer_done".
+            //const eventTarget = new EventTarget();
+            const completionEvent = new CustomEvent('typer_done', {});
+            document.dispatchEvent(completionEvent);
+            
+            //// switch back to content to include fancy renders.
+            //contentElement.style.display = 'block'; // Set the inline style
+            //displayElement.style.display = 'none'; // Set the inline style
+            //
+            //// Scroll to the bottom of the page
+            //window.scrollTo({
+            //    top: document.body.scrollHeight,
+            //    behavior: 'instant' // Optional: Smooth scrolling animation
+            //});
+
+
             console.log("typer.js done"); // Print "Done" when rendering is complete
         }
     }

@@ -58,6 +58,9 @@ window.addEventListener('load', () => {
 
 
     // add scripts
+    //var script = document.createElement('script');
+    //script.src = 'https://cdn.rawgit.com/konvajs/konva/4.0.0/konva.min.js';
+    //document.head.appendChild(script);
 
     var script = document.createElement('script');
     script.src = '../js/programs.js';
@@ -77,6 +80,10 @@ window.addEventListener('load', () => {
 
     var script = document.createElement('script');
     script.src = '../js/colourwaySelector.js';
+    document.head.appendChild(script);
+
+    var script = document.createElement('script');
+    script.src = '../js/orbitalSystemMap.js';
     document.head.appendChild(script);
 
     //remove all init elements last

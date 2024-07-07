@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <link class="init" href="../css/style.css" rel="stylesheet" type="text/css" />
+      <script src="https://cdn.rawgit.com/konvajs/konva/4.0.0/konva.min.js"></script>
+      <script src="../js/populateHTML.js"></script>
+      <title>Orbital system map demo</title>
+    </head>
+
+  <body>
+
+<pre>
+                                 EXAMPLE SYSTEM:
+</pre>
+
+<type-osm id="orbitalSystemMap" style="display:none;">
+  {
+
+    "Star 1": {
+      "label": "Star",
+      "icon_r": 6,
+      "period": 0,
+      "period_offset": 0,
+      "major_axis": 0,
+      "minor_axis": 0,
+      "focal_axis_offset": 0,
+      "satellites":
+      {  }
+    },
+
+    "Planet 1": {
+      "label": "Planet",
+      "icon_r": 1,
+      "period": 100,
+      "period_offset": 0,
+      "major_axis": 15,
+      "minor_axis": 15,
+      "focal_axis_offset": 20,
+      "satellites":
+      {  
+
+        "moon 1": {
+          "label": "Planet",
+          "icon_r": 0.4,
+          "period": 30,
+          "period_offset": 0,
+          "major_axis": 5,
+          "minor_axis": 5,
+          "focal_axis_offset": 0,
+          "satellites":{}
+        }
+
+
+      }
+    },
+    
+    "Planet 2": {
+      "label": "Planet",
+      "icon_r": 2,
+      "period": 500,
+      "period_offset": 0,
+      "major_axis": 30,
+      "minor_axis": 30,
+      "focal_axis_offset": 30,
+      "satellites":
+      {
+        
+        "moon 1": {
+          "label": "Planet",
+          "icon_r": 0.2,
+          "period": 35,
+          "period_offset": 0,
+          "major_axis": 6,
+          "minor_axis": 6,
+          "focal_axis_offset": 202,
+          "satellites":{}
+        },
+
+        "moon 2": {
+          "label": "Planet",
+          "icon_r": 0.4,
+          "period": 50,
+          "period_offset": 0,
+          "major_axis": 10,
+          "minor_axis": 10,
+          "focal_axis_offset": 200,
+          "satellites":{}
+        }
+
+      }
+    },
+    
+    "Planet 3": {
+      "label": "Planet",
+      "icon_r": 0.6,
+      "period": -1200,
+      "period_offset": 0,
+      "major_axis": 60,
+      "minor_axis": 60,
+      "focal_axis_offset": 160,
+      "satellites":
+      {  }
+    },
+
+    
+    "Spike gate 1": {
+      "label": "spike gate",
+      "icon_r": 0.6,
+      "period": 0,
+      "period_offset": -30,
+      "major_axis": 100,
+      "minor_axis": 100,
+      "focal_axis_offset": 0,
+      "satellites":
+      {  }
+    }
+    
+
+    }
+</type-osm>
+
+<pre>
+                                 EXAMPLE SYSTEM:
+</pre>
+
+<type-osm id="orbitalSystemMap" style="display:none;">
+  {
+
+    "Planet 1": {
+      "label": "Planet",
+      "icon_r": 1,
+      "period": 100,
+      "period_offset": 50,
+      "major_axis": 20,
+      "minor_axis": 20,
+      "focal_axis_offset": 20,
+      "satellites":
+      {}
+    },
+
+    
+    "Spike gate 1": {
+      "label": "spike gate",
+      "icon_r": 0.6,
+      "period": 0,
+      "period_offset": -30,
+      "major_axis": 60,
+      "minor_axis": 60,
+      "focal_axis_offset": 0,
+      "satellites":
+      {  }
+    }
+  }
+</type-osm>
+
+
+
+</body>
+    </html>
