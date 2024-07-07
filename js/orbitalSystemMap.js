@@ -87,14 +87,14 @@ function orbitalSystemMap_main(finalPass=false) {
     if (finalPass) {
         //if this is the final pass complete the last stage and start the animation.
         //startRevealAnimation(stages[stages.length-1],50,() => {animation.start();});
-        //startRevealAnimation(stages,50,() => {animation.start();});
-        startRevealAnimation(stages,50,() => {});
+        startRevealAnimation(stages,50,() => {animation.start();});
+        //startRevealAnimation(stages,60,() => {});
     } else {
         //if this is a mid document stop
         //animate the reveal, then restart the typewriter after.
         //startRevealAnimation(stages,50,() => {console.log("animation done");});
         console.log("stages[stages.length-1] : ", stages[stages.length-1])
-        startRevealAnimation(stages,50,() => {typeWriter();});
+        startRevealAnimation(stages,60,() => {typeWriter();});
         //startRevealAnimation(stages[stages.length-1],50,() => {typeWriter();});
     }
 }
