@@ -87,7 +87,8 @@ function orbitalSystemMap_main(finalPass=false) {
     if (finalPass) {
         //if this is the final pass complete the last stage and start the animation.
         //startRevealAnimation(stages[stages.length-1],50,() => {animation.start();});
-        startRevealAnimation(stages,50,() => {animation.start();});
+        //startRevealAnimation(stages,50,() => {animation.start();});
+        startRevealAnimation(stages,50,() => {});
     } else {
         //if this is a mid document stop
         //animate the reveal, then restart the typewriter after.
@@ -216,14 +217,25 @@ function scaleStage() {
 
 
     stages.forEach(function (stage, index) {
+        const container = stage.container();
+        const containerWidth = container.offsetWidth;  // Use the container width for scaling
+        const documentWidth = document.documentElement.clientWidth;  // Use the document width for scaling
 
-    //const scale = stage.width() / initialScreenWidth;  // Calculate scale factor based on initial screen width
-    const scale = window.innerWidth / initialScreenWidth;  // Calculate scale factor based on initial screen width
+        console.log("documentWidth: ", documentWidth);
+        console.log("window.innerWidth: ", window.innerWidth);
+
+
+    let width = documentWidth;
+    //let width = window.innerWidth;
+    let scale = width / initialScreenWidth;  // Calculate scale factor based on initial screen width
+
     //console.log("stage.width: ", stage.width());
     //console.log("scale: ", scale);
+
     stage.scaleX(scale);  // Apply scale to X axis
     stage.scaleY(scale);  // Apply scale to Y axis
-    stage.width(window.innerWidth);
+    stage.width(width);
+    //stage.width(containerWidth);
     //stage.height(window.innerHeight);
 
     // Calculate the height to fit the content
