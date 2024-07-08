@@ -166,42 +166,54 @@ function renderOrbits(layer,orbits, time = 0, offset = {"x":0,"y":0}){
 
     //draw each static orbit
     for (let key in orbits) {
-    
-    //console.log(key, orbits[key]);
-    
-    //calculate offsets
-    let new_offset = getPositionFromOrbit(orbits[key],time);
-    total_offset = {"x":0,"y":0};
-    total_offset.x = offset.x + new_offset.x;
-    total_offset.y = offset.y + new_offset.y;
-    //console.log("old offset", offset);
-    //console.log("new offset", new_offset);
-    //console.log("total offset", total_offset);
-    
-    //render the orbit
-    orbits[key].konva_orbit = getEllipseFromOrbit(orbits[key]);
-    //orbits[key].konva_orbit.x((stage.width() / 2)+offset.x);
-    //orbits[key].konva_orbit.y((stage.height() / 2)+offset.y);
-    orbits[key].konva_orbit.x(115+offset.x);
-    orbits[key].konva_orbit.y(0+offset.y);
-    layer.add(orbits[key].konva_orbit);
-    
-    
-    //render the icon
-    orbits[key].konva_icon = getIconFromOrbit(orbits[key]);
-    //orbits[key].konva_icon.x((stage.width() / 2)+total_offset.x);
-    //orbits[key].konva_icon.y((stage.height() / 2)+total_offset.y);
-    orbits[key].konva_icon.x(115+total_offset.x);
-    orbits[key].konva_icon.y(0+total_offset.y);
-    layer.add(orbits[key].konva_icon);
 
-    //recursively iterate over satellites
-    if (orbits[key].satellites && Object.keys(orbits[key].satellites).length > 0) {
-        //console.log("Recursing...");
-        renderOrbits(layer,orbits[key].satellites,time,total_offset);
+        //console.log(key, orbits[key]);
+
+        //calculate offsets
+        let new_offset = getPositionFromOrbit(orbits[key],time);
+        total_offset = {"x":0,"y":0};
+        total_offset.x = offset.x + new_offset.x;
+        total_offset.y = offset.y + new_offset.y;
+        //console.log("old offset", offset);
+        //console.log("new offset", new_offset);
+        //console.log("total offset", total_offset);
+
+        //render the orbit
+        orbits[key].konva_orbit = getEllipseFromOrbit(orbits[key]);
+        orbits[key].konva_orbit.x(115+offset.x);
+        orbits[key].konva_orbit.y(0+offset.y);
+        layer.add(orbits[key].konva_orbit);
+
+
+        if (typeof orbits[key].icon_r === 'number' && orbits[key].icon_r > 0) {
+            //render the icon
+            orbits[key].konva_icon = getIconFromOrbit(orbits[key]);
+            orbits[key].konva_icon.x(115+total_offset.x);
+            orbits[key].konva_icon.y(0+total_offset.y);
+            layer.add(orbits[key].konva_icon);
+        }
+
+        if (typeof orbits[key].label === 'string' && orbits[key].label.trim() !== '') {
+            //render label (is present)
+            orbits[key].konva_label = getLabelFromOrbit(orbits[key]);
+            orbits[key].konva_label.x(115+total_offset.x+orbits[key].konva_label.x());
+            orbits[key].konva_label.y(0+total_offset.y+orbits[key].konva_label.y());
+            layer.add(orbits[key].konva_label);
+        }
+
+        //recursively iterate over satellites
+        if (orbits[key].satellites && Object.keys(orbits[key].satellites).length > 0) {
+            //console.log("Recursing...");
+            renderOrbits(layer,orbits[key].satellites,time,total_offset);
+        }
     }
 
-    }
+    //reorder all elements in layer so text boxes are on top.
+    layer.getChildren().forEach((shape) => {
+        if (shape instanceof Konva.Text) {
+          shape.moveToTop();
+        }
+      });
 
 } 
 
@@ -221,8 +233,8 @@ function scaleStage() {
         const containerWidth = container.offsetWidth;  // Use the container width for scaling
         const documentWidth = document.documentElement.clientWidth;  // Use the document width for scaling
 
-        console.log("documentWidth: ", documentWidth);
-        console.log("window.innerWidth: ", window.innerWidth);
+        //console.log("documentWidth: ", documentWidth);
+        //console.log("window.innerWidth: ", window.innerWidth);
 
 
     let width = documentWidth;
@@ -282,6 +294,7 @@ function getEllipseFromOrbit(orbitParams) {
 
     // Create and return the Konva.Ellipse
     return new Konva.Ellipse({
+        preventDefault: false,
         x: 0,  // Initial position, can be updated later
         y: 0,  // Initial position, can be updated later
         //x: stage.width() / 2,
@@ -306,10 +319,11 @@ function getEllipseFromOrbit(orbitParams) {
 
 //creates Konva.Ellipse from orbit data
 function getIconFromOrbit(orbitParams) {
-    const { major_axis, minor_axis, focal_axis_offset, icon_r } = orbitParams;
+    let { major_axis, minor_axis, focal_axis_offset, icon_r } = orbitParams;
 
     // Calculate the distance to the focal point
-    const c = Math.sqrt(Math.pow(major_axis, 2) - Math.pow(minor_axis, 2));
+    //const c = Math.sqrt(Math.pow(major_axis, 2) - Math.pow(minor_axis, 2));
+
 
     // Create and return the Konva.Ellipse
     return new Konva.Circle({
@@ -318,6 +332,7 @@ function getIconFromOrbit(orbitParams) {
         //x: (stage.width() / 2)+major_axis,
         //x: stage.width() / 2,
         //y: stage.height() / 2,
+        preventDefault: false,
         x: 0,
         y: 0,
         radius: icon_r,
@@ -385,6 +400,42 @@ function getPositionFromOrbit(orbitParams, time) {
     };
 }
 
+
+function getLabelFromOrbit(orbitParams){
+    const {label, major_axis, minor_axis, focal_axis_offset, icon_r } = orbitParams;
+
+    // Calculate the distance to the focal point
+    const c = Math.sqrt(Math.pow(major_axis, 2) - Math.pow(minor_axis, 2));
+
+    // Create and return the Konva.Ellipse
+    let textLabel = new Konva.Text({
+        preventDefault: false,
+        x: 0,  
+        y: 0,  
+        text: label,
+        fontSize: 5,
+        fontFamily: "Noto Sans Mono",
+        align: "center",
+
+        strokeWidth: 0,
+        fill: "rgb(255, 176, 0)",
+        stroke: "rgb(255, 176, 0)",
+        shadowColor: "rgb(255, 176, 0)",
+        shadowBlur: 1,
+        shadowOffsetX: 0,
+        shadowOffsetY: 0,
+    });
+
+    textLabel.x(-textLabel.width()/2);
+
+    if (icon_r===0) {
+        textLabel.y( (-textLabel.height()/2) - (icon_r) );
+    } else {
+        textLabel.y( (-textLabel.height()) - (icon_r) - 2 );
+    }
+
+    return textLabel;
+}
 
 
 
