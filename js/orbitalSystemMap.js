@@ -3,6 +3,29 @@ let staticOrbits = [];
 
 console.log('orbitalSystemMap.js called...');
 
+//set up pattern canvas.
+
+{
+// Define stripe parameters
+const stripeWidth = 7; // Width of each stripe
+const stripeHeight = 5; // Height of each stripe (one color segment)
+const patternWidth = stripeWidth; // Total pattern width (equal to stripe width for vertical stripes)
+const patternHeight = stripeHeight * 2; // Total pattern height (two segments: one colored, one transparent)
+
+// Create a canvas for the pattern
+var konva_pattern_stripes = document.createElement('canvas');
+konva_pattern_stripes.width = patternWidth;
+konva_pattern_stripes.height = patternHeight;
+var patternContext = konva_pattern_stripes.getContext('2d');
+
+// Draw the pattern: alternating colored and transparent stripes
+patternContext.fillStyle = 'rgb(255, 176, 0)';
+patternContext.fillRect(0, 0, patternWidth, stripeHeight); // Top half colored
+patternContext.clearRect(0, stripeHeight, patternWidth, stripeHeight); // Bottom half transparent
+}
+
+
+
 document.addEventListener('typer_done', function(event) {
     console.log('Listener 1: typer_done');
     orbitalSystemMap_main(true);
@@ -188,7 +211,7 @@ function renderOrbits(layer,orbits, time = 0, offset = {"x":0,"y":0}){
         if (orbits[key].major_axis===null || orbits[key].major_axis === undefined) { orbits[key].major_axis = orbits[key].minor_axis; }
         if (orbits[key].focal_axis_offset===null || orbits[key].focal_axis_offset === undefined) { orbits[key].focal_axis_offset = 0; }
         if (orbits[key].satellites===null || orbits[key].satellites === undefined) { orbits[key].satellites = {}; }
-
+        
         //calculate offsets
         let new_offset = getPositionFromOrbit(orbits[key],time);
         total_offset = {"x":0,"y":0};
@@ -198,14 +221,15 @@ function renderOrbits(layer,orbits, time = 0, offset = {"x":0,"y":0}){
         //console.log("new offset", new_offset);
         //console.log("total offset", total_offset);
 
+
+
         if (typeof orbits[key].orbit_w === 'number' && orbits[key].orbit_w > 0) {
             //render the orbit
             orbits[key].konva_orbit = getEllipseFromOrbit(orbits[key]);
             orbits[key].konva_orbit.x(115+offset.x);
             orbits[key].konva_orbit.y(0+offset.y);
             layer.add(orbits[key].konva_orbit);
-    }
-
+        }
 
         if (typeof orbits[key].icon_r === 'number' && orbits[key].icon_r > 0) {
             //render the icon
@@ -222,21 +246,30 @@ function renderOrbits(layer,orbits, time = 0, offset = {"x":0,"y":0}){
             orbits[key].konva_label.y(0+total_offset.y+orbits[key].konva_label.y());
             layer.add(orbits[key].konva_label);
         }
-
+        
         //recursively iterate over satellites
         if (orbits[key].satellites && Object.keys(orbits[key].satellites).length > 0) {
             //console.log("Recursing...");
             renderOrbits(layer,orbits[key].satellites,time,total_offset);
         }
+
+
     }
 
 
-    ////reorder all elements in layer so text boxes are on top.
-    //layer.getChildren().forEach((shape) => {
-    //    if (shape instanceof Konva.Text) {
-    //      shape.moveToTop();
-    //    }
-    //  });
+    //reorder all elements in layer so Rect are on top.
+    layer.getChildren().forEach((shape) => {
+        if (shape instanceof Konva.Rect) {
+          shape.moveToTop();
+        }
+      });
+
+    //reorder all elements in layer so Text are on top.
+      layer.getChildren().forEach((shape) => {
+          if (shape instanceof Konva.Text) {
+            shape.moveToTop();
+          }
+        });
 
     //cache and apply blur on entire layer
     //layer.cache();
@@ -332,7 +365,7 @@ function getEllipseFromOrbit(orbitParams) {
         radiusY: minor_axis,
         stroke: "rgb(255, 176, 0)",
         shadowColor: "rgb(255, 176, 0)",
-        shadowBlur: 0,
+        shadowBlur: 1,
         shadowOffsetX: 0,
         shadowOffsetY: 0,
         //dashEnabled: true,
@@ -345,10 +378,42 @@ function getEllipseFromOrbit(orbitParams) {
         }
     });
 
+    if (orbit_type==="ring") {
+
+
+        ellipse = new Konva.Ring({
+            preventDefault: false,
+            outerRadius: major_axis + 0.5*orbit_w,
+            innerRadius: major_axis - 0.5*orbit_w,
+            stroke: "rgb(255, 176, 0)",
+            //fill: "rgb(255, 176, 0)",
+            
+            fillPatternImage: konva_pattern_stripes,
+            fillPatternRepeat: 'repeat',
+            
+            //fillLinearGradientStartPoint: { x: -100, y: -100 },
+            //fillLinearGradientEndPoint: { x: 100, y: 100 },
+            //fillLinearGradientColorStops: [
+            //    0, 'rgb(255, 176, 0)', 
+            //    0.1, 'rgba(0,0,0,0)', 
+            //    0.9, 'rgb(255, 176, 0)',
+            //    1, 'rgb(255, 176, 0)'
+            //],
+
+            shadowColor: "rgb(255, 176, 0)",
+            shadowBlur: 1,
+            shadowOffsetX: 0,
+            shadowOffsetY: 0,
+            strokeWidth: 0.4,
+            rotation: -30
+        });
+    }
+
 
     if (orbit_type==="dash") {
         ellipse.dashEnabled(true);
         ellipse.dash([5, 20]);
+        ellipse.shadowBlur(0);
     }
 
     return ellipse;
@@ -376,7 +441,7 @@ function getIconFromOrbit(orbitParams) {
         stroke: "rgb(255, 176, 0)",
         fill: "rgb(255, 176, 0)",
         shadowColor: "rgb(255, 176, 0)",
-        shadowBlur: 0,
+        shadowBlur: 1,
         shadowOffsetX: 0,
         shadowOffsetY: 0,
     });
@@ -474,7 +539,23 @@ function getLabelFromOrbit(orbitParams){
         textLabel.y( (-textLabel.height()) - (icon_r) - 2 );
     }
 
-    return textLabel;
+    let background = new Konva.Rect({
+        preventDefault: false,
+        x: textLabel.x() - 0.5,  // Add some padding
+        y: textLabel.y() - 0.5,  // Add some padding
+        width: textLabel.width() + 1,  // Add some padding
+        height: textLabel.height() + 1,  // Add some padding
+        fill: "rgb(20, 20, 20)",
+        cornerRadius: 0,  // Optional: rounded corners
+        globalCompositeOperation: 'destination-out'
+    });
+
+    //group text and background together and return them.
+    let textLabelGroup = new Konva.Group({});
+    textLabelGroup.add(background);
+    textLabelGroup.add(textLabel);
+
+    return textLabelGroup;
 }
 
 
