@@ -16,31 +16,30 @@
   {
 
     "Star 1": {
-      "label": "S",
-      "icon_r": 6,
-      "period": 0,
-      "period_offset": 0,
-      "major_axis": 0,
-      "minor_axis": 0,
-      "focal_axis_offset": 0,
-      "satellites":
-      {  }
+      "label": "Star",
+      "icon_r": 6
     },
 
     "Planet 1": {
-      "label": "P",
-      "icon_r": 1,
+      "label": "Planet",
+      "icon_r": 1.2,
+      "icon_type": "",
+      "orbit_w": 0.4,
+      "orbit_type": "",
       "period": 100,
       "period_offset": 0,
-      "major_axis": 20,
-      "minor_axis": 20,
+      "major_axis": 25,
+      "minor_axis": 25,
       "focal_axis_offset": 20,
       "satellites":
       {  
 
         "moon 1": {
           "label": "",
-          "icon_r": 0.4,
+          "icon_r": 0.8,
+          "icon_type": "",
+          "orbit_w": 0.4,
+          "orbit_type": "",
           "period": 30,
           "period_offset": 0,
           "major_axis": 5,
@@ -54,12 +53,15 @@
     },
     
     "Planet 2": {
-      "label": "P",
+      "label": "Planet",
       "icon_r": 2,
-      "period": 500,
+      "icon_type": "",
+      "orbit_w": 0.4,
+      "orbit_type": "",
+      "period": 364.25,
       "period_offset": 0,
-      "major_axis": 40,
-      "minor_axis": 40,
+      "major_axis": 50,
+      "minor_axis": 50,
       "focal_axis_offset": 30,
       "satellites":
       {
@@ -67,6 +69,9 @@
         "moon 1": {
           "label": "",
           "icon_r": 0.2,
+          "icon_type": "",
+          "orbit_w": 0.4,
+          "orbit_type": "",
           "period": 35,
           "period_offset": 0,
           "major_axis": 7,
@@ -78,6 +83,9 @@
         "moon 2": {
           "label": "",
           "icon_r": 0.4,
+          "icon_type": "",
+          "orbit_w": 0.4,
+          "orbit_type": "",
           "period": 50,
           "period_offset": 0,
           "major_axis": 13,
@@ -90,68 +98,332 @@
     },
     
     "Planet 3": {
-      "label": "P",
+      "label": "Planet",
       "icon_r": 0.6,
+      "icon_type": "",
+      "orbit_w": 0.4,
+      "orbit_type": "",
       "period": -1200,
       "period_offset": 0,
-      "major_axis": 60,
-      "minor_axis": 60,
+      "major_axis": 80,
+      "minor_axis": 80,
+      "focal_axis_offset": 160,
+      "satellites":
+      {  }
+    },
+    
+    "Planet 3 L1": {
+      "label": "L1",
+      "period": -1200,
+      "period_offset": 0,
+      "major_axis": 70,
+      "minor_axis": 70,
+      "focal_axis_offset": 160,
+      "satellites":
+      {  }
+    },
+    
+    "Planet 3 L2": {
+      "label": "L2",
+      "period": -1200,
+      "period_offset": 0,
+      "major_axis": 90,
+      "minor_axis": 90,
+      "focal_axis_offset": 160,
+      "satellites":
+      {  }
+    },
+    
+    "Planet 3 L4": {
+      "label": "L4",
+      "period": -1200,
+      "period_offset": -200,
+      "major_axis": 80,
+      "minor_axis": 80,
+      "focal_axis_offset": 160,
+      "satellites":
+      {  }
+    },
+    
+    "Planet 3 L3": {
+      "label": "L3",
+      "period": -1200,
+      "period_offset": -600,
+      "major_axis": 80,
+      "minor_axis": 80,
+      "focal_axis_offset": 160,
+      "satellites":
+      {  }
+    },
+    
+    "Planet 3 L5": {
+      "label": "L5",
+      "period": -1200,
+      "period_offset": 200,
+      "major_axis": 80,
+      "minor_axis": 80,
       "focal_axis_offset": 160,
       "satellites":
       {  }
     },
 
     
-    "Spike gate 1": {
-      "label": "SG1",
-      "icon_r": 0,
-      "period": 0,
-      "period_offset": -30,
-      "major_axis": 100,
-      "minor_axis": 100,
-      "focal_axis_offset": 0,
-      "satellites":
-      {  }
-    }
-    
-
-    }
-</type-osm>
-
-<pre>
-                                 EXAMPLE SYSTEM:
-</pre>
-
-<type-osm id="orbitalSystemMap" style="display:none;">
-  {
-
-    "Planet 1": {
-      "label": "Planet",
-      "icon_r": 1,
-      "period": 100,
-      "period_offset": 50,
-      "major_axis": 20,
-      "minor_axis": 20,
-      "focal_axis_offset": 20,
-      "satellites":
-      {}
+    "Spike gate N": {
+      "label": "N",
+      "orbit_w": 0.4,
+      "orbit_type": "dash",
+      "period_offset": -90,
+      "major_axis": 100
     },
 
     
-    "Spike gate 1": {
-      "label": "spike gate",
-      "icon_r": 0.6,
-      "period": 0,
+    "Spike gate NE": {
+      "label": "NE",
       "period_offset": -30,
-      "major_axis": 60,
-      "minor_axis": 60,
-      "focal_axis_offset": 0,
-      "satellites":
-      {  }
+      "major_axis": 100
+    },
+
+    
+    "Spike gate SE": {
+      "label": "SE",
+      "period_offset": 30,
+      "major_axis": 100
+    },
+
+    
+    "Spike gate S": {
+      "label": "S",
+      "period_offset": 90,
+      "major_axis": 100
+    },
+
+    
+    "Spike gate SW": {
+      "label": "SW",
+      "period_offset": 150,
+      "major_axis": 100
+    },
+
+    
+    "Spike gate NW": {
+      "label": "NW",
+      "period_offset": -150,
+      "major_axis": 100
     }
-  }
+
+    
+
+    }
 </type-osm>
 
+
+<pre>
+  EXAMPLE SYSTEM:
+</pre>
+
+<type-osm id="orbitalSystemMap" style="display:none;">
+{
+
+"Star 1": {
+"label": "Star",
+"icon_r": 6
+},
+
+"Planet 1": {
+"label": "Planet",
+"icon_r": 1.2,
+"icon_type": "",
+"orbit_w": 0.4,
+"orbit_type": "",
+"period": 100,
+"period_offset": 0,
+"major_axis": 25,
+"minor_axis": 25,
+"focal_axis_offset": 20,
+"satellites":
+{  
+
+"moon 1": {
+"label": "",
+"icon_r": 0.8,
+"icon_type": "",
+"orbit_w": 0.4,
+"orbit_type": "",
+"period": 30,
+"period_offset": 0,
+"major_axis": 5,
+"minor_axis": 5,
+"focal_axis_offset": 0,
+"satellites":{}
+}
+
+
+}
+},
+
+"Planet 2": {
+"label": "Planet",
+"icon_r": 2,
+"icon_type": "",
+"orbit_w": 0.4,
+"orbit_type": "",
+"period": 500,
+"period_offset": 0,
+"major_axis": 50,
+"minor_axis": 50,
+"focal_axis_offset": 30,
+"satellites":
+{
+
+"moon 1": {
+"label": "",
+"icon_r": 0.2,
+"icon_type": "",
+"orbit_w": 0.4,
+"orbit_type": "",
+"period": 35,
+"period_offset": 0,
+"major_axis": 7,
+"minor_axis": 6.8,
+"focal_axis_offset": 202,
+"satellites":{}
+},
+
+"moon 2": {
+"label": "",
+"icon_r": 0.4,
+"icon_type": "",
+"orbit_w": 0.4,
+"orbit_type": "",
+"period": 50,
+"period_offset": 0,
+"major_axis": 13,
+"minor_axis": 13,
+"focal_axis_offset": 200,
+"satellites":{}
+}
+
+}
+},
+
+"Planet 3": {
+"label": "Planet",
+"icon_r": 0.6,
+"icon_type": "",
+"orbit_w": 0.4,
+"orbit_type": "",
+"period": -1200,
+"period_offset": 0,
+"major_axis": 80,
+"minor_axis": 80,
+"focal_axis_offset": 160,
+"satellites":
+{  }
+},
+
+"Planet 3 L1": {
+"label": "L1",
+"period": -1200,
+"period_offset": 0,
+"major_axis": 70,
+"minor_axis": 70,
+"focal_axis_offset": 160,
+"satellites":
+{  }
+},
+
+"Planet 3 L2": {
+"label": "L2",
+"period": -1200,
+"period_offset": 0,
+"major_axis": 90,
+"minor_axis": 90,
+"focal_axis_offset": 160,
+"satellites":
+{  }
+},
+
+"Planet 3 L4": {
+"label": "L4",
+"period": -1200,
+"period_offset": -200,
+"major_axis": 80,
+"minor_axis": 80,
+"focal_axis_offset": 160,
+"satellites":
+{  }
+},
+
+"Planet 3 L3": {
+"label": "L3",
+"period": -1200,
+"period_offset": -600,
+"major_axis": 80,
+"minor_axis": 80,
+"focal_axis_offset": 160,
+"satellites":
+{  }
+},
+
+"Planet 3 L5": {
+"label": "L5",
+"period": -1200,
+"period_offset": 200,
+"major_axis": 80,
+"minor_axis": 80,
+"focal_axis_offset": 160,
+"satellites":
+{  }
+},
+
+
+"Spike gate N": {
+"label": "N",
+"orbit_w": 0.4,
+"orbit_type": "dash",
+"period_offset": -90,
+"major_axis": 100
+},
+
+
+"Spike gate NE": {
+"label": "NE",
+"period_offset": -30,
+"major_axis": 100
+},
+
+
+"Spike gate SE": {
+"label": "SE",
+"period_offset": 30,
+"major_axis": 100
+},
+
+
+"Spike gate S": {
+"label": "S",
+"period_offset": 90,
+"major_axis": 100
+},
+
+
+"Spike gate SW": {
+"label": "SW",
+"period_offset": 150,
+"major_axis": 100
+},
+
+
+"Spike gate NW": {
+"label": "NW",
+"period_offset": -150,
+"major_axis": 100
+}
+
+
+
+}
+</type-osm>
 
 
 </body>
