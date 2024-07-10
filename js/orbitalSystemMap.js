@@ -10,7 +10,7 @@ console.log('orbitalSystemMap.js called...');
 const stripeWidth = 1; // Width of each stripe
 const stripeHeight = 1; // Height of each stripe (one color segment)
 const patternWidth = stripeWidth; // Total pattern width (equal to stripe width for vertical stripes)
-const patternHeight = stripeHeight * 3; // Total pattern height (two segments: one colored, one transparent)
+const patternHeight = stripeHeight * 4; // Total pattern height (two segments: one colored, one transparent)
 
 // Create a canvas for the pattern
 var konva_pattern_stripes = document.createElement('canvas');
@@ -25,7 +25,7 @@ patternContext.fillRect(0, 0, patternWidth, stripeHeight); // Top half colored
 patternContext.clearRect(0, stripeHeight, patternWidth, stripeHeight); // Bottom half transparent
 
 // Rotate the context 45 degrees (converted to radians)
-patternContext.rotate(45 * Math.PI / 180);
+//patternContext.rotate(45 * Math.PI / 180);
 
 }
 
@@ -233,25 +233,25 @@ function renderOrbits(layer,orbits, time = 0, offset = {"x":0,"y":0}){
         if (typeof orbits[key].orbit_w === 'number' && orbits[key].orbit_w > 0) {
             //render the orbit
             orbits[key].konva_orbit = getEllipseFromOrbit(orbits[key]);
-            orbits[key].konva_orbit.x(115+offset.x);
+            orbits[key].konva_orbit.x(100+offset.x);
             orbits[key].konva_orbit.y(0+offset.y);
-            layer.add(orbits[key].konva_orbit);
+            //layer.add(orbits[key].konva_orbit);
         }
 
         if (typeof orbits[key].icon_r === 'number' && orbits[key].icon_r > 0) {
             //render the icon
             orbits[key].konva_icon = getIconFromOrbit(orbits[key]);
-            orbits[key].konva_icon.x(115+total_offset.x);
+            orbits[key].konva_icon.x(100+total_offset.x);
             orbits[key].konva_icon.y(0+total_offset.y);
-            layer.add(orbits[key].konva_icon);
+            //layer.add(orbits[key].konva_icon);
         }
 
         if (typeof orbits[key].label === 'string' && orbits[key].label.trim() !== '') {
             //render label (is present)
             orbits[key].konva_label = getLabelFromOrbit(orbits[key]);
-            orbits[key].konva_label.x(115+total_offset.x+orbits[key].konva_label.x());
+            orbits[key].konva_label.x(100+total_offset.x+orbits[key].konva_label.x());
             orbits[key].konva_label.y(0+total_offset.y+orbits[key].konva_label.y());
-            layer.add(orbits[key].konva_label);
+            //layer.add(orbits[key].konva_label);
         }
         
         //recursively iterate over satellites
@@ -260,24 +260,48 @@ function renderOrbits(layer,orbits, time = 0, offset = {"x":0,"y":0}){
             renderOrbits(layer,orbits[key].satellites,time,total_offset);
         }
 
+        //add the satellites first so the parent object is rendered on top
+
+
+        if (typeof orbits[key].orbit_w === 'number' && orbits[key].orbit_w > 0) {
+            //add the orbit
+            layer.add(orbits[key].konva_orbit);
+        }
+
+        if (typeof orbits[key].icon_r === 'number' && orbits[key].icon_r > 0) {
+            //add the icon
+            layer.add(orbits[key].konva_icon);
+        }
+
+        if (typeof orbits[key].label === 'string' && orbits[key].label.trim() !== '') {
+            //add label (is present)
+            layer.add(orbits[key].konva_label);
+        }
 
     }
 
+    ////reorder all elements in layer so groups (things with backgrounds) are on top
+    //layer.getChildren().forEach((shape) => {
+    //    if (shape instanceof Konva.Group) {
+    //      shape.moveToTop();
+    //    }
+    //  });
 
-    //reorder all elements in layer so Rect are on top.
-    layer.getChildren().forEach((shape) => {
-        if (shape instanceof Konva.Rect) {
-          shape.moveToTop();
-        }
-      });
-
-    //reorder all elements in layer so Text are on top.
-      layer.getChildren().forEach((shape) => {
-          if (shape instanceof Konva.Text) {
-            shape.moveToTop();
-          }
-        });
-
+    ////reorder all elements in layer so Rect are on top.
+    //layer.getChildren().forEach((shape) => {
+    //    if (shape instanceof Konva.Rect) {
+    //      shape.moveToTop();
+    //    }
+    //    console.log(shape);
+    //  });
+    //
+    ////reorder all elements in layer so Text are on top.
+    //  layer.getChildren().forEach((shape) => {
+    //      if (shape instanceof Konva.Text) {
+    //        shape.moveToTop();
+    //      }
+    //    });
+    //
     //cache and apply blur on entire layer
     //layer.cache();
     // Apply the blur filter to the layer
@@ -294,7 +318,7 @@ function renderOrbits(layer,orbits, time = 0, offset = {"x":0,"y":0}){
 
 // Function to scale stage based on screen width
 function scaleStage() {
-    const initialScreenWidth = 240;  // Example: base screen width
+    const initialScreenWidth = 200;  // Example: base screen width
 
 
     stages.forEach(function (stage, index) {
@@ -372,7 +396,7 @@ function getEllipseFromOrbit(orbitParams) {
         radiusY: minor_axis,
         stroke: "rgb(255, 176, 0)",
         shadowColor: "rgb(255, 176, 0)",
-        shadowBlur: 1,
+        shadowBlur: 0.3,
         shadowOffsetX: 0,
         shadowOffsetY: 0,
         //dashEnabled: true,
@@ -408,7 +432,7 @@ function getEllipseFromOrbit(orbitParams) {
             //],
 
             shadowColor: "rgb(255, 176, 0)",
-            shadowBlur: 1,
+            shadowBlur: 0.3,
             shadowOffsetX: 0,
             shadowOffsetY: 0,
             strokeWidth: 0.4,
@@ -449,7 +473,7 @@ function getIconFromOrbit(orbitParams) {
         //fill: "rgb(255, 176, 0, 0)",
         //fill: "rgb(255, 176, 0)",
         shadowColor: "rgb(255, 176, 0)",
-        shadowBlur: 1,
+        shadowBlur: 0.3,
         shadowOffsetX: 0,
         shadowOffsetY: 0,
         //rotation: -45,
@@ -553,7 +577,7 @@ function getLabelFromOrbit(orbitParams){
         x: 0,  
         y: 0,  
         text: label,
-        fontSize: 5,
+        fontSize: 4,
         fontFamily: "Noto Sans Mono",
         align: "center",
 
@@ -561,7 +585,7 @@ function getLabelFromOrbit(orbitParams){
         fill: "rgb(255, 176, 0)",
         stroke: "rgb(255, 176, 0)",
         shadowColor: "rgb(255, 176, 0)",
-        shadowBlur: 1,
+        shadowBlur: 0.3,
         shadowOffsetX: 0,
         shadowOffsetY: 0,
     });
@@ -572,10 +596,10 @@ function getLabelFromOrbit(orbitParams){
         (textLabel.width()*textLabel.width())
         + (textLabel.height()*textLabel.height())); //text box diagonal
 
-    //console.log(label, " needs ", labelBoundingDiameter, ", and has ", icon_r);
+    //console.log(label, " needs ", labelBoundingDiameter, ", and has ", icon_r*2);
 
     //if (icon_r===0) {
-    if (icon_r<=0 || labelBoundingDiameter < icon_r) {
+    if (icon_r<=0 || labelBoundingDiameter < (icon_r*2)) {
         icon_r=0;
         textLabel.y( (-textLabel.height()/2) - (icon_r) );
     } else {
@@ -633,14 +657,14 @@ function adTimeLabel(layer, time) {
         x: 0,  
         y: -100,  
         text: displayString,
-        fontSize: 5,
+        fontSize: 4,
         fontFamily: "Noto Sans Mono",
         align: "center",
         strokeWidth: 0,
         fill: "rgb(255, 176, 0)",
         stroke: "rgb(255, 176, 0)",
         shadowColor: "rgb(255, 176, 0)",
-        shadowBlur: 1,
+        shadowBlur: 0.3,
         shadowOffsetX: 0,
         shadowOffsetY: 0,
     });
