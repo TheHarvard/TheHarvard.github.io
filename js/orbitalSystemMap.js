@@ -6,29 +6,52 @@ console.log('orbitalSystemMap.js called...');
 //set up pattern canvas.
 
 {
-// Define stripe parameters
-const stripeWidth = 1; // Width of each stripe
-const stripeHeight = 1; // Height of each stripe (one color segment)
-const patternWidth = stripeWidth; // Total pattern width (equal to stripe width for vertical stripes)
-const patternHeight = stripeHeight * 4; // Total pattern height (two segments: one colored, one transparent)
+    // Define stripe parameters
+    const stripeWidth = 1; // Width of each stripe
+    const stripeHeight = 1; // Height of each stripe (one color segment)
+    const patternWidth = stripeWidth; // Total pattern width (equal to stripe width for vertical stripes)
+    const patternHeight = stripeHeight * 4; // Total pattern height (two segments: one colored, one transparent)
 
-// Create a canvas for the pattern
-var konva_pattern_stripes = document.createElement('canvas');
-konva_pattern_stripes.width = patternWidth;
-konva_pattern_stripes.height = patternHeight;
-var patternContext = konva_pattern_stripes.getContext('2d');
+    // Create a canvas for the pattern
+    var konva_pattern_stripes = document.createElement('canvas');
+    konva_pattern_stripes.width = patternWidth;
+    konva_pattern_stripes.height = patternHeight;
+    var patternContext = konva_pattern_stripes.getContext('2d');
 
 
-// Draw the pattern: alternating colored and transparent stripes
-patternContext.fillStyle = 'rgb(255, 176, 0)';
-patternContext.fillRect(0, 0, patternWidth, stripeHeight); // Top half colored
-patternContext.clearRect(0, stripeHeight, patternWidth, stripeHeight); // Bottom half transparent
-
-// Rotate the context 45 degrees (converted to radians)
-//patternContext.rotate(45 * Math.PI / 180);
+    // Draw the pattern: alternating colored and transparent stripes
+    patternContext.fillStyle = 'rgb(255, 176, 0)';
+    patternContext.fillRect(0, 0, patternWidth, stripeHeight); // Top half colored
+    patternContext.clearRect(0, stripeHeight, patternWidth, stripeHeight); // Bottom half transparent
 
 }
 
+//{
+//        // Define dot parameters
+//    const dotRadius = 2.5; // Radius of each dot
+//    const patternWidth = 200; // Total pattern width (higher resolution)
+//    const patternHeight = 200; // Total pattern height (higher resolution)
+//    const dotDensity = 0.01; // Density of the dots, 0.1 means 10% of the area will have dots
+//
+//    // Create a canvas for the pattern
+//    var konva_pattern_dots = document.createElement('canvas');
+//    konva_pattern_dots.width = patternWidth;
+//    konva_pattern_dots.height = patternHeight;
+//    var patternContext = konva_pattern_dots.getContext('2d');
+//
+//    // Draw the pattern: random small dots
+//    patternContext.fillStyle = 'rgb(255, 176, 0)';
+//
+//    for (let x = 0; x < patternWidth; x++) {
+//        for (let y = 0; y < patternHeight; y++) {
+//            if (Math.random() < dotDensity) {
+//                patternContext.beginPath();
+//                patternContext.arc(x, y, dotRadius, 0, 2 * Math.PI);
+//                patternContext.fill();
+//            }
+//        }
+//    }
+//}
 
 
 document.addEventListener('typer_done', function(event) {
@@ -103,8 +126,8 @@ function orbitalSystemMap_main(finalPass=false) {
             stage.destroyChildren();
             var layer = new Konva.Layer();
             stage.add(layer);
-            renderOrbits(layer,staticOrbits[index],frame.time*8640);
-            adTimeLabel(layer,frame.time*8640)
+            renderOrbits(layer,staticOrbits[index],frame.time*8640*0.5);
+            adTimeLabel(layer,frame.time*8640*0.5)
             scaleStage();
             //layer.draw();
             });
@@ -219,6 +242,10 @@ function renderOrbits(layer,orbits, time = 0, offset = {"x":0,"y":0}){
         if (orbits[key].focal_axis_offset===null || orbits[key].focal_axis_offset === undefined) { orbits[key].focal_axis_offset = 0; }
         if (orbits[key].satellites===null || orbits[key].satellites === undefined) { orbits[key].satellites = {}; }
         
+        if (orbits[key].label!==""  && orbits[key].icon_type==="")
+            { orbits[key].icon_type = "fill"; }
+
+
         //calculate offsets
         let new_offset = getPositionFromOrbit(orbits[key],time);
         total_offset = {"x":0,"y":0};
@@ -232,7 +259,7 @@ function renderOrbits(layer,orbits, time = 0, offset = {"x":0,"y":0}){
 
         if (typeof orbits[key].orbit_w === 'number' && orbits[key].orbit_w > 0) {
             //render the orbit
-            orbits[key].konva_orbit = getEllipseFromOrbit(orbits[key]);
+            orbits[key].konva_orbit = getEllipseFromOrbit(orbits[key],time);
             orbits[key].konva_orbit.x(100+offset.x);
             orbits[key].konva_orbit.y(0+offset.y);
             //layer.add(orbits[key].konva_orbit);
@@ -240,7 +267,7 @@ function renderOrbits(layer,orbits, time = 0, offset = {"x":0,"y":0}){
 
         if (typeof orbits[key].icon_r === 'number' && orbits[key].icon_r > 0) {
             //render the icon
-            orbits[key].konva_icon = getIconFromOrbit(orbits[key]);
+            orbits[key].konva_icon = getIconFromOrbit(orbits[key],time);
             orbits[key].konva_icon.x(100+total_offset.x);
             orbits[key].konva_icon.y(0+total_offset.y);
             //layer.add(orbits[key].konva_icon);
@@ -248,7 +275,7 @@ function renderOrbits(layer,orbits, time = 0, offset = {"x":0,"y":0}){
 
         if (typeof orbits[key].label === 'string' && orbits[key].label.trim() !== '') {
             //render label (is present)
-            orbits[key].konva_label = getLabelFromOrbit(orbits[key]);
+            orbits[key].konva_label = getLabelFromOrbit(orbits[key],time);
             orbits[key].konva_label.x(100+total_offset.x+orbits[key].konva_label.x());
             orbits[key].konva_label.y(0+total_offset.y+orbits[key].konva_label.y());
             //layer.add(orbits[key].konva_label);
@@ -379,14 +406,14 @@ function scaleStage() {
 
 
 //creates Konva.Ellipse from orbit data
-function getEllipseFromOrbit(orbitParams) {
-    let { orbit_w, orbit_type, major_axis, minor_axis, focal_axis_offset } = orbitParams;
+function getEllipseFromOrbit(orbitParams,time) {
+    let { orbit_w, orbit_type, major_axis, minor_axis, focal_axis_offset, period, period_offset} = orbitParams;
 
     // Calculate the distance to the focal point
     const c = Math.sqrt(Math.pow(major_axis, 2) - Math.pow(minor_axis, 2));
 
     // Create and return the Konva.Ellipse
-    let ellipse = new Konva.Ellipse({
+    let konva_orbit = new Konva.Ellipse({
         preventDefault: false,
         x: 0,  // Initial position, can be updated later
         y: 0,  // Initial position, can be updated later
@@ -412,24 +439,15 @@ function getEllipseFromOrbit(orbitParams) {
     if (orbit_type==="ring") {
 
 
-        ellipse = new Konva.Ring({
+        konva_orbit = new Konva.Ring({
             preventDefault: false,
             outerRadius: major_axis + 0.5*orbit_w,
             innerRadius: major_axis - 0.5*orbit_w,
             stroke: "rgb(255, 176, 0)",
             //fill: "rgb(255, 176, 0)",
-            
+
             fillPatternImage: konva_pattern_stripes,
             fillPatternRepeat: 'repeat',
-            
-            //fillLinearGradientStartPoint: { x: -100, y: -100 },
-            //fillLinearGradientEndPoint: { x: 100, y: 100 },
-            //fillLinearGradientColorStops: [
-            //    0, 'rgb(255, 176, 0)', 
-            //    0.1, 'rgba(0,0,0,0)', 
-            //    0.9, 'rgb(255, 176, 0)',
-            //    1, 'rgb(255, 176, 0)'
-            //],
 
             shadowColor: "rgb(255, 176, 0)",
             shadowBlur: 0.3,
@@ -438,20 +456,169 @@ function getEllipseFromOrbit(orbitParams) {
             strokeWidth: 0.4,
             rotation: -45
         });
+
+        
     }
 
     if (orbit_type==="dash") {
-        ellipse.dashEnabled(true);
-        ellipse.dash([5, 20]);
-        ellipse.shadowBlur(0);
+        konva_orbit.dashEnabled(true);
+        konva_orbit.dash([5, 20]);
+        konva_orbit.shadowBlur(0);
     }
 
 
-    return ellipse;
+    if (orbit_type==="belt") {
+
+
+
+
+        //divide the belt into multiple rings
+        let numberOfRingDivisions = orbit_w;
+
+        let newWidth = orbit_w/numberOfRingDivisions;
+        let oldMinRadius = major_axis - 0.5*orbit_w;
+        let oldMaxRadius = major_axis + 0.5*orbit_w;
+        //let oldMinPeriod = period - 0.5*(period*(oldMaxRadius-oldMinRadius)/oldMaxRadius);
+        //let oldMaxPeriod = period + 0.5*(period*(oldMaxRadius-oldMinRadius)/oldMaxRadius);
+
+        //use keplers third law to create new periods from the new radius
+        //let oldMinPeriod = period * Math.pow(oldMinRadius / major_axis, 3 / 2);
+        //let oldMaxPeriod = period * Math.pow(oldMaxRadius / major_axis, 3 / 2);
+
+        //console.log("newWidth ",newWidth);
+        //console.log("oldMinRadius ",oldMinRadius);
+        //console.log("oldMaxRadius ",oldMaxRadius);
+        //console.log("oldMinPeriod ",oldMinPeriod);
+        //console.log("oldMaxPeriod ",oldMaxPeriod);
+        //console.log("oldMinRadius ",oldMinRadius);
+
+        konva_orbit = new Konva.Group({});
+
+        for (let i = 0; i < numberOfRingDivisions; i++) {
+            let newRadius = oldMaxRadius - (i * newWidth);
+            //let newPeriod = oldMaxPeriod - (i * ((oldMaxPeriod-oldMinPeriod)/numberOfRingDivisions))
+            
+            //use keplers third law to create new periods from the new radius
+            let newPeriod = period * Math.pow(newRadius / major_axis, 3 / 2);
+
+
+            //console.log("i ",i);
+            //console.log("newRadius ",newRadius);
+            //console.log("newPeriod ",newPeriod);
+
+            let rot = 0;
+            //scale time to days
+            let days = time / 864000;
+
+            if (period!==0) {
+                rot = (((-days + period_offset)/newPeriod)*360)%360;
+                //console.log("rot: ",rot);
+            }
+
+            konva_orbit.add(beltRing(newRadius,newWidth,rot));
+            //konva_orbit.add(beltRing(50,newWidth,rot));
+
+        }
+    }
+
+
+    return konva_orbit;
+}
+
+
+function beltRing(radius,width,rot){
+    let beltRing = new Konva.Ring({
+        preventDefault: false,
+        outerRadius: radius + 0.5*width,
+        innerRadius: radius - 0.5*width,
+        //stroke: "rgb(255, 176, 0)",
+        //fill: "rgb(255, 176, 0)",
+
+        //fillPatternImage: konva_pattern_dots_image,
+        //fillPatternImage: konva_pattern_dots,
+        //fillPatternRepeat: 'repeat',
+
+        shadowColor: "rgb(255, 176, 0)",
+        shadowBlur: 0.3,
+        //shadowBlur: 0,
+        shadowOffsetX: 0,
+        shadowOffsetY: 0,
+        strokeWidth: 0.4,
+        //rotation: rot
+    });
+    
+    //create group 
+    //UPDATE_TAG
+    let beltGroup = new Konva.Group({});
+    beltGroup.add(beltRing);
+
+    //generate the asteroids, add them to the group
+    let area = 3.1415 * (Math.pow(beltRing.outerRadius(),2) - Math.pow(beltRing.innerRadius(),2));
+    let numberOfDots = Math.round(area*0.25);
+
+    //console.log ("numberOfDots: ", numberOfDots)
+
+    for (var i = 0; i < numberOfDots; i++) {
+
+        let dot = new Konva.Circle({
+            preventDefault: false,
+            radius: 0.4,
+            //stroke: "rgb(255, 176, 0)",
+            fill: "rgb(255, 176, 0)",
+            shadowColor: "rgb(255, 176, 0)",
+            shadowBlur: 0.3,
+            //shadowBlur: 0,
+            shadowOffsetX: 0,
+            shadowOffsetY: 0,
+            //strokeWidth: 0.4,
+        });
+
+        //random numbers for this run
+        var random_1 = integerToRandomNumber(i);
+        var random_2 = integerToRandomNumber(i+numberOfDots);
+        var random_3 = integerToRandomNumber(i+numberOfDots+numberOfDots);
+
+        // start in the middle of the ring
+        //var angle = (((Math.random()-0.5)*1.5 + i) / numberOfDots) * Math.PI * 2;
+        var angle = (((random_1-0.5)*1.5 + i) / numberOfDots) * Math.PI * 2;
+        //var x = (beltRing.x() + ((beltRing.innerRadius() + beltRing.outerRadius()) / 2) * Math.cos(angle));
+        //var y = (beltRing.y() + ((beltRing.innerRadius() + beltRing.outerRadius()) / 2) * Math.sin(angle));
+        var x = (((beltRing.innerRadius() + beltRing.outerRadius()) / 2) * Math.cos(angle));
+        var y = (((beltRing.innerRadius() + beltRing.outerRadius()) / 2) * Math.sin(angle));
+
+        //offset in random direction
+        //var angle = Math.random() * Math.PI * 2;
+        //var offsetLength = Math.random() * (width*4);
+        var angle = random_2 * Math.PI * 2;
+        var offsetLength = random_3 * (width*10);
+        x += offsetLength * Math.cos(angle);
+        y += offsetLength * Math.sin(angle);
+
+        dot.x(x);
+        dot.y(y);
+
+        beltGroup.add(dot);
+
+    }
+
+
+    //rotate the group
+    beltGroup.rotation(rot);
+    return beltGroup;
+}
+
+
+function integerToRandomNumber(integer) {
+    integer = integer ^ (integer << 10);
+    integer = integer ^ (integer >> 15);
+    integer = integer ^ (integer << 4);
+    integer = integer * 3323198485;
+    integer = integer ^ (integer >> 16);
+    return (integer >>> 0) / (4294967296); // Normalize to [0, 1]
 }
 
 //creates icon from orbit data
-function getIconFromOrbit(orbitParams) {
+function getIconFromOrbit(orbitParams,time) {
     let { major_axis, minor_axis, focal_axis_offset, icon_r, icon_type } = orbitParams;
 
     // Calculate the distance to the focal point
@@ -487,10 +654,16 @@ function getIconFromOrbit(orbitParams) {
         fill: "rgb(20, 20, 220)",
         globalCompositeOperation: 'destination-out'
     });
+    
+    //fill
+    if (icon_type==="fill") {
+        konva_icon.fill('rgb(255, 176, 0)');
+    }
+
 
     //stripe
     if (icon_type==="stripe") {
-        console.log("!!!icon_type: ",icon_type);
+        //console.log("!!!icon_type: ",icon_type);
         konva_icon.fill(null);
         konva_icon.fillPatternImage(konva_pattern_stripes);
         konva_icon.fillPatternRepeat('repeat');
@@ -565,7 +738,7 @@ function getPositionFromOrbit(orbitParams, time) {
 }
 
 
-function getLabelFromOrbit(orbitParams){
+function getLabelFromOrbit(orbitParams,time){
     let {label, major_axis, minor_axis, focal_axis_offset, icon_r } = orbitParams;
 
     // Calculate the distance to the focal point
