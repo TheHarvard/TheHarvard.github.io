@@ -194,7 +194,7 @@ function startRevealAnimation(stages, interval, onComplete) {
     shapes.forEach(function (shape, index) {
         shape.opacity(0);
     });
-    stages.forEach(stage => {stage.draw();});
+    stages.forEach(stage => {stage.batchDraw();});
 
     //recurse over the list with a delay, and reveal each shape in turn.
     revealElementsRecursive(shapes, 0, interval, onComplete);
@@ -227,6 +227,7 @@ function renderOrbits(orbits, time = 0, offset = {"x":0,"y":0},layer){
     if (orbits.layer===undefined) {
         if (layer===undefined) {
         orbits.layer = new Konva.Layer();
+        orbits.layer.listening(false);
         } else {
             orbits.layer = layer;
         }
@@ -443,6 +444,8 @@ function getEllipseFromOrbit(orbitParams,time) {
         if (orbitParams.konva_object_orbit===undefined){
             orbitParams.konva_object_orbit = new Konva.Ring({
                 preventDefault: false,
+                listening: false,
+                perfectDrawEnabled: false,
                 outerRadius: major_axis + 0.5*orbit_w,
                 innerRadius: major_axis - 0.5*orbit_w,
                 stroke: "rgb(255, 176, 0)",
@@ -513,6 +516,8 @@ function getEllipseFromOrbit(orbitParams,time) {
             // Create and return the Konva.Ellipse
                 orbitParams.konva_object_orbit = new Konva.Ellipse({
                 preventDefault: false,
+                listening: false,
+                perfectDrawEnabled: false,
                 x: 0,  // Initial position, can be updated later
                 y: 0,  // Initial position, can be updated later
                 //x: stage.width() / 2,
@@ -548,6 +553,8 @@ function getEllipseFromOrbit(orbitParams,time) {
 function beltRing(radius,width){
     let beltRing = new Konva.Ring({
         preventDefault: false,
+        listening: false,
+        perfectDrawEnabled: false,
         outerRadius: radius + 0.5*width,
         innerRadius: radius - 0.5*width,
         //stroke: "rgb(255, 176, 0)",
@@ -581,6 +588,8 @@ function beltRing(radius,width){
 
         let dot = new Konva.Circle({
             preventDefault: false,
+            listening: false,
+            perfectDrawEnabled: false,
             radius: 0.4,
             fill: "rgb(255, 176, 0)",
             shadowColor: "rgb(255, 176, 0)",
@@ -649,6 +658,8 @@ function getIconFromOrbit(orbitParams,time) {
         orbitParams.konva_object_icon.add(
             new Konva.Circle({
                 preventDefault: false,
+                listening: false,
+                perfectDrawEnabled: false,
                 radius: icon_r+0,
                 strokeWidth: 0,
                 fill: "rgb(20, 20, 220)",
@@ -665,6 +676,8 @@ function getIconFromOrbit(orbitParams,time) {
                 //x: stage.width() / 2,
                 //y: stage.height() / 2,
                 preventDefault: false,
+                listening: false,
+                perfectDrawEnabled: false,
                 radius: icon_r,
                 stroke: "rgb(255, 176, 0)",
                 strokeWidth: 0.4,
@@ -799,6 +812,8 @@ function getLabelFromOrbit(orbitParams,time){
         // Create and return the Konva.Ellipse
         let textLabel = new Konva.Text({
             preventDefault: false,
+            listening: false,
+            perfectDrawEnabled: false,
             x: 0,  
             y: 0,  
             text: label,
@@ -833,6 +848,8 @@ function getLabelFromOrbit(orbitParams,time){
 
         let background = new Konva.Rect({
             preventDefault: false,
+            listening: false,
+            perfectDrawEnabled: false,
             x: textLabel.x() - 0.5,  // Add some padding
             y: textLabel.y() - 0.5,  // Add some padding
             width: textLabel.width() + 1,  // Add some padding
@@ -882,6 +899,8 @@ function adTimeLabel(layer, time) {
 
     let konva_date_label = new Konva.Text({
         preventDefault: false,
+        listening: false,
+        perfectDrawEnabled: false,
         x: 0,  
         y: -100,  
         text: displayString,
