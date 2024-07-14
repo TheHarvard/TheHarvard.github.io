@@ -250,6 +250,7 @@ function renderOrbits(orbits, time = 0, offset = {"x":0,"y":0},layer){
         if (orbits[key].orbit_type===null || orbits[key].orbit_type === undefined) { orbits[key].orbit_type = ""; }
         if (orbits[key].period===null || orbits[key].period === undefined) { orbits[key].period = 0; }
         if (orbits[key].period_offset===null || orbits[key].period_offset === undefined) { orbits[key].period_offset = 0; }
+        if (orbits[key].link===null || orbits[key].link === undefined) { orbits[key].link = ""; }
 
         if ((orbits[key].minor_axis===null || orbits[key].minor_axis === undefined) 
             && (orbits[key].major_axis===null || orbits[key].major_axis === undefined))
@@ -386,7 +387,7 @@ function scaleStage() {
     //stage.height(window.innerHeight);
 
     // Calculate the height to fit the content
-    let maxHeight = 0;
+    let maxHeight = 180;
     stage.find('Shape').forEach((shape) => {
         const shapeHeight = shape.y() + shape.height() * shape.scaleY();
         if (shapeHeight > maxHeight) {
@@ -970,7 +971,7 @@ function getPositionFromOrbit(orbitParams, time) {
 
 
 function getLabelFromOrbit(orbitParams,time){
-    let {label, major_axis, minor_axis, focal_axis_offset, icon_r, icon_type } = orbitParams;
+    let {label, major_axis, minor_axis, focal_axis_offset, icon_r, icon_type, link } = orbitParams;
 
     
     if (orbitParams.konva_object_label===undefined){
@@ -978,7 +979,7 @@ function getLabelFromOrbit(orbitParams,time){
         // Calculate the distance to the focal point
         const c = Math.sqrt(Math.pow(major_axis, 2) - Math.pow(minor_axis, 2));
 
-        // Create and return the Konva.Ellipse
+        // Create  Konva.Text
         let textLabel = new Konva.Text({
             preventDefault: false,
             listening: false,
@@ -1031,7 +1032,12 @@ function getLabelFromOrbit(orbitParams,time){
             y: textLabel.y() - 0.5,  // Add some padding
             width: textLabel.width() + 1,  // Add some padding
             height: textLabel.height() + 1,  // Add some padding
-            fill: "rgb(20, 20, 20)",
+            fill: "rgb(255, 176, 0)",
+            //stroke: "rgb(255, 176, 0)",
+            shadowColor: "rgb(255, 176, 0)",
+            shadowBlur: 0,
+            shadowOffsetX: 0,
+            shadowOffsetY: 0,
             cornerRadius: 0,  // Optional: rounded corners
             globalCompositeOperation: 'destination-out'
         });
@@ -1041,6 +1047,54 @@ function getLabelFromOrbit(orbitParams,time){
         orbitParams.konva_object_label.add(background);
         orbitParams.konva_object_label.add(textLabel);
 
+        //add link behaviour if link is set
+        if (link!==null && link !== undefined && link !== "") { 
+
+            //console.log("added event listeners to ", orbitParams.konva_object_label)
+
+            textLabel.listening(true);
+            orbitParams.konva_object_label.listening(true);
+
+            textLabel.textDecoration("underline");
+
+
+            //add click behavior
+            orbitParams.konva_object_label.on('click', function() {
+                //console.log("CLICKED! ", link);
+                //window.open(link, '_blank'); // Opens in new tab
+                window.location.href = link; // Navigates current tab
+            });
+
+            //add hover behavior
+            orbitParams.konva_object_label.on('mouseover', function() {
+                textLabel.globalCompositeOperation("destination-out");
+                background.globalCompositeOperation(null);
+                background.shadowBlur(0.3);
+                stages.forEach(stage => {stage.batchDraw();});
+            });
+
+            orbitParams.konva_object_label.on('mouseout', function() {
+                textLabel.globalCompositeOperation(null);
+                background.globalCompositeOperation("destination-out");
+                background.shadowBlur(0);
+                stages.forEach(stage => {stage.batchDraw();});
+            });
+
+            orbitParams.konva_object_label.on('focus', function() {
+                textLabel.globalCompositeOperation("destination-out");
+                background.globalCompositeOperation(null);
+                background.shadowBlur(0.3);
+                stages.forEach(stage => {stage.batchDraw();})
+            });
+
+            orbitParams.konva_object_label.on('blur', function() {
+                textLabel.globalCompositeOperation(null);
+                background.globalCompositeOperation("destination-out");
+                background.shadowBlur(0);
+                stages.forEach(stage => {stage.batchDraw();})
+            ;});
+
+        }
 
     }
 
