@@ -110,7 +110,7 @@ function orbitalSystemMap_main(finalPass=false) {
         //renderOrbits(layer,staticOrbits[index]);
         renderOrbits(staticOrbits[index]);
         stages[index].add(staticOrbits[index].layer);
-        //adTimeLabel(layer,0)
+        //adTimeLabel(staticOrbits[index].layer,0)
         //layer.draw();
         element.style.display = ''; //remove style="display:none;"
         
@@ -130,7 +130,7 @@ function orbitalSystemMap_main(finalPass=false) {
                 //var layer = new Konva.Layer();
                 //stage.add(layer);
             renderOrbits(staticOrbits[index],frame.time*8640*0.5);
-            //adTimeLabel(layer,frame.time*8640*0.5)
+            //adTimeLabel(staticOrbits[index].layer,frame.time*8640*0.5)
             scaleStage();
             //layer.draw();
             });
@@ -145,14 +145,14 @@ function orbitalSystemMap_main(finalPass=false) {
     if (finalPass) {
         //if this is the final pass complete the last stage and start the animation.
         //startRevealAnimation(stages[stages.length-1],50,() => {animation.start();});
-        startRevealAnimation(stages,50,() => {animation.start();});
+        startRevealAnimation(stages,70,() => {animation.start();});
         //startRevealAnimation(stages,60,() => {});
     } else {
         //if this is a mid document stop
         //animate the reveal, then restart the typewriter after.
         //startRevealAnimation(stages,50,() => {console.log("animation done");});
-        console.log("stages[stages.length-1] : ", stages[stages.length-1])
-        startRevealAnimation(stages,60,() => {typeWriter();});
+        //console.log("stages[stages.length-1] : ", stages[stages.length-1])
+        startRevealAnimation(stages,70,() => {typeWriter();});
         //startRevealAnimation(stages[stages.length-1],50,() => {typeWriter();});
     }
 }
@@ -184,7 +184,7 @@ function startRevealAnimation(stages, interval, onComplete) {
         //console.log("layer.getChildren: ",layer.getChildren());
     });
 
-    //console.log("shapes: ", shapes);
+    console.log("shapes: ", shapes);
 
 
     //const layer = stage.children[0]; // Assuming there's only one layer
@@ -192,7 +192,8 @@ function startRevealAnimation(stages, interval, onComplete) {
     
     //makes all shapes in the list hidden.
     shapes.forEach(function (shape, index) {
-        shape.opacity(0);
+        //shape.opacity(0);
+        shape.visible(false);
     });
     stages.forEach(stage => {stage.batchDraw();});
 
@@ -210,7 +211,8 @@ function startRevealAnimation(stages, interval, onComplete) {
     }
 
     const shape = elements[index];
-    shape.opacity(1); // Snap to visible
+    //shape.opacity(1); // Snap to visible
+    shape.visible(true);
     shape.getLayer().batchDraw(); // Redraw the layer to reflect the change
 
     setTimeout(() => {
@@ -278,6 +280,7 @@ function renderOrbits(orbits, time = 0, offset = {"x":0,"y":0},layer){
             var konva_orbit = getEllipseFromOrbit(orbits[key],time);
             konva_orbit.x(100+offset.x);
             konva_orbit.y(0+offset.y);
+            orbits.layer.add(konva_orbit);
             //orbits[key].konva_orbit = getEllipseFromOrbit(orbits[key],time);
             //orbits[key].konva_orbit.x(100+offset.x);
             //orbits[key].konva_orbit.y(0+offset.y);
@@ -318,7 +321,7 @@ function renderOrbits(orbits, time = 0, offset = {"x":0,"y":0},layer){
 
             if (typeof orbits[key].orbit_w === 'number' && orbits[key].orbit_w > 0) {
                 //add the orbit
-                orbits.layer.add(konva_orbit);
+                //orbits.layer.add(konva_orbit);
             }
 
             if (typeof orbits[key].icon_r === 'number' && orbits[key].icon_r > 0) {
@@ -569,7 +572,7 @@ function beltRing(radius,width){
         //shadowBlur: 0,
         shadowOffsetX: 0,
         shadowOffsetY: 0,
-        strokeWidth: 0.4,
+        //strokeWidth: 0.4,
         //rotation: rot
     });
     
@@ -586,23 +589,28 @@ function beltRing(radius,width){
 
     for (var i = 0; i < numberOfDots; i++) {
 
+        
+        //random numbers for this run
+        var random_1 = integerToRandomNumber(i+radius);
+        var random_2 = integerToRandomNumber(i+radius*2+1+numberOfDots*2);
+        var random_3 = integerToRandomNumber(i+radius*4+2+numberOfDots*4);
+        var random_4 = integerToRandomNumber(i+radius*6+3+numberOfDots*6);
+        var random_4 = integerToRandomNumber(i+radius*8+4+numberOfDots*8);
+
+        var r = (random_4-0.25)*0.4 + 0.4;
+
         let dot = new Konva.Circle({
             preventDefault: false,
             listening: false,
             perfectDrawEnabled: false,
             radius: 0.4,
+            //radius: r,
             fill: "rgb(255, 176, 0)",
             shadowColor: "rgb(255, 176, 0)",
             shadowBlur: 0.3,
             shadowOffsetX: 0,
             shadowOffsetY: 0,
         });
-
-        //random numbers for this run
-        var random_1 = integerToRandomNumber(i+radius);
-        var random_2 = integerToRandomNumber(i+radius*2+1+numberOfDots*2);
-        var random_3 = integerToRandomNumber(i+radius*4+2+numberOfDots*4);
-        var random_4 = integerToRandomNumber(i+radius*6+3+numberOfDots*6);
 
         // start in the middle of the ring
         //var angle = (((Math.random()-0.5)*1.5 + i) / numberOfDots) * Math.PI * 2;
@@ -651,62 +659,237 @@ function getIconFromOrbit(orbitParams,time) {
 
     if (orbitParams.konva_object_icon===undefined){
 
-
         orbitParams.konva_object_icon = new Konva.Group({});
 
-        // Add background
-        orbitParams.konva_object_icon.add(
-            new Konva.Circle({
-                preventDefault: false,
-                listening: false,
-                perfectDrawEnabled: false,
-                radius: icon_r+0,
-                strokeWidth: 0,
-                fill: "rgb(20, 20, 220)",
-                globalCompositeOperation: 'destination-out'
-            })
-        );
+        //star * - Navigation point
+        if (icon_type==="triangle"||icon_type==="triangle2"
+            ||icon_type==="diamond"||icon_type==="diamond2"
+            ||icon_type==="square"||icon_type==="pentagon"||icon_type==="hexagon"
+            ||icon_type==="heptagon"||icon_type==="octagon") {
 
-        // Add icon
-        orbitParams.konva_object_icon.add(
-            new Konva.Circle({
-                //x: 0,  // Initial position, can be updated later
-                //y: 0,  // Initial position, can be updated later
-                //x: (stage.width() / 2)+major_axis,
-                //x: stage.width() / 2,
-                //y: stage.height() / 2,
-                preventDefault: false,
-                listening: false,
-                perfectDrawEnabled: false,
-                radius: icon_r,
-                stroke: "rgb(255, 176, 0)",
-                strokeWidth: 0.4,
-                //strokeWidth: 0,
-                //fill: "rgb(255, 176, 0, 0)",
-                //fill: "rgb(255, 176, 0)",
-                shadowColor: "rgb(255, 176, 0)",
-                shadowBlur: 0.3,
-                shadowOffsetX: 0,
-                shadowOffsetY: 0,
-                //rotation: -45,
-                //globalCompositeOperation: 'destination-out'
-            })
-        )
+            var sides = 3;
+            if (icon_type==="triangle"||icon_type==="triangle2") {sides = 3;}
+            if (icon_type==="diamond"||icon_type==="diamond2") {sides = 4;}
+            if (icon_type==="square") {sides = 4;}
+            if (icon_type==="pentagon") {sides = 5;}
+            if (icon_type==="hexagon") {sides = 6;}
+            if (icon_type==="heptagon") {sides = 7;}
+            if (icon_type==="octagon") {sides = 8;}
 
-        //fill
-        if (icon_type==="fill") {
-        orbitParams.konva_object_icon.getChildren()[1].fill('rgb(255, 176, 0)');
+            var rot = 0;
+            if (icon_type==="square") {rot = 45;}
+            if (icon_type==="triangle2") {rot = 180;}
+
+            
+            var scale = 1;
+            var width = 0.4;
+            if (icon_type==="diamond2") {scale = 0.707; width = 0.5;}
+
+            // add background
+            orbitParams.konva_object_icon.add(
+                new Konva.RegularPolygon({
+                    preventDefault: false,
+                    listening: false,
+                    perfectDrawEnabled: false,
+                    lineJoin: "miter",
+                    
+                    radius: icon_r+1,
+                    sides: sides,
+                    rotation: rot,
+                    scaleX: scale,
+
+                    strokeWidth: 0,
+                    fill: "rgb(20, 20, 220)",
+                    globalCompositeOperation: 'destination-out'
+                })
+            );
+
+            // add shape
+            orbitParams.konva_object_icon.add(
+                new Konva.RegularPolygon({
+                    preventDefault: false,
+                    listening: false,
+                    perfectDrawEnabled: false,
+                    stroke: "rgb(255, 176, 0)",
+                    strokeWidth: width,
+                    shadowBlur: 0.3,
+                    shadowOffsetX: 0,
+                    shadowOffsetY: 0,
+                    lineJoin: "miter",
+                    
+                    radius: icon_r,
+                    sides: sides,
+                    rotation: rot,
+                    scaleX: scale,
+                })
+            );
         }
 
-        //stripe
-        if (icon_type==="stripe") {
-            //console.log("!!!icon_type: ",icon_type);
-            orbitParams.konva_object_icon.getChildren()[1].fill(null);
-            orbitParams.konva_object_icon.getChildren()[1].fillPatternImage(konva_pattern_stripes);
-            orbitParams.konva_object_icon.getChildren()[1].fillPatternRepeat('repeat');
-            orbitParams.konva_object_icon.getChildren()[1].rotation(-45);
+        //v
+        else if (icon_type==="v") {
+            orbitParams.konva_object_icon.add(
+                new Konva.Circle({
+                    preventDefault: false,
+                    listening: false,
+                    perfectDrawEnabled: false,
+                    radius: 0.4,
+                    fill: "rgb(255, 176, 0)",
+                    shadowColor: "rgb(255, 176, 0)",
+                    shadowBlur: 0.3,
+                    shadowOffsetX: 0,
+                    shadowOffsetY: 0,
+                })
+
+            );
+            orbitParams.konva_object_icon.add(
+                new Konva.Line({
+                    preventDefault: false,
+                    listening: false,
+                    perfectDrawEnabled: false,
+                    stroke: "rgb(255, 176, 0)",
+                    strokeWidth: 0.4,
+                    shadowBlur: 0.3,
+                    shadowOffsetX: 0,
+                    shadowOffsetY: 0,
+                    points: [icon_r*0.5,-0.8-icon_r*0.866,0,-0.8],
+                })
+            );
+
+            orbitParams.konva_object_icon.add(
+                new Konva.Line({
+                    preventDefault: false,
+                    listening: false,
+                    perfectDrawEnabled: false,
+                    stroke: "rgb(255, 176, 0)",
+                    strokeWidth: 0.4,
+                    shadowBlur: 0.3,
+                    shadowOffsetX: 0,
+                    shadowOffsetY: 0,
+                    points: [0,-0.8,-icon_r*0.5,-0.8-icon_r*0.866],
+                })
+            );
         }
 
+
+        //star * - Navigation points?
+        else if (icon_type==="star"||icon_type==="star1"||icon_type==="star2") {
+
+            var triStar_up = 1;
+            var triStar_down = 1;
+
+            if (icon_type==="star1") {triStar_up = 0;}
+            if (icon_type==="star2") {triStar_down = 0;}
+
+            orbitParams.konva_object_icon.add(
+                new Konva.Line({
+                    preventDefault: false,
+                    listening: false,
+                    perfectDrawEnabled: false,
+                    stroke: "rgb(255, 176, 0)",
+                    strokeWidth: 0.4,
+                    shadowBlur: 0.3,
+                    shadowOffsetX: 0,
+                    shadowOffsetY: 0,
+                    points: [0,-icon_r*triStar_down,0,icon_r*triStar_up],
+                })
+            );
+
+            orbitParams.konva_object_icon.add(
+                new Konva.Line({
+                    preventDefault: false,
+                    listening: false,
+                    perfectDrawEnabled: false,
+                    stroke: "rgb(255, 176, 0)",
+                    strokeWidth: 0.4,
+                    shadowBlur: 0.3,
+                    shadowOffsetX: 0,
+                    shadowOffsetY: 0,
+                    points: [icon_r*0.866*triStar_up,-icon_r*0.5*triStar_up,-icon_r*0.866*triStar_down,icon_r*0.5*triStar_down],
+                })
+            );
+
+            orbitParams.konva_object_icon.add(
+                new Konva.Line({
+                    preventDefault: false,
+                    listening: false,
+                    perfectDrawEnabled: false,
+                    stroke: "rgb(255, 176, 0)",
+                    strokeWidth: 0.4,
+                    shadowBlur: 0.3,
+                    shadowOffsetX: 0,
+                    shadowOffsetY: 0,
+                    points: [icon_r*0.866*triStar_down,icon_r*0.5*triStar_down,-icon_r*0.866*triStar_up,-icon_r*0.5*triStar_up],
+                })
+            );
+        }
+
+        //squat diamond 
+        else if (icon_type==="diamond1") {}
+        
+        //tall diamond 
+        else if (icon_type==="diamond2") {}
+
+        //square  
+        else if (icon_type==="square") {}
+
+        //triangle  
+        else if (icon_type==="triangle") {}
+
+        else {
+
+            // Add background
+            orbitParams.konva_object_icon.add(
+                new Konva.Circle({
+                    preventDefault: false,
+                    listening: false,
+                    perfectDrawEnabled: false,
+                    radius: icon_r+1,
+                    strokeWidth: 0,
+                    fill: "rgb(20, 20, 220)",
+                    globalCompositeOperation: 'destination-out'
+                })
+            );
+
+            // Add icon
+            orbitParams.konva_object_icon.add(
+                new Konva.Circle({
+                    //x: 0,  // Initial position, can be updated later
+                    //y: 0,  // Initial position, can be updated later
+                    //x: (stage.width() / 2)+major_axis,
+                    //x: stage.width() / 2,
+                    //y: stage.height() / 2,
+                    preventDefault: false,
+                    listening: false,
+                    perfectDrawEnabled: false,
+                    radius: icon_r,
+                    stroke: "rgb(255, 176, 0)",
+                    strokeWidth: 0.4,
+                    //strokeWidth: 0,
+                    //fill: "rgb(255, 176, 0, 0)",
+                    //fill: "rgb(255, 176, 0)",
+                    shadowColor: "rgb(255, 176, 0)",
+                    shadowBlur: 0.3,
+                    shadowOffsetX: 0,
+                    shadowOffsetY: 0,
+                    //rotation: -45,
+                    //globalCompositeOperation: 'destination-out'
+                })
+            )
+
+            //fill
+            if (icon_type==="fill") {
+            orbitParams.konva_object_icon.getChildren()[1].fill('rgb(255, 176, 0)'); 
+            }
+
+            //stripe
+            if (icon_type==="stripe") {
+                //console.log("!!!icon_type: ",icon_type);
+                orbitParams.konva_object_icon.getChildren()[1].fill(null);
+                orbitParams.konva_object_icon.getChildren()[1].fillPatternImage(konva_pattern_stripes);
+                orbitParams.konva_object_icon.getChildren()[1].fillPatternRepeat('repeat');
+                orbitParams.konva_object_icon.getChildren()[1].rotation(-45);
+            }
+        }
     }
 
     //let background_icon = new Konva.Circle({
@@ -801,7 +984,7 @@ function getPositionFromOrbit(orbitParams, time) {
 
 
 function getLabelFromOrbit(orbitParams,time){
-    let {label, major_axis, minor_axis, focal_axis_offset, icon_r } = orbitParams;
+    let {label, major_axis, minor_axis, focal_axis_offset, icon_r, icon_type } = orbitParams;
 
     
     if (orbitParams.konva_object_label===undefined){
@@ -817,6 +1000,7 @@ function getLabelFromOrbit(orbitParams,time){
             x: 0,  
             y: 0,  
             text: label,
+            //fontSize: 4,
             fontSize: 4,
             fontFamily: "Noto Sans Mono",
             align: "center",
@@ -838,11 +1022,18 @@ function getLabelFromOrbit(orbitParams,time){
 
         //console.log(label, " needs ", labelBoundingDiameter, ", and has ", icon_r*2);
 
+        if (icon_type ==="v"){
+            textLabel.y( (-textLabel.height()) - (icon_r) -0.8 );
+            textLabel.strokeWidth();
+        }
+
         //if (icon_r===0) {
-        if (icon_r<=0 || labelBoundingDiameter < (icon_r*2)) {
+        else if (icon_r<=0 || labelBoundingDiameter < (icon_r*2)) {
             icon_r=0;
             textLabel.y( (-textLabel.height()/2) - (icon_r) );
-        } else {
+        } 
+        
+        else {
             textLabel.y( (-textLabel.height()) - (icon_r) - 2 );
         }
 
@@ -915,6 +1106,7 @@ function adTimeLabel(layer, time) {
         shadowOffsetX: 0,
         shadowOffsetY: 0,
     });
+
 
     layer.add(konva_date_label);
 }
