@@ -110,7 +110,7 @@ function orbitalSystemMap_main(finalPass=false) {
         //renderOrbits(layer,staticOrbits[index]);
         renderOrbits(staticOrbits[index]);
         stages[index].add(staticOrbits[index].layer);
-        //adTimeLabel(staticOrbits[index].layer,0)
+        adTimeLabel(staticOrbits[index],0)
         //layer.draw();
         element.style.display = ''; //remove style="display:none;"
         
@@ -130,7 +130,7 @@ function orbitalSystemMap_main(finalPass=false) {
                 //var layer = new Konva.Layer();
                 //stage.add(layer);
             renderOrbits(staticOrbits[index],frame.time*8640*0.5);
-            //adTimeLabel(staticOrbits[index].layer,frame.time*8640*0.5)
+            adTimeLabel(staticOrbits[index],frame.time*8640*0.5)
             scaleStage();
             //layer.draw();
             });
@@ -269,9 +269,6 @@ function renderOrbits(orbits, time = 0, offset = {"x":0,"y":0},layer){
         total_offset = {"x":0,"y":0};
         total_offset.x = offset.x + new_offset.x;
         total_offset.y = offset.y + new_offset.y;
-        //console.log("old offset", offset);
-        //console.log("new offset", new_offset);
-        //console.log("total offset", total_offset);
 
 
 
@@ -281,10 +278,6 @@ function renderOrbits(orbits, time = 0, offset = {"x":0,"y":0},layer){
             konva_orbit.x(100+offset.x);
             konva_orbit.y(0+offset.y);
             orbits.layer.add(konva_orbit);
-            //orbits[key].konva_orbit = getEllipseFromOrbit(orbits[key],time);
-            //orbits[key].konva_orbit.x(100+offset.x);
-            //orbits[key].konva_orbit.y(0+offset.y);
-            //layer.add(orbits[key].konva_orbit);
         }
 
         if (typeof orbits[key].icon_r === 'number' && orbits[key].icon_r > 0) {
@@ -292,10 +285,7 @@ function renderOrbits(orbits, time = 0, offset = {"x":0,"y":0},layer){
             var konva_icon = getIconFromOrbit(orbits[key],time);
             konva_icon.x(100+total_offset.x);
             konva_icon.y(0+total_offset.y);
-            //orbits[key].konva_icon = getIconFromOrbit(orbits[key],time);
-            //orbits[key].konva_icon.x(100+total_offset.x);
-            //orbits[key].konva_icon.y(0+total_offset.y);
-            //layer.add(orbits[key].konva_icon);
+            orbits.layer.add(konva_icon);
         }
 
         if (typeof orbits[key].label === 'string' && orbits[key].label.trim() !== '') {
@@ -303,16 +293,11 @@ function renderOrbits(orbits, time = 0, offset = {"x":0,"y":0},layer){
             var konva_label = getLabelFromOrbit(orbits[key],time);
             konva_label.x(100+total_offset.x);
             konva_label.y(0+total_offset.y);
-            //orbits[key].konva_label = getLabelFromOrbit(orbits[key],time);
-            //orbits[key].konva_label.x(100+total_offset.x+orbits[key].konva_label.x());
-            //orbits[key].konva_label.y(0+total_offset.y+orbits[key].konva_label.y());
-            //layer.add(orbits[key].konva_label);
         }
         
         //recursively iterate over satellites
         if (orbits[key].satellites && Object.keys(orbits[key].satellites).length > 0) {
             //console.log("Recursing...");
-            //orbits[key].satellites.layer = orbits.layer;
             renderOrbits(orbits[key].satellites,time,total_offset,orbits.layer);
         }
 
@@ -326,7 +311,7 @@ function renderOrbits(orbits, time = 0, offset = {"x":0,"y":0},layer){
 
             if (typeof orbits[key].icon_r === 'number' && orbits[key].icon_r > 0) {
                 //add the icon
-                orbits.layer.add(konva_icon);
+                //orbits.layer.add(konva_icon);
             }
 
             if (typeof orbits[key].label === 'string' && orbits[key].label.trim() !== '') {
@@ -411,7 +396,7 @@ function scaleStage() {
     });
 
     //Add margin
-    maxHeight += 10; 
+    maxHeight += 20; 
     
     let offset_y = (maxHeight/2);
     
@@ -501,6 +486,7 @@ function getEllipseFromOrbit(orbitParams,time) {
             let days = time / 864000;
 
             if (period!==0) {
+                //rot = (((-days + period_offset)/newPeriod)*360)%360;
                 rot = (((-days + period_offset)/newPeriod)*360)%360;
                 //console.log("rot: ",rot);
             }
@@ -1063,7 +1049,35 @@ function getLabelFromOrbit(orbitParams,time){
 
 
 //Add time label. 
-function adTimeLabel(layer, time) {
+function adTimeLabel(orbits, time) {
+
+
+    //create the label when it does not allready exist
+    if (orbits.time_label===undefined){
+
+        orbits.time_label = new Konva.Text({
+            preventDefault: false,
+            listening: false,
+            perfectDrawEnabled: false,
+            x: 0,  
+            y: -100,  
+            text: "displayString",
+            fontSize: 4,
+            fontFamily: "Noto Sans Mono",
+            align: "center",
+            strokeWidth: 0,
+            fill: "rgb(255, 176, 0)",
+            stroke: "rgb(255, 176, 0)",
+            shadowColor: "rgb(255, 176, 0)",
+            shadowBlur: 0.3,
+            shadowOffsetX: 0,
+            shadowOffsetY: 0,
+        });
+    
+        orbits.layer.add(orbits.time_label);
+    }
+
+
     //unicode time
     let unicodeTime = Date.now();
 
@@ -1085,30 +1099,32 @@ function adTimeLabel(layer, time) {
     let dayOfWeek = daysOfWeek[date.getUTCDay()];
 
     // Concatenate day of the week to the formatted date
-    //let displayString = `${formattedDate} ${dayOfWeek}`;
-    let displayString = `${formattedDate}`;
+    let displayString = `${formattedDate} ${dayOfWeek}`;
+    //let displayString = `${formattedDate}`;
 
-    let konva_date_label = new Konva.Text({
-        preventDefault: false,
-        listening: false,
-        perfectDrawEnabled: false,
-        x: 0,  
-        y: -100,  
-        text: displayString,
-        fontSize: 4,
-        fontFamily: "Noto Sans Mono",
-        align: "center",
-        strokeWidth: 0,
-        fill: "rgb(255, 176, 0)",
-        stroke: "rgb(255, 176, 0)",
-        shadowColor: "rgb(255, 176, 0)",
-        shadowBlur: 0.3,
-        shadowOffsetX: 0,
-        shadowOffsetY: 0,
-    });
+    orbits.time_label.text(displayString);
 
-
-    layer.add(konva_date_label);
+    //let konva_date_label = new Konva.Text({
+    //    preventDefault: false,
+    //    listening: false,
+    //    perfectDrawEnabled: false,
+    //    x: 0,  
+    //    y: -100,  
+    //    text: displayString,
+    //    fontSize: 4,
+    //    fontFamily: "Noto Sans Mono",
+    //    align: "center",
+    //    strokeWidth: 0,
+    //    fill: "rgb(255, 176, 0)",
+    //    stroke: "rgb(255, 176, 0)",
+    //    shadowColor: "rgb(255, 176, 0)",
+    //    shadowBlur: 0.3,
+    //    shadowOffsetX: 0,
+    //    shadowOffsetY: 0,
+    //});
+//
+//
+    //layer.add(konva_date_label);
 }
 
 
