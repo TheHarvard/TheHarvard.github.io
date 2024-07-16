@@ -1077,14 +1077,19 @@ function getLabelFromOrbit(orbitParams,time){
 
             textLabel.textDecoration("underline");
 
-            //add click behavior
-            orbitParams.konva_object_label.on('click', function() {
-                //console.log("CLICKED! ", link);
-                //window.open(link, '_blank'); // Opens in new tab
+            //add click event behavior
+            orbitParams.konva_object_label.on('click', function(evt) {
+                //Left click
+                if (evt.evt.button === 0) {
                 window.location.href = link; // Navigates current tab
+                }
+                //middle click
+                if (evt.evt.button === 1) {
+                window.open(link, '_blank'); // Opens in new tab
+                }
             });
 
-            //add hover behavior
+            //add hover event behavior
             orbitParams.konva_object_label.on('mouseover', function() {
                 textLabel.globalCompositeOperation("destination-out");
                 background.globalCompositeOperation(null);
