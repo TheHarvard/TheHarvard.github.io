@@ -1090,9 +1090,9 @@ function getLabelFromOrbit(orbitParams,time){
             });
 
             //... and for touch
-            orbitParams.konva_object_label.on('touchstart', function(evt) {
-                window.location.href = link; // Navigates current tab
-            });
+            //orbitParams.konva_object_label.on('touchstart', function(evt) {
+            //    window.location.href = link; // Navigates current tab
+            //});
 
             //add hover event behavior
             orbitParams.konva_object_label.on('mouseover', function() {
