@@ -1,7 +1,13 @@
 let stages = [];
 let staticOrbits = [];
+let focusableShapes = [];
 
 console.log('orbitalSystemMap.js called...');
+
+
+// Create hidden focus elements
+//var focusContainer = document.getElementById('focus-elements');
+var focusContainer = document.getElementById('display');
 
 //set up pattern canvas.
 
@@ -145,14 +151,14 @@ function orbitalSystemMap_main(finalPass=false) {
     if (finalPass) {
         //if this is the final pass complete the last stage and start the animation.
         //startRevealAnimation(stages[stages.length-1],50,() => {animation.start();});
-        startRevealAnimation(stages,70,() => {animation.start();});
+        startRevealAnimation(stages,75,() => {animation.start();});
         //startRevealAnimation(stages,60,() => {});
     } else {
         //if this is a mid document stop
         //animate the reveal, then restart the typewriter after.
         //startRevealAnimation(stages,50,() => {console.log("animation done");});
         //console.log("stages[stages.length-1] : ", stages[stages.length-1])
-        startRevealAnimation(stages,70,() => {typeWriter();});
+        startRevealAnimation(stages,75,() => {typeWriter();});
         //startRevealAnimation(stages[stages.length-1],50,() => {typeWriter();});
     }
 }
@@ -225,6 +231,7 @@ function startRevealAnimation(stages, interval, onComplete) {
 function renderOrbits(orbits, time = 0, offset = {"x":0,"y":0},layer){
 
     var addToLayer = false;
+    var labelsToBePutOnTop = [];
 
     if (orbits.layer===undefined) {
         if (layer===undefined) {
@@ -318,9 +325,19 @@ function renderOrbits(orbits, time = 0, offset = {"x":0,"y":0},layer){
             if (typeof orbits[key].label === 'string' && orbits[key].label.trim() !== '') {
                 //add label (is present)
                 orbits.layer.add(konva_label);
+                labelsToBePutOnTop.push(konva_label)
             }
         }
 
+    }
+    
+    //reorder the labels to be on top.
+    if (addToLayer) {
+        labelsToBePutOnTop.forEach((shape) => {
+            if (shape instanceof Konva.Group) {
+              shape.moveToTop();
+            }
+        });
     }
 
     ////reorder all elements in layer so groups (things with backgrounds) are on top
@@ -1021,7 +1038,7 @@ function getLabelFromOrbit(orbitParams,time){
         } 
         
         else {
-            textLabel.y( (-textLabel.height()) - (icon_r) - 2 );
+            textLabel.y( (-textLabel.height()) - (icon_r) - 1.75 );
         }
 
         let background = new Konva.Rect({
@@ -1055,8 +1072,10 @@ function getLabelFromOrbit(orbitParams,time){
             textLabel.listening(true);
             orbitParams.konva_object_label.listening(true);
 
-            textLabel.textDecoration("underline");
+            //textLabel.tabindex(0);
+            //orbitParams.konva_object_label.tabindex(0);
 
+            textLabel.textDecoration("underline");
 
             //add click behavior
             orbitParams.konva_object_label.on('click', function() {
@@ -1080,19 +1099,60 @@ function getLabelFromOrbit(orbitParams,time){
                 stages.forEach(stage => {stage.batchDraw();});
             });
 
-            orbitParams.konva_object_label.on('focus', function() {
+            //orbitParams.konva_object_label.on('focus', function() {
+            //    textLabel.globalCompositeOperation("destination-out");
+            //    background.globalCompositeOperation(null);
+            //    background.shadowBlur(0.3);
+            //    stages.forEach(stage => {stage.batchDraw();})
+            //});
+//
+            //orbitParams.konva_object_label.on('blur', function() {
+            //    textLabel.globalCompositeOperation(null);
+            //    background.globalCompositeOperation("destination-out");
+            //    background.shadowBlur(0);
+            //    stages.forEach(stage => {stage.batchDraw();})
+            //;});
+
+            
+
+            //add to the focusable shapes list, get its index
+            var index = focusableShapes.push(orbitParams.konva_object_label)-1;
+
+            // Create corresponding hidden focus element
+            var focusElement = document.createElement('div');
+            focusElement.setAttribute('tabindex', '0');
+            focusElement.setAttribute('id', 'focus-' + index);
+            focusElement.style.position = 'absolute';
+            focusContainer.appendChild(focusElement);
+
+            console.log("adding focus element index: ",index);
+
+            // Sync focus and blur events with Konva shape
+            focusElement.addEventListener('focus', function() {
                 textLabel.globalCompositeOperation("destination-out");
                 background.globalCompositeOperation(null);
                 background.shadowBlur(0.3);
                 stages.forEach(stage => {stage.batchDraw();})
+                //scroll to me
+                var stage = orbitParams.konva_object_label.getStage();
+                var htmlElement = stage.container();
+                htmlElement.scrollIntoView();
+
             });
 
-            orbitParams.konva_object_label.on('blur', function() {
+            focusElement.addEventListener('blur', function() {
                 textLabel.globalCompositeOperation(null);
                 background.globalCompositeOperation("destination-out");
                 background.shadowBlur(0);
                 stages.forEach(stage => {stage.batchDraw();})
-            ;});
+            });
+
+            // Handle Enter key to open the URL
+            focusElement.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    window.location.href = link; // Navigates current tab
+                }
+            });
 
         }
 
@@ -1100,6 +1160,49 @@ function getLabelFromOrbit(orbitParams,time){
 
     return orbitParams.konva_object_label;
 }
+
+// Add keyboard listener for tab navigation on the container
+//document.addEventListener('keydown', handleTabNavigation);
+
+//// Function to handle tab navigation
+//function handleTabNavigation(e) {
+//
+//    
+//    
+//    //var shapes = layer.children;
+//    var shapes = focusableShapes;
+//    var currentFocus = document.activeElement;
+//    var currentIndex = -1;
+//    
+//    
+//    // Find the index of the currently focused element
+//    if (currentFocus && currentFocus.id && currentFocus.id.startsWith('focus-')) {
+//        currentIndex = parseInt(currentFocus.id.split('-')[1]);
+//    }
+//    
+//    console.log("handleTabNavigation() called, Current index: ",currentIndex);
+//    console.log("currentFocus: ", currentFocus);
+//
+//    return;
+//
+//    if (e.key === 'Tab') {
+//        var nextIndex;
+//
+//        if (e.shiftKey) {
+//            // Shift + Tab for previous
+//            nextIndex = currentIndex > 0 ? currentIndex - 1 : shapes.length - 1;
+//        } else {
+//            // Tab for next
+//            nextIndex = currentIndex < shapes.length - 1 ? currentIndex + 1 : 0;
+//        }
+//
+//        if (nextIndex >= 0 && nextIndex < shapes.length) {
+//            document.getElementById('focus-' + nextIndex).focus();
+//            e.preventDefault();
+//        }
+//    }
+//}
+
 
 
 //Add time label. 
