@@ -271,6 +271,15 @@ function renderOrbits(orbits, time = 0, offset = {"x":0,"y":0},layer){
         if (orbits[key].label!==""  && orbits[key].icon_type==="")
             { orbits[key].icon_type = "fill"; }
 
+        
+        // simplify spikjump
+        if (orbits[key].icon_type==="spikejump1"){orbits[key].icon_type="star"};
+        if (orbits[key].icon_type==="spikejump2"){orbits[key].icon_type="star"};
+        if (orbits[key].icon_type==="spikejump3"){orbits[key].icon_type="star"};
+        if (orbits[key].icon_type==="spikejump4"){orbits[key].icon_type="star"};
+        if (orbits[key].icon_type==="spikejump5"){orbits[key].icon_type="star"};
+        if (orbits[key].icon_type==="spikejump6"){orbits[key].icon_type="star"};
+
 
         //calculate offsets
         let new_offset = getPositionFromOrbit(orbits[key],time);
@@ -661,6 +670,7 @@ function getIconFromOrbit(orbitParams,time) {
     //const c = Math.sqrt(Math.pow(major_axis, 2) - Math.pow(minor_axis, 2));
 
 
+
     if (orbitParams.konva_object_icon===undefined){
 
         orbitParams.konva_object_icon = new Konva.Group({});
@@ -774,7 +784,7 @@ function getIconFromOrbit(orbitParams,time) {
             );
         }
 
-
+    
         //star * - Navigation points?
         else if (icon_type==="star"||icon_type==="star1"||icon_type==="star2") {
 
@@ -1031,11 +1041,11 @@ function getLabelFromOrbit(orbitParams,time){
             textLabel.strokeWidth();
         }
 
-        //if (icon_r===0) {
-        else if (icon_r<=0 || labelBoundingDiameter < (icon_r*2)) {
-            icon_r=0;
-            textLabel.y( (-textLabel.height()/2) - (icon_r) );
-        } 
+        ////if (icon_r===0) {
+        //else if (icon_r<=0 || labelBoundingDiameter < (icon_r*2)) {
+        //    icon_r=0;
+        //    textLabel.y( (-textLabel.height()/2) - (icon_r) );
+        //} 
         
         else {
             textLabel.y( (-textLabel.height()) - (icon_r) - 1.75 );
