@@ -1,4 +1,13 @@
 {
-    "editor.rulers": [80,120]
+    "editor.rulers": [
+        80,
+        120
+    ],
+    "cSpell.words": [
+        "konva",
+        "Noto",
+        "spikejump",
+        "typer"
+    ]
 
 }

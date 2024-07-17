@@ -228,7 +228,7 @@ function startRevealAnimation(stages, interval, onComplete) {
 
 
 //renders orbits
-function renderOrbits(orbits, time = 0, offset = {"x":0,"y":0},layer){
+function renderOrbits(orbits, time = 0, offset = {"x":0,"y":0},layer,labelsToBePutOnTop_override,){
 
     var addToLayer = false;
     var labelsToBePutOnTop = [];
@@ -271,14 +271,6 @@ function renderOrbits(orbits, time = 0, offset = {"x":0,"y":0},layer){
         if (orbits[key].label!==""  && orbits[key].icon_type==="")
             { orbits[key].icon_type = "fill"; }
 
-        
-        // simplify spikjump
-        if (orbits[key].icon_type==="spikejump1"){orbits[key].icon_type="star"};
-        if (orbits[key].icon_type==="spikejump2"){orbits[key].icon_type="star"};
-        if (orbits[key].icon_type==="spikejump3"){orbits[key].icon_type="star"};
-        if (orbits[key].icon_type==="spikejump4"){orbits[key].icon_type="star"};
-        if (orbits[key].icon_type==="spikejump5"){orbits[key].icon_type="star"};
-        if (orbits[key].icon_type==="spikejump6"){orbits[key].icon_type="star"};
 
 
         //calculate offsets
@@ -310,12 +302,16 @@ function renderOrbits(orbits, time = 0, offset = {"x":0,"y":0},layer){
             var konva_label = getLabelFromOrbit(orbits[key],time);
             konva_label.x(100+total_offset.x);
             konva_label.y(0+total_offset.y);
+            //if (orbits[key].link==="") {
+                orbits.layer.add(konva_label);
+                labelsToBePutOnTop.push(konva_label)
+            //}
         }
         
         //recursively iterate over satellites
         if (orbits[key].satellites && Object.keys(orbits[key].satellites).length > 0) {
             //console.log("Recursing...");
-            renderOrbits(orbits[key].satellites,time,total_offset,orbits.layer);
+            renderOrbits(orbits[key].satellites,time,total_offset,orbits.layer,labelsToBePutOnTop);
         }
 
         //add the satellites first so the parent object is rendered on top
@@ -333,20 +329,33 @@ function renderOrbits(orbits, time = 0, offset = {"x":0,"y":0},layer){
 
             if (typeof orbits[key].label === 'string' && orbits[key].label.trim() !== '') {
                 //add label (is present)
-                orbits.layer.add(konva_label);
-                labelsToBePutOnTop.push(konva_label)
+                //if (!orbits[key].link==="") {
+                //  orbits.layer.add(konva_label);
+                //  labelsToBePutOnTop.push(konva_label)
+                //}
             }
         }
 
     }
+
+    if (labelsToBePutOnTop_override===null || labelsToBePutOnTop_override === undefined)  {
     
-    //reorder the labels to be on top.
-    if (addToLayer) {
+        //reorder the labels to be on top.
+        if (addToLayer) {
+            labelsToBePutOnTop.forEach((shape) => {
+                if (shape instanceof Konva.Group) {
+                shape.moveToTop();
+                }
+            });
+        }
+
+    }
+    else {
+
+        //return the labels to be put on top to the higher recursion 
         labelsToBePutOnTop.forEach((shape) => {
-            if (shape instanceof Konva.Group) {
-              shape.moveToTop();
-            }
-        });
+            labelsToBePutOnTop_override.push(shape)
+        })
     }
 
     ////reorder all elements in layer so groups (things with backgrounds) are on top
@@ -505,7 +514,7 @@ function getEllipseFromOrbit(orbitParams,time) {
         for (let i = 0; i < numberOfRingDivisions; i++) {
             let newRadius = oldMaxRadius - (i * newWidth);
             
-            //use keplers third law to create new periods from the new radius
+            //use kepler's third law to create new periods from the new radius
             let newPeriod = period * Math.pow(newRadius / major_axis, 3 / 2);
 
             let rot = 0;
@@ -837,17 +846,375 @@ function getIconFromOrbit(orbitParams,time) {
             );
         }
 
-        //squat diamond 
-        else if (icon_type==="diamond1") {}
+        //Spike jump hexagons 
+        else if (icon_type==="spikejump1"||icon_type==="spikejump2"
+               ||icon_type==="spikejump3"||icon_type==="spikejump4"
+               ||icon_type==="spikejump5"||icon_type==="spikejump6") {
+
+               let text = "1";
         
-        //tall diamond 
-        else if (icon_type==="diamond2") {}
+               if (icon_type==="spikejump1"){text="1"}
+               if (icon_type==="spikejump2"){text="2"}
+               if (icon_type==="spikejump3"){text="3"}
+               if (icon_type==="spikejump4"){text="4"}
+               if (icon_type==="spikejump5"){text="5"}
+               if (icon_type==="spikejump6"){text="6"}
 
-        //square  
-        else if (icon_type==="square") {}
+               
+            // add background
+            orbitParams.konva_object_icon.add(
+                new Konva.RegularPolygon({
+                    preventDefault: false,
+                    listening: false,
+                    perfectDrawEnabled: false,
+                    lineJoin: "miter",
+                    
+                    radius: icon_r+1,
+                    sides: 6,
 
-        //triangle  
-        else if (icon_type==="triangle") {}
+                    strokeWidth: 0,
+                    fill: "rgb(20, 20, 220)",
+                    globalCompositeOperation: 'destination-out'
+                })
+            );
+
+            // add shape
+            orbitParams.konva_object_icon.add(
+                new Konva.RegularPolygon({
+                    preventDefault: false,
+                    listening: false,
+                    perfectDrawEnabled: false,
+                    stroke: "rgb(255, 176, 0)",
+                    strokeWidth: 0.4,
+                    shadowBlur: 0.3,
+                    shadowOffsetX: 0,
+                    shadowOffsetY: 0,
+                    lineJoin: "miter",
+                    
+                    radius: icon_r,
+                    sides: 6,
+                })
+            );
+
+            // add label
+            var numLabel = new Konva.Text({
+                preventDefault: false,
+                listening: false,
+                perfectDrawEnabled: false,
+                x: 0,  
+                y: 0,  
+                text: text,
+                fontSize: 4,
+                fontFamily: "Noto Sans Mono",
+                align: "center",
+                strokeWidth: 0,
+                fill: "rgb(255, 176, 0)",
+                stroke: "rgb(255, 176, 0)",
+                shadowColor: "rgb(255, 176, 0)",
+                shadowBlur: 0.3,
+                shadowOffsetX: 0,
+                shadowOffsetY: 0,
+            })
+
+            numLabel.x(-numLabel.width()/2);
+            numLabel.y(-numLabel.height()/2);
+
+            orbitParams.konva_object_icon.add(numLabel);
+
+        }
+        
+        else if (icon_type==="blackhole"){
+
+            var accretionRing_w = 1.0;
+            var accretionRing_amount = Math.round((icon_r*0.5)/accretionRing_w);
+
+            //console.log("accretionRing_amount: ",accretionRing_amount);
+
+            //create noise pattern for the accretion disk
+            var noisePattern = {};
+            noisePattern.strokeWidth = [];
+            for (let i = 0; i < accretionRing_amount; i++) {
+                noisePattern.strokeWidth.push((Math.random()-0.5)*0.0);
+            }
+            //noisePattern.strokeWidth[0] = 0;
+            //noisePattern.strokeWidth[1] = 0.15;
+            //noisePattern.strokeWidth[1] = 0.1;
+            //noisePattern.strokeWidth[accretionRing_amount-1] = -0.05;
+            //noisePattern.strokeWidth[accretionRing_amount] = -0.1;
+
+            //particles
+            
+            
+            for (let i = 0; i < accretionRing_amount; i++) {
+                // Lower Accretion disk mirror
+
+                //interpolate over the range
+                var radius =  
+             (  (i/accretionRing_amount)) * ((icon_r*0.5*0.75)+(icon_r*0.5*0.75)*(i/accretionRing_amount))  //outermost ring
+           + (1-(i/accretionRing_amount)) * ((icon_r*0.5*1.00)+(icon_r*0.5*1.00)*(i/accretionRing_amount)); //innermost ring
+
+                orbitParams.konva_object_icon.add(
+                    new Konva.Arc({
+
+                        preventDefault: false,
+                        listening: false,
+                        perfectDrawEnabled: false,
+                        outerRadius: radius+0.0 - noisePattern.strokeWidth[i]*0.5,
+                        innerRadius: radius+0.4 + noisePattern.strokeWidth[i]*0.5,
+                        //innerRadius: (icon_r*0.5),
+                        x: 0,
+                        y: (i/accretionRing_amount)*icon_r*((1-0.75)*0.5),
+                        angle: 200,
+                        rotation: -10,
+                        //stroke: "rgb(255, 176, 0)",
+                        fill: "rgb(255, 176, 0)",
+                        shadowColor: "rgb(255, 176, 0)",
+                        //strokeWidth: 0.4 + noisePattern.strokeWidth[i],
+                        shadowBlur: 0.3,
+                        shadowOffsetX: 0,
+                        shadowOffsetY: 0,
+                        //linecap: "round",
+                        //globalCompositeOperation: 'destination-out'
+                        
+                    })
+                );
+            }
+
+            //single lower line
+            orbitParams.konva_object_icon.add(
+                new Konva.Arc({
+
+                    preventDefault: false,
+                    listening: false,
+                    perfectDrawEnabled: false,
+                    outerRadius: icon_r*0.35+0.0,
+                    innerRadius: icon_r*0.35+0.4,
+                    x: 0,
+                    y: 0,
+                    angle: 200,
+                    rotation: -10,
+                    //stroke: "rgb(255, 176, 0)",
+                    fill: "rgb(255, 176, 0)",
+                    shadowColor: "rgb(255, 176, 0)",
+                    strokeWidth: 0.4,
+                    shadowBlur: 0.3,
+                    shadowOffsetX: 0,
+                    shadowOffsetY: 0,
+                    //linecap: "round",
+                    //globalCompositeOperation: 'destination-out'
+                    
+                })
+            );
+
+            
+            // Lower Accretion disk occluder (acretion disk)
+            orbitParams.konva_object_icon.add(
+                new Konva.Ellipse({
+                    preventDefault: false,
+                    listening: false,
+                    perfectDrawEnabled: false,
+                    radiusX: (icon_r+icon_r*1.5)+0.8,
+                    radiusY: (icon_r*0.05+icon_r*0.195)+0.8,
+                    fill: "rgb(255, 176, 0)",
+                    //stroke: "rgb(255, 176, 0)",
+                    //shadowColor: "rgb(255, 176, 0)",
+                    //strokeWidth: 0.4,
+                    //shadowBlur: 0.3,
+                    //shadowOffsetX: 0,
+                    //shadowOffsetY: 0,
+                    globalCompositeOperation: 'destination-out'
+                })
+            );
+            
+
+
+
+
+           for (let i = 0; i < accretionRing_amount; i++) {
+
+           //break;
+
+           //adjust spacing to line up with upper accretion disk
+           //var j = i-((1-(i/accretionRing_amount))*0.8);
+           var j = Math.pow(i/accretionRing_amount,1.375);
+
+                //accretion disc on edge from camera
+                orbitParams.konva_object_icon.add(
+                    new Konva.Ellipse({
+                        preventDefault: false,
+                        listening: false,
+                        perfectDrawEnabled: false,
+                        //radiusX: icon_r*0.5+(i/accretionRing_amount)*icon_r*2.0,
+                        //radiusY: icon_r*0.05+(i/accretionRing_amount)*icon_r*0.195,
+                        radiusX: icon_r*0.5+j*icon_r*2.0,
+                        radiusY: icon_r*0.05+j*icon_r*0.195,
+                        //fill: "rgb(255, 176, 0)",
+                        stroke: "rgb(255, 176, 0)",
+                        shadowColor: "rgb(255, 176, 0)",
+                        strokeWidth: 0.4 + noisePattern.strokeWidth[i],
+                        shadowBlur: 0.3,
+                        shadowOffsetX: 0,
+                        shadowOffsetY: 0,
+                    })
+                );
+            } 
+            /*
+            //event horizon on edge
+            orbitParams.konva_object_icon.add(
+                new Konva.Ellipse({//
+                    preventDefault: false,
+                    listening: false,
+                    perfectDrawEnabled: false,
+                    radiusX: icon_r*0.6,
+                    radiusY: icon_r*0.05,
+                    stroke: "rgb(255, 176, 0)",
+                    fill: "rgb(255, 176, 0)",
+                    //shadowColor: "rgb(255, 176, 0)",
+                    strokeWidth: 0.4,
+                    //shadowBlur: 0.3,
+                    //shadowOffsetX: 0,
+                    //shadowOffsetY: 0,
+                    globalCompositeOperation: 'destination-out'
+                    
+                })
+            );
+            */
+
+            
+            //occlude back of accretion disc (behind event horizon) 
+            orbitParams.konva_object_icon.add(
+                new Konva.Arc({
+            
+                    preventDefault: false,
+                    listening: false,
+                    perfectDrawEnabled: false,
+                    innerRadius: 0,
+                    outerRadius: icon_r*0.5,
+                    angle: 180,
+                    rotation: 180,
+                    //stroke: "rgb(255, 176, 0)",
+                    fill: "rgb(255, 176, 0)",
+                    //shadowColor: "rgb(255, 176, 0)",
+                    strokeWidth: 0.4,
+                    //shadowBlur: 0.3,
+                    //shadowOffsetX: 0,
+                    //shadowOffsetY: 0,
+                    globalCompositeOperation: 'destination-out'
+                    
+                })
+            );
+
+            //occlude additional parts of the accretion disk to make illusion of seamlesness - trapezoid
+            
+            let topWidth = icon_r*4.1;
+            let bottomWidth = icon_r;
+            let height = icon_r*0.5;
+            let centerX = 0;
+            let centerY = -height*0.5;
+            
+            // Calculate the points of the trapezoid
+            let points = [
+                centerX - bottomWidth / 2, centerY + height / 2, // Bottom-left point
+                centerX + bottomWidth / 2, centerY + height / 2, // Bottom-right point
+                centerX + topWidth / 2, centerY - height / 2, // Top-right point
+                centerX - topWidth / 2, centerY - height / 2  // Top-left point
+            ];
+
+            // Create the trapezoid using Konva.Line
+            orbitParams.konva_object_icon.add(
+                new Konva.Line({
+                    points: points,
+                    closed: true,
+            
+                    preventDefault: false,
+                    listening: false,
+                    perfectDrawEnabled: false,
+                    //stroke: "rgb(255, 176, 0)",
+                    fill: "rgb(255, 176, 222)",
+                    //shadowColor: "rgb(255, 176, 0)",
+                    strokeWidth: 0.4,
+                    //shadowBlur: 0.3,
+                    //shadowOffsetX: 0,
+                    //shadowOffsetY: 0,
+                    globalCompositeOperation: 'destination-out'
+                })
+            );
+
+
+
+            for (let i = 0; i < accretionRing_amount; i++) {
+                // upper Accretion disk mirror
+                
+                //interpolate over the range
+                var radius =  
+             (  (i/accretionRing_amount)) * ((icon_r*0.5*1.25)+(icon_r*0.5*1.25)*(i/accretionRing_amount))  //outermost ring
+           + (1-(i/accretionRing_amount)) * ((icon_r*0.5*1.00)+(icon_r*0.5*1.00)*(i/accretionRing_amount)); //innermost ring
+
+           var angleOffset = ((i/accretionRing_amount)*42) 
+           + (Math.sin((i/accretionRing_amount)*Math.PI)*10);
+
+
+                orbitParams.konva_object_icon.add(
+                    new Konva.Arc({
+                        preventDefault: false,
+                        listening: false,
+                        perfectDrawEnabled: false,
+                        //outerRadius: (icon_r*0.5*1.00)+(icon_r*0.5*1.00)*(i/accretionRing_amount)+0.0,
+                        //innerRadius: (icon_r*0.5*1.00)+(icon_r*0.5*1.00)*(i/accretionRing_amount)+0.4,
+                        outerRadius: radius+0.0 - noisePattern.strokeWidth[i]*0.5,
+                        innerRadius: radius+0.4 + noisePattern.strokeWidth[i]*0.5,
+                        //innerRadius: (icon_r*0.5),
+                        x: 0,
+                        //y: -(i/accretionRing_amount)*icon_r*((1-1.25)*0.5),
+                        y: -(i/accretionRing_amount)*icon_r*((1-1.25)),
+                        angle: 180-angleOffset,
+                        rotation: 180+angleOffset*0.5,
+                        //stroke: "rgb(255, 176, 0)",
+                        fill: "rgb(255, 176, 0)",
+                        shadowColor: "rgb(255, 176, 0)",
+                        //strokeWidth: 0.4 + noisePattern.strokeWidth[i],
+                        shadowBlur: 0.3,
+                        shadowOffsetX: 0,
+                        shadowOffsetY: 0,
+                        //globalCompositeOperation: 'destination-out'
+                        
+                    })
+                );
+            }
+
+            //single upper ring
+            
+            orbitParams.konva_object_icon.add(
+                new Konva.Arc({
+                    preventDefault: false,
+                    listening: false,
+                    perfectDrawEnabled: false,
+                    //outerRadius: (icon_r*0.5*1.00)+(icon_r*0.5*1.00)*(i/accretionRing_amount)+0.0,
+                    //innerRadius: (icon_r*0.5*1.00)+(icon_r*0.5*1.00)*(i/accretionRing_amount)+0.4,
+                    outerRadius: icon_r*0.35+0.0,
+                    innerRadius: icon_r*0.35+0.4,
+                    //innerRadius: (icon_r*0.5),
+                    x: 0,
+                    //y: -(i/accretionRing_amount)*icon_r*((1-1.25)*0.5),
+                    y: 0,
+                    angle: 180,
+                    rotation: 180,
+                    //stroke: "rgb(255, 176, 0)",
+                    fill: "rgb(255, 176, 0)",
+                    shadowColor: "rgb(255, 176, 0)",
+                    strokeWidth: 0.4,
+                    shadowBlur: 0.3,
+                    shadowOffsetX: 0,
+                    shadowOffsetY: 0,
+                    //globalCompositeOperation: 'destination-out'
+                    
+                })
+            )
+
+            //rotate 15 degrees for that artistic look
+            orbitParams.konva_object_icon.rotation(-15);
+
+        }
 
         else {
 
@@ -1041,11 +1408,11 @@ function getLabelFromOrbit(orbitParams,time){
             textLabel.strokeWidth();
         }
 
-        ////if (icon_r===0) {
+        if (icon_r===0) {
         //else if (icon_r<=0 || labelBoundingDiameter < (icon_r*2)) {
-        //    icon_r=0;
-        //    textLabel.y( (-textLabel.height()/2) - (icon_r) );
-        //} 
+            icon_r=0;
+            textLabel.y( (-textLabel.height()/2) - (icon_r) );
+        } 
         
         else {
             textLabel.y( (-textLabel.height()) - (icon_r) - 1.75 );
@@ -1074,7 +1441,7 @@ function getLabelFromOrbit(orbitParams,time){
         orbitParams.konva_object_label.add(background);
         orbitParams.konva_object_label.add(textLabel);
 
-        //add link behaviour if link is set
+        //add link behavior if link is set
         if (link!==null && link !== undefined && link !== "") { 
 
             //console.log("added event listeners to ", orbitParams.konva_object_label)
@@ -1229,7 +1596,7 @@ function getLabelFromOrbit(orbitParams,time){
 function adTimeLabel(orbits, time) {
 
 
-    //create the label when it does not allready exist
+    //create the label when it does not already exist
     if (orbits.time_label===undefined){
 
         orbits.time_label = new Konva.Text({
