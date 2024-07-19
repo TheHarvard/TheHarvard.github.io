@@ -1,8 +1,13 @@
+let orbitalSystemMap_disableModule = false;
 let stages = [];
 let staticOrbits = [];
+let staticOrbits_preFirstRender = [];
 let focusableShapes = [];
+var colourway_primaryColour = 'rgb(255, 176, 0)';
+var revealAnimation_nextTimeout;
 
 console.log('orbitalSystemMap.js called...');
+
 
 
 // Create hidden focus elements
@@ -19,14 +24,14 @@ var focusContainer = document.getElementById('display');
     const patternHeight = stripeHeight * 4; // Total pattern height (two segments: one colored, one transparent)
 
     // Create a canvas for the pattern
-    var konva_pattern_stripes = document.createElement('canvas');
+    var konva_pattern_stripes = document.createElement("canvas");
     konva_pattern_stripes.width = patternWidth;
     konva_pattern_stripes.height = patternHeight;
-    var patternContext = konva_pattern_stripes.getContext('2d');
+    var patternContext = konva_pattern_stripes.getContext("2d");
 
 
     // Draw the pattern: alternating colored and transparent stripes
-    patternContext.fillStyle = 'rgb(255, 176, 0)';
+    patternContext.fillStyle = colourway_primaryColour;
     patternContext.fillRect(0, 0, patternWidth, stripeHeight); // Top half colored
     patternContext.clearRect(0, stripeHeight, patternWidth, stripeHeight); // Bottom half transparent
 
@@ -46,7 +51,7 @@ var focusContainer = document.getElementById('display');
 //    var patternContext = konva_pattern_dots.getContext('2d');
 //
 //    // Draw the pattern: random small dots
-//    patternContext.fillStyle = 'rgb(255, 176, 0)';
+//    patternContext.fillStyle = colourway_primaryColour";
 //
 //    for (let x = 0; x < patternWidth; x++) {
 //        for (let y = 0; y < patternHeight; y++) {
@@ -62,9 +67,83 @@ var focusContainer = document.getElementById('display');
 
 document.addEventListener('typer_done', function(event) {
     console.log('Listener 1: typer_done');
+    
+    //fetch colourway
+    var cssValue = getColourWayProperty("--osm-colourway-primarycolour");
+    console.log("cssValue: ", cssValue) 
+    if (typeof cssValue === 'string' && cssValue.trim().length > 0){
+        colourway_primaryColour = cssValue;
+    }
+
+    //subscribe to changes in the colourway
+    document.addEventListener('colorway_change', function(event) {
+
+        //skip if disabled
+        if (orbitalSystemMap_disableModule) {return}
+
+
+        //cancel animation:
+        //clearTimeout(revealAnimation_nextTimeout);
+
+        //apply new colourway
+        var cssValue = getColourWayProperty("--osm-colourway-primarycolour");
+        //var cssValue = event.detail;
+        if (typeof cssValue === 'string' && cssValue.trim().length > 0){
+            colourway_primaryColour = cssValue;
+            console.log("OSM: new colourway: ",colourway_primaryColour )
+        }
+        
+        // Helper function to recursively iterate over shapes and groups
+        function traverseShapes(node, callback) {
+            // If the node is a group, iterate through its children
+            if (node instanceof Konva.Group) {
+                node.children.each(child => traverseShapes(child, callback));
+            } else {
+                // If the node is a shape, execute the callback
+                callback(node);
+            }
+        }
+
+        var listOfShapes = [];
+        // Loop over all stages and update colorway
+        console.log('looping over every shape:', stages);
+        stages.forEach(stage => {
+            const layer = stage.children[0]; // Assuming there's only one layer
+            console.log('layer: ', layer);
+            //each child in layer
+            layer.getChildren().each(child => traverseShapes(child, shape => {listOfShapes.push(shape);}));
+        });
+        
+        listOfShapes.forEach(shape=> {
+            if (shape.stroke() !== undefined ) {shape.stroke(colourway_primaryColour)}
+            if (shape.fill() !== undefined ) {shape.fill(colourway_primaryColour)}
+            if (shape.shadowColor() !== undefined ) {shape.shadowColor(colourway_primaryColour)}
+        });
+        console.log('listOfShapes:', listOfShapes);
+
+        //trigger a redraw to update the colourway
+        //orbitalSystemMap_hardRedraw();
+
+    });
+    
+
     orbitalSystemMap_main(true);
 });
 
+//function orbitalSystemMap_hardRedraw(){
+//    //revert to preFirstRender to force a re-render
+//    //staticOrbits = staticOrbits_preFirstRender;
+//    staticOrbits = JSON.parse(JSON.stringify(staticOrbits_preFirstRender));
+//
+//    stages.forEach(function (stage, index) {
+//        //stage.destroyChildren();
+//        //stage.removeChildren();
+//        renderOrbits(staticOrbits[index],0);
+//        adTimeLabel(staticOrbits[index],0)
+//        scaleStage();
+//    });
+//
+//}
 
 function orbitalSystemMap_main(finalPass=false) {
 
@@ -76,9 +155,11 @@ function orbitalSystemMap_main(finalPass=false) {
 
     // If there are no elements with id="orbitalSystemMap"
     if (orbitalSystemMaps.length === 0) {
-        console.log('No elements with id "orbitalSystemMap" found.');
+        //console.log('No elements with id "orbitalSystemMap" found.');
         // Add any additional logic here
-        //return; // Exit the function early if no elements are found
+        console.log("OrbitalSystemMap: no OSM detected, disabling module.")
+        orbitalSystemMap_disableModule = true;
+        return; // Exit the function early if no elements are found
     }
 
     // Iterate over each element
@@ -112,6 +193,9 @@ function orbitalSystemMap_main(finalPass=false) {
 
         //console.log("staticOrbits: ",staticOrbits[index]);
         //console.log("stage: ",stages[index]);
+
+        // save clean copy of static orbits from before first render.
+        staticOrbits_preFirstRender[index] = JSON.parse(JSON.stringify(staticOrbits[index]));
         
         //renderOrbits(layer,staticOrbits[index]);
         renderOrbits(staticOrbits[index]);
@@ -147,6 +231,7 @@ function orbitalSystemMap_main(finalPass=false) {
     scaleStage();
     window.addEventListener('resize', scaleStage);
 
+
     //animate the reveal, and restart the typewriter if necessary
     if (finalPass) {
         //if this is the final pass complete the last stage and start the animation.
@@ -161,6 +246,7 @@ function orbitalSystemMap_main(finalPass=false) {
         startRevealAnimation(stages,75,() => {typeWriter();});
         //startRevealAnimation(stages[stages.length-1],50,() => {typeWriter();});
     }
+
 }
 
 
@@ -173,7 +259,8 @@ function startRevealAnimation(stages, interval, onComplete) {
     }
 
     // Build a list of all shapes from all stages
-    let shapes = [];
+    //let osm_allShapes = [];
+    shapes = [];
     stages.forEach(stage => {
         const layer = stage.children[0]; // Assuming there's only one layer
         
@@ -219,7 +306,7 @@ function startRevealAnimation(stages, interval, onComplete) {
     shape.visible(true);
     shape.getLayer().batchDraw(); // Redraw the layer to reflect the change
 
-    setTimeout(() => {
+    revealAnimation_nextTimeout = setTimeout(() => {
         revealElementsRecursive(elements, index + 1, interval, onComplete);
     }, interval);
 }
@@ -462,13 +549,13 @@ function getEllipseFromOrbit(orbitParams,time) {
                 perfectDrawEnabled: false,
                 outerRadius: major_axis + 0.5*orbit_w,
                 innerRadius: major_axis - 0.5*orbit_w,
-                stroke: "rgb(255, 176, 0)",
-                //fill: "rgb(255, 176, 0)",
+                stroke: colourway_primaryColour,
+                //fill: colourway_primaryColour,
 
                 fillPatternImage: konva_pattern_stripes,
                 fillPatternRepeat: 'repeat',
 
-                shadowColor: "rgb(255, 176, 0)",
+                shadowColor: colourway_primaryColour,
                 shadowBlur: 0.3,
                 shadowOffsetX: 0,
                 shadowOffsetY: 0,
@@ -539,8 +626,8 @@ function getEllipseFromOrbit(orbitParams,time) {
                 //y: stage.height() / 2,
                 radiusX: major_axis,
                 radiusY: minor_axis,
-                stroke: "rgb(255, 176, 0)",
-                shadowColor: "rgb(255, 176, 0)",
+                stroke: colourway_primaryColour,
+                shadowColor: colourway_primaryColour,
                 shadowBlur: 0.3,
                 shadowOffsetX: 0,
                 shadowOffsetY: 0,
@@ -572,14 +659,14 @@ function beltRing(radius,width){
         perfectDrawEnabled: false,
         outerRadius: radius + 0.5*width,
         innerRadius: radius - 0.5*width,
-        //stroke: "rgb(255, 176, 0)",
-        //fill: "rgb(255, 176, 0)",
+        //stroke: colourway_primaryColour,
+        //fill: colourway_primaryColour,
 
         //fillPatternImage: konva_pattern_dots_image,
         //fillPatternImage: konva_pattern_dots,
         //fillPatternRepeat: 'repeat',
 
-        shadowColor: "rgb(255, 176, 0)",
+        shadowColor: colourway_primaryColour,
         shadowBlur: 0.3,
         //shadowBlur: 0,
         shadowOffsetX: 0,
@@ -617,8 +704,8 @@ function beltRing(radius,width){
             perfectDrawEnabled: false,
             radius: 0.4,
             //radius: r,
-            fill: "rgb(255, 176, 0)",
-            shadowColor: "rgb(255, 176, 0)",
+            fill: colourway_primaryColour,
+            shadowColor: colourway_primaryColour,
             shadowBlur: 0.3,
             shadowOffsetX: 0,
             shadowOffsetY: 0,
@@ -674,10 +761,10 @@ function getIconFromOrbit(orbitParams,time) {
         var noisePattern = {};
         //orbital period
         var orbit_radius = 1; //reference radius
-        var orbit_period = 500000; //orbital period at orbit_radius
-        var accretionRing_w = 1.0;
+        var orbit_period = 300000; //orbital period at orbit_radius
+        var accretionRing_w = 1;
         var accretionRing_amount = Math.round((icon_r*0.5)/accretionRing_w);
-        var patriclesPerRing = 250/accretionRing_amount;
+        var patriclesPerRing = 300/accretionRing_amount;
 
         // of first render
         if (orbitParams.konva_object_icon===undefined){
@@ -751,9 +838,9 @@ function getIconFromOrbit(orbitParams,time) {
                         y: (i/accretionRing_amount)*icon_r*((1-0.75)*0.5),
                         angle: 200,
                         rotation: -10,
-                        //stroke: "rgb(255, 176, 0)",
-                        fill: "rgb(255, 176, 0)",
-                        shadowColor: "rgb(255, 176, 0)",
+                        //stroke: colourway_primaryColour,
+                        fill: colourway_primaryColour,
+                        shadowColor: colourway_primaryColour,
                         //strokeWidth: 0.4 + noisePattern.strokeWidth[i],
                         shadowBlur: 0.3,
                         shadowOffsetX: 0,
@@ -788,6 +875,7 @@ function getIconFromOrbit(orbitParams,time) {
                 0.420*(1-(i/accretionRing_amount))+0.475*((i/accretionRing_amount)), 
                 0.081*(1-(i/accretionRing_amount))+0.025*((i/accretionRing_amount)),
                 false,
+                1.3,
             )
             
         }
@@ -807,10 +895,10 @@ function getIconFromOrbit(orbitParams,time) {
                     y: 0,
                     angle: 200,
                     rotation: -10,
-                    //stroke: "rgb(255, 176, 0)",
-                    fill: "rgb(255, 176, 0)",
-                    shadowColor: "rgb(255, 176, 0)",
-                    strokeWidth: 0.4,
+                    //stroke: colourway_primaryColour,
+                    fill: colourway_primaryColour,
+                    shadowColor: colourway_primaryColour,
+                    strokeWidth: 0.5,
                     shadowBlur: 0.3,
                     shadowOffsetX: 0,
                     shadowOffsetY: 0,
@@ -831,9 +919,9 @@ function getIconFromOrbit(orbitParams,time) {
                     perfectDrawEnabled: false,
                     radiusX: (icon_r+icon_r*1.5)+0.8,
                     radiusY: (icon_r*0.05+icon_r*0.195)+0.8,
-                    fill: "rgb(255, 176, 0)",
-                    //stroke: "rgb(255, 176, 0)",
-                    //shadowColor: "rgb(255, 176, 0)",
+                    fill: colourway_primaryColour,
+                    //stroke: colourway_primaryColour,
+                    //shadowColor: colourway_primaryColour,
                     strokeWidth: 0.1,
                     //shadowBlur: 0.3,
                     //shadowOffsetX: 0,
@@ -864,9 +952,9 @@ function getIconFromOrbit(orbitParams,time) {
                         //radiusY: icon_r*0.05+(i/accretionRing_amount)*icon_r*0.195,
                         radiusX: icon_r*0.5+i_adjusted*icon_r*2.0,
                         radiusY: icon_r*0.05+i_adjusted*icon_r*0.195,
-                        //fill: "rgb(255, 176, 0)",
-                        stroke: "rgb(255, 176, 0)",
-                        shadowColor: "rgb(255, 176, 0)",
+                        //fill: colourway_primaryColour,
+                        stroke: colourway_primaryColour,
+                        shadowColor: colourway_primaryColour,
                         strokeWidth: 0.4 + noisePattern.strokeWidth[i],
                         shadowBlur: 0.3,
                         shadowOffsetX: 0,
@@ -892,6 +980,7 @@ function getIconFromOrbit(orbitParams,time) {
                 0,
                 0,
                 true,
+                0,
             )
                 
                 
@@ -913,9 +1002,9 @@ function getIconFromOrbit(orbitParams,time) {
                     outerRadius: icon_r*0.5,
                     angle: 180,
                     rotation: 180,
-                    //stroke: "rgb(255, 176, 0)",
-                    fill: "rgb(255, 176, 0)",
-                    //shadowColor: "rgb(255, 176, 0)",
+                    //stroke: colourway_primaryColour,
+                    fill: colourway_primaryColour,
+                    //shadowColor: colourway_primaryColour,
                     strokeWidth: 0.4,
                     //shadowBlur: 0.3,
                     //shadowOffsetX: 0,
@@ -953,9 +1042,9 @@ function getIconFromOrbit(orbitParams,time) {
                     preventDefault: false,
                     listening: false,
                     perfectDrawEnabled: false,
-                    //stroke: "rgb(255, 176, 0)",
+                    //stroke: colourway_primaryColour,
                     fill: "rgb(255, 176, 222)",
-                    //shadowColor: "rgb(255, 176, 0)",
+                    //shadowColor: colourway_primaryColour,
                     strokeWidth: 0.4,
                     //shadowBlur: 0.3,
                     //shadowOffsetX: 0,
@@ -995,9 +1084,9 @@ function getIconFromOrbit(orbitParams,time) {
                     y: -(i/accretionRing_amount)*icon_r*((1-1.25)),
                     angle: 180-angleOffset,
                     rotation: 180+angleOffset*0.5,
-                    //stroke: "rgb(255, 176, 0)",
-                    fill: "rgb(255, 176, 0)",
-                    shadowColor: "rgb(255, 176, 0)",
+                    //stroke: colourway_primaryColour,
+                    fill: colourway_primaryColour,
+                    shadowColor: colourway_primaryColour,
                     //strokeWidth: 0.4 + noisePattern.strokeWidth[i],
                     shadowBlur: 0.3,
                     shadowOffsetX: 0,
@@ -1035,6 +1124,7 @@ function getIconFromOrbit(orbitParams,time) {
                 1.000*interpolate_inverse+0.941*interpolate, 
                 0.500*interpolate_inverse+0.560*interpolate,
                 true,
+                1.3,
             )
             
 
@@ -1058,9 +1148,9 @@ function getIconFromOrbit(orbitParams,time) {
                     y: 0,
                     angle: 180,
                     rotation: 180,
-                    //stroke: "rgb(255, 176, 0)",
-                    fill: "rgb(255, 176, 0)",
-                    shadowColor: "rgb(255, 176, 0)",
+                    //stroke: colourway_primaryColour,
+                    fill: colourway_primaryColour,
+                    shadowColor: colourway_primaryColour,
                     strokeWidth: 0.4,
                     shadowBlur: 0.3,
                     shadowOffsetX: 0,
@@ -1130,7 +1220,7 @@ function getIconFromOrbit(orbitParams,time) {
                     preventDefault: false,
                     listening: false,
                     perfectDrawEnabled: false,
-                    stroke: "rgb(255, 176, 0)",
+                    stroke: colourway_primaryColour,
                     strokeWidth: width,
                     shadowBlur: 0.3,
                     shadowOffsetX: 0,
@@ -1153,8 +1243,8 @@ function getIconFromOrbit(orbitParams,time) {
                     listening: false,
                     perfectDrawEnabled: false,
                     radius: 0.4,
-                    fill: "rgb(255, 176, 0)",
-                    shadowColor: "rgb(255, 176, 0)",
+                    fill: colourway_primaryColour,
+                    shadowColor: colourway_primaryColour,
                     shadowBlur: 0.3,
                     shadowOffsetX: 0,
                     shadowOffsetY: 0,
@@ -1166,7 +1256,7 @@ function getIconFromOrbit(orbitParams,time) {
                     preventDefault: false,
                     listening: false,
                     perfectDrawEnabled: false,
-                    stroke: "rgb(255, 176, 0)",
+                    stroke: colourway_primaryColour,
                     strokeWidth: 0.4,
                     shadowBlur: 0.3,
                     shadowOffsetX: 0,
@@ -1180,7 +1270,7 @@ function getIconFromOrbit(orbitParams,time) {
                     preventDefault: false,
                     listening: false,
                     perfectDrawEnabled: false,
-                    stroke: "rgb(255, 176, 0)",
+                    stroke: colourway_primaryColour,
                     strokeWidth: 0.4,
                     shadowBlur: 0.3,
                     shadowOffsetX: 0,
@@ -1205,7 +1295,7 @@ function getIconFromOrbit(orbitParams,time) {
                     preventDefault: false,
                     listening: false,
                     perfectDrawEnabled: false,
-                    stroke: "rgb(255, 176, 0)",
+                    stroke: colourway_primaryColour,
                     strokeWidth: 0.4,
                     shadowBlur: 0.3,
                     shadowOffsetX: 0,
@@ -1219,7 +1309,7 @@ function getIconFromOrbit(orbitParams,time) {
                     preventDefault: false,
                     listening: false,
                     perfectDrawEnabled: false,
-                    stroke: "rgb(255, 176, 0)",
+                    stroke: colourway_primaryColour,
                     strokeWidth: 0.4,
                     shadowBlur: 0.3,
                     shadowOffsetX: 0,
@@ -1233,7 +1323,7 @@ function getIconFromOrbit(orbitParams,time) {
                     preventDefault: false,
                     listening: false,
                     perfectDrawEnabled: false,
-                    stroke: "rgb(255, 176, 0)",
+                    stroke: colourway_primaryColour,
                     strokeWidth: 0.4,
                     shadowBlur: 0.3,
                     shadowOffsetX: 0,
@@ -1281,7 +1371,7 @@ function getIconFromOrbit(orbitParams,time) {
                     preventDefault: false,
                     listening: false,
                     perfectDrawEnabled: false,
-                    stroke: "rgb(255, 176, 0)",
+                    stroke: colourway_primaryColour,
                     strokeWidth: 0.4,
                     shadowBlur: 0.3,
                     shadowOffsetX: 0,
@@ -1305,9 +1395,9 @@ function getIconFromOrbit(orbitParams,time) {
                 fontFamily: "Noto Sans Mono",
                 align: "center",
                 strokeWidth: 0,
-                fill: "rgb(255, 176, 0)",
-                stroke: "rgb(255, 176, 0)",
-                shadowColor: "rgb(255, 176, 0)",
+                fill: colourway_primaryColour,
+                stroke: colourway_primaryColour,
+                shadowColor: colourway_primaryColour,
                 shadowBlur: 0.3,
                 shadowOffsetX: 0,
                 shadowOffsetY: 0,
@@ -1347,12 +1437,12 @@ function getIconFromOrbit(orbitParams,time) {
                     listening: false,
                     perfectDrawEnabled: false,
                     radius: icon_r,
-                    stroke: "rgb(255, 176, 0)",
+                    stroke: colourway_primaryColour,
                     strokeWidth: 0.4,
                     //strokeWidth: 0,
                     //fill: "rgb(255, 176, 0, 0)",
-                    //fill: "rgb(255, 176, 0)",
-                    shadowColor: "rgb(255, 176, 0)",
+                    //fill: colourway_primaryColour,
+                    shadowColor: colourway_primaryColour,
                     shadowBlur: 0.3,
                     shadowOffsetX: 0,
                     shadowOffsetY: 0,
@@ -1363,7 +1453,7 @@ function getIconFromOrbit(orbitParams,time) {
 
             //fill
             if (icon_type==="fill") {
-            orbitParams.konva_object_icon.getChildren()[1].fill('rgb(255, 176, 0)'); 
+            orbitParams.konva_object_icon.getChildren()[1].fill(colourway_primaryColour); 
             }
 
             //stripe
@@ -1413,6 +1503,7 @@ function populateBHOrbitals(
     muting_low=0,
     muting_high=0,
     reverse=false,
+    nonLinearity=0,
     ) {
 
     var numberOfParticles = noisePattern.particleOffsets[i].length;
@@ -1427,8 +1518,8 @@ function populateBHOrbitals(
                 listening: false,
                 perfectDrawEnabled: false,
                 radius: 0.3,
-                fill: "rgb(255, 176, 0)",
-                shadowColor: "rgb(255, 176, 0)",
+                fill: colourway_primaryColour,
+                shadowColor: colourway_primaryColour,
                 //shadowBlur: 0.3,
                 shadowBlur: 0.6,
                 shadowOffsetX: 0,
@@ -1447,14 +1538,24 @@ function populateBHOrbitals(
 
         var orbitalPeriod = noisePattern.orbitalPeriod[i];
         //var offset = (time%orbitalPeriod)/orbitalPeriod;
+        if (nonLinearity !== 0) {orbitalPeriod=orbitalPeriod/nonLinearity}
 
         //var particleOffset = (j/numberOfParticles*orbitalPeriod)
         var particleOffset = noisePattern.particleOffsets[i][j]*orbitalPeriod;
-        var totalOffset = ((((time%orbitalPeriod)+particleOffset)/orbitalPeriod)%1); // where in orbit 0-1
+        var totalOffset = ((((time%orbitalPeriod)+particleOffset)/(orbitalPeriod))%1); // where in orbit 0-1
 
         if (reverse) {totalOffset = 1-totalOffset}
 
         //console.log("totalOffset: ", totalOffset);
+
+        //apply non linearity
+        if (nonLinearity !== 0) {
+            // GEOGEBRA: n(x)=x+0.25+((0.25)/(π)) sin(4 π (x+0.25))-0.25
+            //var temp = totalOffset;
+            totalOffset = totalOffset+0.25+((0.25)/(Math.PI))*Math.sin(4*Math.PI*(totalOffset+0.25))-0.25;
+            //totalOffset = totalOffset * nonLinearity;
+            //console.log("NonLinear, totalOffset: ",temp,totalOffset); 
+        }
 
         // check for muting
         var mute=false;
@@ -1567,9 +1668,9 @@ function getLabelFromOrbit(orbitParams,time){
             align: "center",
 
             strokeWidth: 0,
-            fill: "rgb(255, 176, 0)",
-            stroke: "rgb(255, 176, 0)",
-            shadowColor: "rgb(255, 176, 0)",
+            fill: colourway_primaryColour,
+            stroke: colourway_primaryColour,
+            shadowColor: colourway_primaryColour,
             shadowBlur: 0.3,
             shadowOffsetX: 0,
             shadowOffsetY: 0,
@@ -1606,9 +1707,9 @@ function getLabelFromOrbit(orbitParams,time){
             y: textLabel.y() - 0.5,  // Add some padding
             width: textLabel.width() + 1,  // Add some padding
             height: textLabel.height() + 1,  // Add some padding
-            fill: "rgb(255, 176, 0)",
-            //stroke: "rgb(255, 176, 0)",
-            shadowColor: "rgb(255, 176, 0)",
+            fill: colourway_primaryColour,
+            //stroke: colourway_primaryColour,
+            shadowColor: colourway_primaryColour,
             shadowBlur: 0,
             shadowOffsetX: 0,
             shadowOffsetY: 0,
@@ -1790,9 +1891,9 @@ function adTimeLabel(orbits, time) {
             fontFamily: "Noto Sans Mono",
             align: "center",
             strokeWidth: 0,
-            fill: "rgb(255, 176, 0)",
-            stroke: "rgb(255, 176, 0)",
-            shadowColor: "rgb(255, 176, 0)",
+            fill: colourway_primaryColour,
+            stroke: colourway_primaryColour,
+            shadowColor: colourway_primaryColour,
             shadowBlur: 0.3,
             shadowOffsetX: 0,
             shadowOffsetY: 0,
@@ -1839,9 +1940,9 @@ function adTimeLabel(orbits, time) {
     //    fontFamily: "Noto Sans Mono",
     //    align: "center",
     //    strokeWidth: 0,
-    //    fill: "rgb(255, 176, 0)",
-    //    stroke: "rgb(255, 176, 0)",
-    //    shadowColor: "rgb(255, 176, 0)",
+    //    fill: colourway_primaryColour,
+    //    stroke: colourway_primaryColour,
+    //    shadowColor: colourway_primaryColour,
     //    shadowBlur: 0.3,
     //    shadowOffsetX: 0,
     //    shadowOffsetY: 0,

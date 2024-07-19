@@ -1,3 +1,6 @@
+:root {
+  --osm-colourway-primarycolour: #00F0B0;
+}
 
 body {
   background-image: radial-gradient(
