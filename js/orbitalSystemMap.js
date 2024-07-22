@@ -4,6 +4,8 @@ let staticOrbits = [];
 let staticOrbits_preFirstRender = [];
 let focusableShapes = [];
 var colourway_primaryColour = 'rgb(255, 176, 0)';
+var colourway_secondaryColour = 'rgb(255, 176, 0)';
+var colourway_tertiaryColour = 'rgb(255, 176, 0)';
 var revealAnimation_nextTimeout;
 
 console.log('orbitalSystemMap.js called...');
@@ -29,12 +31,13 @@ var focusContainer = document.getElementById('display');
     konva_pattern_stripes.height = patternHeight;
     var patternContext = konva_pattern_stripes.getContext("2d");
 
-
-    // Draw the pattern: alternating colored and transparent stripes
-    patternContext.fillStyle = colourway_primaryColour;
-    patternContext.fillRect(0, 0, patternWidth, stripeHeight); // Top half colored
-    patternContext.clearRect(0, stripeHeight, patternWidth, stripeHeight); // Bottom half transparent
-
+    osm_updatePatterns(); 
+    function osm_updatePatterns(){
+        // Draw the pattern: alternating colored and transparent stripes
+        patternContext.fillStyle = colourway_primaryColour;
+        patternContext.fillRect(0, 0, patternWidth, stripeHeight); // Top half colored
+        patternContext.clearRect(0, stripeHeight, patternWidth, stripeHeight); // Bottom half transparent
+    }
 }
 
 //{
@@ -74,6 +77,7 @@ document.addEventListener('typer_done', function(event) {
     if (typeof cssValue === 'string' && cssValue.trim().length > 0){
         colourway_primaryColour = cssValue;
     }
+    osm_updatePatterns(); 
 
     //subscribe to changes in the colourway
     document.addEventListener('colorway_change', function(event) {
@@ -114,12 +118,31 @@ document.addEventListener('typer_done', function(event) {
             layer.getChildren().each(child => traverseShapes(child, shape => {listOfShapes.push(shape);}));
         });
         
+        //update colourway of fill patterns
+        osm_updatePatterns(); 
+        
         listOfShapes.forEach(shape=> {
-            if (shape.stroke() !== undefined ) {shape.stroke(colourway_primaryColour)}
-            if (shape.fill() !== undefined ) {shape.fill(colourway_primaryColour)}
-            if (shape.shadowColor() !== undefined ) {shape.shadowColor(colourway_primaryColour)}
+//            console.log("shape is a: ", shape.constructor.name)
+//            //text objects - primary colour
+//            if (shape.constructor.name==="t") {
+                if (shape.stroke() !== undefined ) {shape.stroke(colourway_primaryColour)}
+                if (shape.fill() !== undefined ) {shape.fill(colourway_primaryColour)}
+                if (shape.shadowColor() !== undefined ) {shape.shadowColor(colourway_primaryColour)}
+//            }
+//            //filled objects - secondary colour
+//            if (shape.fill() !== undefined ) {
+//                if (shape.stroke() !== undefined ) {shape.stroke(colourway_secondaryColour)}
+//                if (shape.fill() !== undefined ) {shape.fill(colourway_secondaryColour)}
+//                if (shape.shadowColor() !== undefined ) {shape.shadowColor(colourway_secondaryColour)}
+//            }
+//            //outline only objects - tertiary colour
+//            else {
+//                if (shape.stroke() !== undefined ) {shape.stroke(colourway_tertiaryColour)}
+//                if (shape.fill() !== undefined ) {shape.fill(colourway_tertiaryColour)}
+//                if (shape.shadowColor() !== undefined ) {shape.shadowColor(colourway_tertiaryColour)}
+//            }
         });
-        console.log('listOfShapes:', listOfShapes);
+        //console.log('listOfShapes:', listOfShapes);
 
         //trigger a redraw to update the colourway
         //orbitalSystemMap_hardRedraw();

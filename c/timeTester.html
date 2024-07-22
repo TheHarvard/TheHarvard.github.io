@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link class="init" href="../css/style.css" rel="stylesheet" type="text/css" />
+        <script src="../js/populateHTML.js"></script>
+        <title>timeTester</title>
+
+    </head>
+<body>
+<type-speed-vfast></type-speed-vfast>
+<pre>
+    
+<button onclick="timeSetOffset(0)">[ set timeOffset 0 ]</button>
+<button onclick="timeSetOffset(1*timeUnits.days)">[ set timeOffset 1d ]</button>
+<button onclick="timeSetOffset(7*timeUnits.days)">[ set timeOffset 7d ]</button>
+<button onclick="timeJump(-1*timeUnits.days)">[ timeJump -1 ]</button>
+<button onclick="timeJump(1*timeUnits.days)">[ timeJump 1d ]</button>
+<button onclick="timeJump(7*timeUnits.days)">[ timeJump 7d ]</button>
+<button onclick="setTimeNormal()">[ play ]</button>
+<button onclick="setTimePaused()">[ pause ]</button>
+
+
+<button onclick="setTimeSpeed(-10)">[ setTimeSpeed -10 ]</button>
+<button onclick="setTimeSpeed(-2)">[ setTimeSpeed -2 ]</button>
+<button onclick="setTimeSpeed(-1)">[ setTimeSpeed -1 ]</button>
+<button onclick="setTimeSpeed(-0.5)">[ setTimeSpeed -0.5 ]</button>
+<button onclick="setTimeSpeed(-0.1)">[ setTimeSpeed -0.1 ]</button>
+<button onclick="setTimeSpeed(0)">[ setTimeSpeed 0 ]</button>
+<button onclick="setTimeSpeed(0.1)">[ setTimeSpeed 0.1 ]</button>
+<button onclick="setTimeSpeed(0.5)">[ setTimeSpeed 0.5 ]</button>
+<button onclick="setTimeSpeed(1)">[ setTimeSpeed 1 ]</button>
+<button onclick="setTimeSpeed(2)">[ setTimeSpeed 2 ]</button>
+<button onclick="setTimeSpeed(10)">[ setTimeSpeed 10 ]</button>
+
+
+<button onclick="document.getElementById('demo').innerHTML = timeToISO8601(getCurrentTime())">The time is?</button>
+<pre id="demo"> temp </pre>
+
+<script>
+    // Function to be executed every second
+    function executeEverySecond() {
+        var currentTime = getCurrentTime();
+        var currentRealTime = realTime;
+        document.getElementById('demo2').innerHTML = "real:   "+timeToISO8601(currentRealTime);
+        document.getElementById('demo3').innerHTML = "offset: "+mainTimeOffset;
+        document.getElementById('demo4').innerHTML = "time:   "+timeToISO8601(currentTime);
+        document.getElementById('demo5').innerHTML = "time:                "+currentTime;
+        document.getElementById('demo6').innerHTML = "timeMode_lastSync:   "+timeMode_lastSync;
+        document.getElementById('demo7').innerHTML = "timeMode_pause_time: "+timeMode_pause_time;
+    }
+
+    // Set interval to execute the function every 1000 milliseconds (1 second)
+    setInterval(executeEverySecond, 25);
+</script>
+<span id="demo2"> temp </span>
+<span id="demo3"> temp </span>
+<span id="demo4"> temp </span>
+<span id="demo5"> temp </span>
+<span id="demo6"> temp </span>
+<span id="demo7"> temp </span>
+
+
+</pre>
+</body>
+</html>

@@ -79,6 +79,10 @@ window.addEventListener('load', () => {
     document.head.appendChild(script);
 
     var script = document.createElement('script');
+    script.src = '../js/time.js';
+    document.head.appendChild(script);
+
+    var script = document.createElement('script');
     script.src = '../js/colourwaySelector.js';
     document.head.appendChild(script);
 
