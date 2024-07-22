@@ -1,53 +1,41 @@
 function interpolateTime(currentRealTime, fromRealTime, toRealTime, fromTime, toTime, startSpeed = 1, endSpeed = 1) {
-   var sigma=0.0997355701004;
-   var sigma_normalizeFactor=4;
-   var deltaTime = toTime-fromTime;
+    var deltaTime = toTime-fromTime;
 
-   var deltaRealTime=toRealTime-fromRealTime;
-   var positionInAnimation=(currentRealTime-fromRealTime)/deltaRealTime;
+    var deltaRealTime=toRealTime-fromRealTime;
+    var positionInAnimation=(currentRealTime-fromRealTime)/deltaRealTime;
 
-   //calculate components
-   var component_acceleration = fromTime + startSpeed * (currentRealTime-fromRealTime);
-   var component_linear = fromTime + positionInAnimation * deltaTime;
-   var component_deceleration = toTime + endSpeed * (currentRealTime-toRealTime);
+    //calculate components
+    var component_acceleration = fromTime + startSpeed * (currentRealTime-fromRealTime);
+    var component_linear = fromTime + positionInAnimation * deltaTime;
+    var component_deceleration = toTime + endSpeed * (currentRealTime-toRealTime);
 
-    //calculate coefficients
-   function gaussian(x, mu, sigma) {
-        const sqrtTwoPi = Math.sqrt(2 * Math.PI);
-        const coefficient = 1 / (sigma * sqrtTwoPi);
-        const exponent = -Math.pow(x - mu, 2) / (2 * Math.pow(sigma, 2));
-        return coefficient * Math.exp(exponent);
-    }
+    //set phase width
+    var phaseWidth = 0.2;
+    //set phase width to always be 2 seconds
+    phaseWidth = deltaTime/20000;
 
     var coefficient_acceleration;
-    var coefficient_deceleration;
+    if      (positionInAnimation<0){coefficient_acceleration = 1;}
+    else if (positionInAnimation>phaseWidth){coefficient_acceleration = 0;}
+    else    {coefficient_acceleration = (Math.cos((positionInAnimation/(phaseWidth*2))*2*Math.PI)+1)*0.5;}
+    //else    {coefficient_acceleration = (1-(positionInAnimation)/phaseWidth)}
 
-    if (positionInAnimation<0){
-        coefficient_acceleration=sigma_normalizeFactor;
-        coefficient_deceleration=0;
-    }
-    else if (positionInAnimation>1){
-        coefficient_acceleration=0;
-        coefficient_deceleration=sigma_normalizeFactor;
-    }
-    else{
-    coefficient_acceleration=gaussian(positionInAnimation,0,sigma);
-    coefficient_deceleration=gaussian(positionInAnimation,1,sigma);
-    }
+    var coefficient_deceleration;
+    if      (positionInAnimation<1-phaseWidth){coefficient_deceleration = 0;}
+    else if (positionInAnimation>1){coefficient_deceleration = 1;}
+    else    {coefficient_deceleration = (Math.cos((positionInAnimation/(phaseWidth*2)-0.5)*2*Math.PI)+1)*0.5;}
+    //else    {coefficient_deceleration = (positionInAnimation+phaseWidth-1)*(1/phaseWidth);}
 
     //normalize
-    coefficient_acceleration=coefficient_acceleration/sigma_normalizeFactor;
-    coefficient_deceleration=coefficient_deceleration/sigma_normalizeFactor;
-    
     var coefficient_linear = 1 - (coefficient_acceleration + coefficient_deceleration);
+    //var coefficient_linear = 0;
 
     //interpolate and combine the different components
-   var currentTime =
+    var currentTime =
           component_acceleration*coefficient_acceleration
         + component_linear*coefficient_linear
         + component_deceleration*coefficient_deceleration;
 
-    return Math.sin((positionInAnimation+0.75)*2*Math.PI);
     return currentTime;
 }
 
@@ -107,5 +95,5 @@ var toTime = fromTime+timeToAnimate;
 var fromRealTime = fromTime/rate;
 var toRealTime = toTime/rate;
 //const testData = generateTestData(10000, 30000, 1000000, 2000000,0,0,100);
-const testData = generateTestData(fromRealTime, toRealTime, fromTime, toTime,1,0,1);
+const testData = generateTestData(fromRealTime, toRealTime, fromTime, toTime,0,2,1);
 plotTestData(testData);
