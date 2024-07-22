@@ -32,6 +32,10 @@
 <button onclick="setTimeSpeed(2)">[ setTimeSpeed 2 ]</button>
 <button onclick="setTimeSpeed(10)">[ setTimeSpeed 10 ]</button>
 
+<button onclick="timeJumpAnimate(1*timeUnits.days)">[ animate +1d ]</button>
+<button onclick="timeJumpAnimate(-1*timeUnits.days)">[ animate -1d ]</button>
+<button onclick="timeSetOffsetAnimate(0)">[ set timeOffset 0 animate ]</button>
+
 
 <button onclick="document.getElementById('demo').innerHTML = timeToISO8601(getCurrentTime())">The time is?</button>
 <pre id="demo"> temp </pre>
@@ -41,9 +45,9 @@
     function executeEverySecond() {
         var currentTime = getCurrentTime();
         var currentRealTime = realTime;
-        document.getElementById('demo2').innerHTML = "real:   "+timeToISO8601(currentRealTime);
+        document.getElementById('demo2').innerHTML = "real:   "+timeToISO8601_compact_withDay(currentRealTime);
         document.getElementById('demo3').innerHTML = "offset: "+mainTimeOffset;
-        document.getElementById('demo4').innerHTML = "time:   "+timeToISO8601(currentTime);
+        document.getElementById('demo4').innerHTML = "time:   "+timeToISO8601_compact_withDay(currentTime);
         document.getElementById('demo5').innerHTML = "time:                "+currentTime;
         document.getElementById('demo6').innerHTML = "timeMode_lastSync:   "+timeMode_lastSync;
         document.getElementById('demo7').innerHTML = "timeMode_pause_time: "+timeMode_pause_time;

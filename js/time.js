@@ -17,6 +17,8 @@ var timeMode_speed_rate = 1; // the rate of time relative to realTime
 var timeMode_lastSync = 1; // last time time was synced
 var timeMode_animate_fromTime = 1;
 var timeMode_animate_toTime = 1;
+var timeMode_animate_fromRealTime = 1;
+var timeMode_animate_toRealTime = 1;
 
 //pushes updated data to local storage (and thus other tabs)
 function timeLocalStorageUpdate(){
@@ -77,16 +79,43 @@ function getCurrentTime() {
         var realTimeDelta = realTime - timeMode_lastSync;
         mainTimeOffset = mainTimeOffset - realTimeDelta + (realTimeDelta * timeMode_speed_rate);
 
-
     } else if (timeMode===timeModes.ANIMATE) {
-        //handle animation
-        //has animation reached the end, if so switch to normal
-        //otherwise interpolate current point in animation.
+        //time is animated, consult the animation function
+        var animateTime = calculateAnimatedTime(
+                realTime,
+                timeMode_animate_fromRealTime,
+                timeMode_animate_toRealTime,
+                timeMode_animate_fromTime,
+                timeMode_animate_toTime,
+                1,
+                1);
+
+                if (timeMode_animate_fromTime<=timeMode_animate_toTime) {
+                    var animationDone = (animateTime >= timeMode_animate_toTime);
+                }
+                else {var animationDone = (animateTime < timeMode_animate_toTime);}
+
+        if (animationDone) {
+            // go to normal when the animation is done
+            console.log ("animation finished! ");
+            //setTimeSpeed(timeMode_speed_rate)
+
+            if (timeMode_speed_rate===1) {
+                timeMode=timeModes.NORMAL;
+            }
+            else if (timeMode_speed_rate===0) {
+                timeMode=timeModes.PAUSED;
+                timeMode_pause_time = animateTime;
+            }
+            else {
+                timeMode=timeModes.SPEED;
+            }
+
+            timeLocalStorageUpdate();
+        } 
+
+        mainTimeOffset = animateTime - (realTime + defaultMainTimeOffset);
         
-        // time is running at a modified rate, calculate appropriate offset
-        instantRate = animationInstantRate();
-        var realTimeDelta = realTime - timeMode_lastSync;
-        mainTimeOffset = mainTimeOffset - realTimeDelta + (realTimeDelta * instantRate);
 
     }
     //timeMode=timeModes.NORMAL will only run this part
@@ -96,52 +125,21 @@ function getCurrentTime() {
     return time;
 }
 
-
-
-
 //calculates the rate/speed of time in a given moment, given an animation
-function animationInstantRate(currentTime,toTime,fromTime,maxRate,maxDuration){
-    
-    //max jerk, or change of rate of acceleration of speed
-    //var maxJerk = 2;
-    
-    if (maxRate === undefined || maxRate === null || typeof maxRate !== 'number'){
-        maxRate=null;
-    }
+function calculateAnimatedTime(currentRealTime, fromRealTime, toRealTime, fromTime, toTime, startSpeed = 1, endSpeed = 1) {
+    var deltaTime = toTime-fromTime;
 
-    if (maxDuration === undefined || maxDuration === null || typeof maxDuration !== 'number'){
-        maxDuration=null;
-    }
+    var deltaRealTime=toRealTime-fromRealTime;
+    var positionInAnimation=(currentRealTime-fromRealTime)/deltaRealTime;
 
-    //calculate position in animation 0-1
-    var deltaTime = toTime - fromTime;
-    var deltaTime_elapsed = currentTime - fromTime;
-    var animationPosition = deltaTime_elapsed/deltaTime;
-    //modify with ease in/out
-    animationPosition = easeInOutQuart(animationPosition);
-    //scale to correct time
-    var returnTime = animationPosition * deltaTime;
-    //
-    
-    //easeInOutQuart from https://easings.net/#easeInOutQuart
-    // takes input 0 to 1, and gives output 0 to 1 but with ease in and out
-    function easeInOutQuart(x) {
-        return x < 0.5 ? 8 * x * x * x * x : 1 - Math.pow(-2 * x + 2, 4) / 2;
-    }
+    //calculate components
+    var component_acceleration = fromTime + startSpeed * (currentRealTime-fromRealTime);
+    var component_linear = fromTime + positionInAnimation * deltaTime;
+    var component_deceleration = toTime + endSpeed * (currentRealTime-toRealTime);
 
-    //if max rate is provided, and max duration is not;
-    // = run at max rate for whatever duration is necessary.
-
-    //if max duration is provided, and max rate is not;
-    // = run at rate that gives max duration.
-
-    //if max duration and max rate is provided,
-    // = find solution within limits, if that is not possible;
-    // = compromise on both equally.
-
-    //if neither max duration nor max rate is provided;
-    // = assume default max rate and max duration.
-
+    if      (positionInAnimation<0){return component_acceleration;}
+    if      (positionInAnimation>1){return component_deceleration;}
+    return component_linear;
 }
 
 //get current real time
@@ -167,11 +165,24 @@ function timeSetOffset(newOffset=0) {
     timeLocalStorageUpdate();
 }
 
+//set the active time offset to provided value, and animate to it
+function timeSetOffsetAnimate(newOffset,duration=5*timeUnits.seconds){
+    fromTime = getCurrentTime();
+    timeMode_animate_fromTime = fromTime;
+    //timeMode_animate_toTime = newOffset + defaultMainTimeOffset + duration*timeMode_speed_rate;
+    timeMode_animate_toTime = (fromTime - mainTimeOffset) + newOffset + duration*timeMode_speed_rate;
+    timeMode_animate_fromRealTime = realTime;
+    timeMode_animate_toRealTime = realTime + duration;
+    timeMode=timeModes.ANIMATE;
+    timeLocalStorageUpdate();
+}
+
 //set the active time offset to make time a specific value.
+// WILL BREAK SYNC!
 function timeSet(newTime=0) {
     //if in the middle of an animation, adjust the end point instead
     if (timeMode===timeModes.ANIMATE) {
-        setTimeAnimate(timeMode_animate_toTime+timeJumpOffset);
+        timeMode_animate_toTime=newTime;
         return;
     }
 
@@ -188,11 +199,22 @@ function timeJump(timeJumpOffset=0) {
     }
     //if in the middle of an animation, adjust the end point instead
     else if (timeMode===timeModes.ANIMATE) {
-        setTimeAnimate(timeMode_animate_toTime+timeJumpOffset);
+        timeMode_animate_toTime+=timeJumpOffset;
         return;
     }
 
     mainTimeOffset += timeJumpOffset;
+    timeLocalStorageUpdate();
+}
+
+//jump forwards or backwards in time, but animate it instead of snapping
+function timeJumpAnimate(timeJumpOffset,duration=5*timeUnits.seconds){
+    fromTime = getCurrentTime();
+    timeMode_animate_fromTime = fromTime;
+    timeMode_animate_toTime = fromTime + timeJumpOffset + duration*timeMode_speed_rate;
+    timeMode_animate_fromRealTime = realTime;
+    timeMode_animate_toRealTime = realTime + duration;
+    timeMode=timeModes.ANIMATE;
     timeLocalStorageUpdate();
 }
 
@@ -220,6 +242,7 @@ function setTimeNormal(){
 function setTimePaused(){
     var currentTime = getCurrentTime();
     timeMode_pause_time = currentTime;
+    timeMode_speed_rate = 0;
     timeMode=timeModes.PAUSED;
     timeLocalStorageUpdate();
 }
@@ -232,21 +255,14 @@ function setTimeSpeed(rate=1){
     timeLocalStorageUpdate();
 }
 
-//set time to animate to a new time.
-function setTimeAnimate(toTime,fromTime,maxRate=4,maxDuration=1*timeUnits.minutes){
-    //If already in an animation, adjust current animation instead.
-    if (timeMode===timeModes.ANIMATE) {
-        //adjust here
-    }
 
-    if (fromTime === undefined || fromTime === null || typeof fromTime !== 'number'){
-        fromTime = getCurrentTime;
-    }
-    timeMode_animate_fromTime = fromTime;
-    timeMode_animate_toTime = toTime;
-    timeMode=timeModes.ANIMATE;
-    timeLocalStorageUpdate();
-}
+
+
+
+
+
+
+
 
 //find a the relative time between two times
 function timeLeft(toTime,fromTime){
@@ -261,10 +277,32 @@ function timeLeft(toTime,fromTime){
 function timeToString(unixTime){
 }
 
-//format time to a ISO8601 string
+//format time to a ISO8601 string - 22 characters?
 function timeToISO8601(unixTime){
     const date = new Date(unixTime);
     return date.toISOString();
+}
+
+//format time to a custom compact ISO8601 string - 17 characters
+function timeToISO8601_compact(unixTime){
+    const ISO8601String = timeToISO8601(unixTime);
+    var strippedString = ISO8601String.split('-').join('');
+    let stringWithSpaces = strippedString.replace(/T/g, ' ');
+    var shortenedString = stringWithSpaces.slice(0, -5);
+    return shortenedString;
+}
+
+//format time to a custom compact ISO8601 string - 17 characters
+function timeToISO8601_compact_withDay(unixTime){
+    const date = new Date(unixTime);
+    const ISO8601String = date.toISOString();
+    var strippedString = ISO8601String.split('-').join('');
+    var stringWithSpaces = strippedString.replace(/T/g, ' ');
+    var shortenedString = stringWithSpaces.slice(0, -5);
+    const options = { weekday: 'long' };
+    const dayOfWeek = date.toLocaleDateString('en-US', options);
+    var stringWithDay = shortenedString + " " + dayOfWeek.substring(0, 3) + ".";
+    return stringWithDay;
 }
 
 //generate QR code to share current time 

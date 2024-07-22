@@ -148,7 +148,7 @@ function dynamicHeader_update() {
     // Retrieve DH list
     let dhList = getDHList();
     
-    headerContent += "<summary>VNA DECK A33.76 - 32240720T13:30:00DSat.<br>================================================================================</summary>";
+    headerContent += "<summary>VNA DECK A33.76 - 32240722 21:15:33 Sat.<br>================================================================================</summary>";
     //headerContent += "A: (M-DISK drive 1)<br>";
 
     //Start with A open if there are A files
