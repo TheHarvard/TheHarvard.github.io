@@ -233,6 +233,11 @@ function orbitalSystemMap_main(finalPass=false) {
     const animation = new Konva.Animation(function(frame) {
 
         //return;
+
+        //var time = frame.time*8640*0.5;
+        //if (typeof myFunction === 'function') {
+        var time = getCurrentTime();
+        //} 
         
         stages.forEach(function (stage, index) {
             //layer.clear();
@@ -242,8 +247,8 @@ function orbitalSystemMap_main(finalPass=false) {
             //stage.destroyChildren();
                 //var layer = new Konva.Layer();
                 //stage.add(layer);
-            renderOrbits(staticOrbits[index],frame.time*8640*0.5);
-            adTimeLabel(staticOrbits[index],frame.time*8640*0.5)
+            renderOrbits(staticOrbits[index],time);
+            adTimeLabel(staticOrbits[index],time)
             scaleStage();
             //layer.draw();
             });
@@ -619,7 +624,7 @@ function getEllipseFromOrbit(orbitParams,time) {
 
             let rot = 0;
             //scale time to days
-            let days = time / 864000;
+            let days = time / 86400000;
 
             if (period!==0) {
                 //rot = (((-days + period_offset)/newPeriod)*360)%360;
@@ -784,7 +789,7 @@ function getIconFromOrbit(orbitParams,time) {
         var noisePattern = {};
         //orbital period
         var orbit_radius = 1; //reference radius
-        var orbit_period = 300000; //orbital period at orbit_radius
+        var orbit_period = 3000000; //orbital period at orbit_radius
         var accretionRing_w = 1;
         var accretionRing_amount = Math.round((icon_r*0.5)/accretionRing_w);
         var patriclesPerRing = 300/accretionRing_amount;
@@ -1632,7 +1637,7 @@ function getPositionFromOrbit(orbitParams, time) {
     };
 
     //scale time to days
-    time = time / 864000;
+    time = time / 86400000;
 
     // Calculate the mean anomaly
     const meanAnomaly = (((-time) + period_offset) / period) * 2 * Math.PI;
@@ -1925,7 +1930,10 @@ function adTimeLabel(orbits, time) {
         orbits.layer.add(orbits.time_label);
     }
 
+    
+    orbits.time_label.text(timeToISO8601_compact_withDay(time));
 
+/*
     //unicode time
     let unicodeTime = Date.now();
 
@@ -1951,6 +1959,7 @@ function adTimeLabel(orbits, time) {
     //let displayString = `${formattedDate}`;
 
     orbits.time_label.text(displayString);
+    */
 
     //let konva_date_label = new Konva.Text({
     //    preventDefault: false,

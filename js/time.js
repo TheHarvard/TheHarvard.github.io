@@ -19,16 +19,76 @@ var timeMode_animate_fromTime = 1;
 var timeMode_animate_toTime = 1;
 var timeMode_animate_fromRealTime = 1;
 var timeMode_animate_toRealTime = 1;
+var timeMode_animate_startSpeed = 1;
+var timeMode_animate_endSpeed = 1;
+
+
+//data structure for storing variables to local storage
+var timeData = {
+    realTime: 0,
+    time: 0,
+    mainTimeOffset: 0,
+    timeMode: 0,
+    timeMode_pause_time: 1,
+    timeMode_speed_rate: 1,
+    timeMode_lastSync: 1,
+    timeMode_animate_fromTime: 1,
+    timeMode_animate_toTime: 1,
+    timeMode_animate_fromRealTime: 1,
+    timeMode_animate_toRealTime: 1,
+    timeMode_animate_startSpeed: 1,
+    timeMode_animate_endSpeed: 1
+};
+
 
 //pushes updated data to local storage (and thus other tabs)
 function timeLocalStorageUpdate(){
-
+    timeData.realTime                       =realTime;
+    timeData.time                           =time;
+    timeData.mainTimeOffset                 =mainTimeOffset;
+    timeData.timeMode                       =timeMode;
+    timeData.timeMode_pause_time            =timeMode_pause_time;
+    timeData.timeMode_speed_rate            =timeMode_speed_rate;
+    timeData.timeMode_lastSync              =timeMode_lastSync;
+    timeData.timeMode_animate_fromTime      =timeMode_animate_fromTime;
+    timeData.timeMode_animate_toTime        =timeMode_animate_toTime;
+    timeData.timeMode_animate_fromRealTime  =timeMode_animate_fromRealTime;
+    timeData.timeMode_animate_toRealTime    =timeMode_animate_toRealTime;
+    timeData.timeMode_animate_startSpeed    =timeMode_animate_startSpeed;
+    timeData.timeMode_animate_endSpeed      =timeMode_animate_endSpeed;
+    localStorage.setItem('timeData', JSON.stringify(timeData));
 }
 
 //receives updated data from local storage
 function timeLocalStorageReceive(){
-
+    var storedData = localStorage.getItem('timeData');
+    if (storedData) {
+        timeData = JSON.parse(storedData);
+        realTime                       =timeData.realTime;
+        time                           =timeData.time;
+        mainTimeOffset                 =timeData.mainTimeOffset;
+        timeMode                       =timeData.timeMode;
+        timeMode_pause_time            =timeData.timeMode_pause_time;
+        timeMode_speed_rate            =timeData.timeMode_speed_rate;
+        timeMode_lastSync              =timeData.timeMode_lastSync;
+        timeMode_animate_fromTime      =timeData.timeMode_animate_fromTime;
+        timeMode_animate_toTime        =timeData.timeMode_animate_toTime;
+        timeMode_animate_fromRealTime  =timeData.timeMode_animate_fromRealTime;
+        timeMode_animate_toRealTime    =timeData.timeMode_animate_toRealTime;
+        timeMode_animate_startSpeed    =timeData.timeMode_animate_startSpeed;
+        timeMode_animate_endSpeed      =timeData.timeMode_animate_endSpeed;
+    }
 }
+
+// Initial load from local storage
+timeLocalStorageReceive();
+
+// Listen for changes in local storage and update variables accordingly
+window.addEventListener('storage', function(event) {
+    if (event.key === 'timeData') {
+        timeLocalStorageReceive();
+    }
+});
 
 // non local storage section
 // ============================================================================
@@ -47,12 +107,19 @@ const timeModes = Object.freeze({
 
 //helper for common time units
 const timeUnits = {
+    second:      1000,
     seconds:     1000,
+    minute:     60000,
     minutes:    60000,
+    hour:     3600000,
     hours:    3600000,
+    day:     86400000,
     days:    86400000,
+    week:   604800000,
     weeks:  604800000,
+    month: 2628000000,
     months:2628000000,
+    year: 31557600000,
     years:31557600000,
   };
 
@@ -90,12 +157,21 @@ function getCurrentTime() {
                 1,
                 1);
 
+                
+
+                /*
                 if (timeMode_animate_fromTime<=timeMode_animate_toTime) {
                     var animationDone = (animateTime >= timeMode_animate_toTime);
                 }
-                else {var animationDone = (animateTime < timeMode_animate_toTime);}
+                else {
+                    var animationDone = (animateTime < timeMode_animate_toTime);
+                    console.log ("NOTICE ME ! ",animateTime,timeMode_animate_toTime);
+                }
+                    */
 
-        if (animationDone) {
+        var positionInAnimation=(realTime-timeMode_animate_fromRealTime)/(timeMode_animate_toRealTime-timeMode_animate_fromRealTime);
+        //console.log("positionInAnimation: ",positionInAnimation)
+        if (positionInAnimation>=1) {
             // go to normal when the animation is done
             console.log ("animation finished! ");
             //setTimeSpeed(timeMode_speed_rate)
@@ -273,10 +349,6 @@ function timeLeft(toTime,fromTime){
     //return milliseconds
 }
 
-//format time to days, hours, minutes, and seconds 
-function timeToString(unixTime){
-}
-
 //format time to a ISO8601 string - 22 characters?
 function timeToISO8601(unixTime){
     const date = new Date(unixTime);
@@ -292,7 +364,7 @@ function timeToISO8601_compact(unixTime){
     return shortenedString;
 }
 
-//format time to a custom compact ISO8601 string - 17 characters
+//format time to a custom compact ISO8601 string with weekdays - 22 characters
 function timeToISO8601_compact_withDay(unixTime){
     const date = new Date(unixTime);
     const ISO8601String = date.toISOString();

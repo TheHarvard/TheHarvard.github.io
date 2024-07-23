@@ -62,6 +62,11 @@ window.addEventListener('load', () => {
     script.src = 'https://cdn.rawgit.com/konvajs/konva/4.0.0/konva.min.js';
     document.head.appendChild(script);
 
+    //QRious - library for generating qr codes
+    var script = document.createElement('script');
+    script.src = '../js/QRious.js';
+    document.head.appendChild(script);
+
     var script = document.createElement('script');
     script.src = '../js/programs.js';
     document.head.appendChild(script);

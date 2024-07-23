@@ -1,4 +1,4 @@
-/*
+
 function interpolateTime(currentRealTime, fromRealTime, toRealTime, fromTime, toTime, startSpeed = 1, endSpeed = 1) {
     var deltaTime = toTime-fromTime;
 
@@ -10,9 +10,9 @@ function interpolateTime(currentRealTime, fromRealTime, toRealTime, fromTime, to
     var component_deceleration = toTime + endSpeed * (currentRealTime-toRealTime);
     var component_linear = fromTime + positionInAnimation * deltaTime;
 
-    //if      (positionInAnimation<0){return component_acceleration;}
-    //if      (positionInAnimation>1){return component_deceleration;}
-    //return component_linear;
+    if      (positionInAnimation<0){return component_acceleration;}
+    if      (positionInAnimation>1){return component_deceleration;}
+    return component_linear;
 
     //set phase width
     var phaseWidth = 0.2;
@@ -46,9 +46,16 @@ function interpolateTime(currentRealTime, fromRealTime, toRealTime, fromTime, to
 }
 
 function generateTestData(fromRealTime, toRealTime, fromTime, toTime, startSpeed = 1, endSpeed = 1, step = 10) {
-    const totalDuration = toRealTime - fromRealTime;
-    const extendedStartTime = fromRealTime - totalDuration * 0.2;
-    const extendedEndTime = toRealTime + totalDuration * 0.2;
+    var totalDuration = toRealTime - fromRealTime;
+    var extendedStartTime = fromRealTime - totalDuration * 0.2;
+    var extendedEndTime = toRealTime + totalDuration * 0.2;
+
+    //run backwards when required
+    if (extendedStartTime > extendedEndTime){
+        var temp = extendedStartTime;
+        extendedStartTime = extendedEndTime;
+        extendedEndTime = temp;
+    }
 
     let testData = [];
     let prevTime = interpolateTime(extendedStartTime, fromRealTime, toRealTime, fromTime, toTime, startSpeed, endSpeed);
@@ -58,6 +65,7 @@ function generateTestData(fromRealTime, toRealTime, fromTime, toTime, startSpeed
         testData.push({ currentRealTime, currentTime, derivative });
         prevTime = currentTime;
     }
+
     return testData;
 }
 
@@ -95,19 +103,22 @@ function plotTestData(testData) {
 // Example usage
 
 var rate = 10
-var timeToAnimate = 1000
-var fromTime = 0;
-var toTime = fromTime+timeToAnimate;
-var fromRealTime = fromTime/rate;
-var toRealTime = toTime/rate;
+//var timeToAnimate = 1000
+var fromTime = 100;
+var toTime = -100;
+//var toTime = fromTime+timeToAnimate;
+//var fromRealTime = fromTime/rate;
+//var toRealTime = toTime/rate;
+var fromRealTime = 0;
+var toRealTime = 10;
 //const testData = generateTestData(10000, 30000, 1000000, 2000000,0,0,100);
-const testData = generateTestData(fromRealTime, toRealTime, fromTime, toTime,1,1,1);
+const testData = generateTestData(fromRealTime, toRealTime, fromTime, toTime,5,5,1);
 plotTestData(testData);
-*/
 
 
 
 
+/*
 // Given new linear functions f1(x) = 2x + 1 and f2(x) = -x + 4
 const m1 = 2;
 const b1 = 1;
@@ -187,3 +198,4 @@ const layout = {
 };
 
 Plotly.newPlot('plot', [trace1, trace2, trace3], layout);
+*/

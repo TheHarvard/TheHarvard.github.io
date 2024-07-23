@@ -20,6 +20,7 @@
 <button onclick="setTimePaused()">[ pause ]</button>
 
 
+<button onclick="setTimeSpeed(-100000)">[ setTimeSpeed -100000 ]</button>
 <button onclick="setTimeSpeed(-10)">[ setTimeSpeed -10 ]</button>
 <button onclick="setTimeSpeed(-2)">[ setTimeSpeed -2 ]</button>
 <button onclick="setTimeSpeed(-1)">[ setTimeSpeed -1 ]</button>
@@ -30,10 +31,14 @@
 <button onclick="setTimeSpeed(0.5)">[ setTimeSpeed 0.5 ]</button>
 <button onclick="setTimeSpeed(1)">[ setTimeSpeed 1 ]</button>
 <button onclick="setTimeSpeed(2)">[ setTimeSpeed 2 ]</button>
-<button onclick="setTimeSpeed(10)">[ setTimeSpeed 10 ]</button>
+<button onclick="setTimeSpeed(100000)">[ setTimeSpeed 100000 ]</button>
 
+<button onclick="timeJumpAnimate(1*timeUnits.years,20*timeUnits.seconds)">[ animate +1y ]</button>
 <button onclick="timeJumpAnimate(1*timeUnits.days)">[ animate +1d ]</button>
+<button onclick="timeJumpAnimate(6*timeUnits.seconds,1*timeUnits.seconds)">[ animate +6s ]</button>
+<button onclick="timeJumpAnimate(-6*timeUnits.seconds,1*timeUnits.seconds)">[ animate -6s ]</button>
 <button onclick="timeJumpAnimate(-1*timeUnits.days)">[ animate -1d ]</button>
+<button onclick="timeJumpAnimate(-1*timeUnits.years,20*timeUnits.seconds)">[ animate -1y ]</button>
 <button onclick="timeSetOffsetAnimate(0)">[ set timeOffset 0 animate ]</button>
 
 
