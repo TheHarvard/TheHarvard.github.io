@@ -219,11 +219,13 @@ function orbitalSystemMap_main(finalPass=false) {
 
         // save clean copy of static orbits from before first render.
         staticOrbits_preFirstRender[index] = JSON.parse(JSON.stringify(staticOrbits[index]));
+
+        var currentTime = getCurrentTime();
         
         //renderOrbits(layer,staticOrbits[index]);
-        renderOrbits(staticOrbits[index]);
+        renderOrbits(staticOrbits[index],currentTime);
         stages[index].add(staticOrbits[index].layer);
-        adTimeLabel(staticOrbits[index],0)
+        adTimeLabel(staticOrbits[index],currentTime)
         //layer.draw();
         element.style.display = ''; //remove style="display:none;"
         
