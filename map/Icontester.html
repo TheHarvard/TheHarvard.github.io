@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <link class="init" href="../css/style.css" rel="stylesheet" type="text/css" />
+      <script src="../js/populateHTML.js"></script>
+      <title>Orbital system map demo</title>
+    </head>
+
+  <body>
+
+<pre>
+                                 ICON EXAMPLES:
+</pre>
+
+<type-osm id="orbitalSystemMap" style="display:none;">
+  {
+
+    "0": {
+      "label": "blackhole",
+      "link": "icontester.html",
+      "icon_r": 8,
+      "icon_type": "blackhole-"
+    },
+
+    "1": {
+      "label": "",
+      "icon_r": 3,
+      "icon_type": "",
+      "orbit_w": 0.4,
+      "orbit_type": "",
+      "period": 100,
+      "period_offset": 50,
+      "major_axis": 20,
+      "minor_axis": 20,
+      "focal_axis_offset": 0,
+      "satellites":{}
+    },
+
+    "2": {
+      "label": "default",
+      "link": "icontester.html",
+      "icon_r": 3,
+      "period": 100,
+      "period_offset": 0,
+      "major_axis": 20
+    },
+
+    "2.5": {
+      "label": "r=0",
+      "link": "icontester.html",
+      "icon_r": 0,
+      "period": 100,
+      "period_offset": 25,
+      "major_axis": 20
+    },
+
+    "3": {
+      "label": "triangle",
+      "link": "icontester.html",
+      "icon_r": 3,
+      "orbit_w": 0.4,
+      "icon_type": "triangle",
+      "period": 100,
+      "period_offset": 0,
+      "major_axis": 40
+    },
+
+    "4": {
+      "label": "triangle2",
+      "link": "icontester.html",
+      "icon_r": 3,
+      "icon_type": "triangle2",
+      "period": 100,
+      "period_offset": 10,
+      "major_axis": 40
+    },
+
+    "5": {
+      "label": "diamond",
+      "link": "icontester.html",
+      "icon_r": 3,
+      "icon_type": "diamond",
+      "period": 100,
+      "period_offset": 20,
+      "major_axis": 40
+    },
+
+    "6": {
+      "label": "diamond2",
+      "link": "icontester.html",
+      "icon_r": 3,
+      "icon_type": "diamond2",
+      "period": 100,
+      "period_offset": 30,
+      "major_axis": 40
+    },
+
+    "7": {
+      "label": "square",
+      "link": "icontester.html",
+      "icon_r": 3,
+      "icon_type": "square",
+      "period": 100,
+      "period_offset": 40,
+      "major_axis": 40
+    },
+
+    "8": {
+      "label": "pentagon",
+      "link": "icontester.html",
+      "icon_r": 3,
+      "icon_type": "pentagon",
+      "period": 100,
+      "period_offset": 50,
+      "major_axis": 40
+    },
+
+    "9": {
+      "label": "star",
+      "link": "icontester.html",
+      "icon_r": 3,
+      "icon_type": "star",
+      "period": 100,
+      "period_offset": 60,
+      "major_axis": 40
+    },
+
+    "10": {
+      "label": "star1",
+      "link": "icontester.html",
+      "icon_r": 3,
+      "icon_type": "star1",
+      "period": 100,
+      "period_offset": 70,
+      "major_axis": 40
+    },
+
+    "11": {
+      "label": "star2",
+      "link": "icontester.html",
+      "icon_r": 3,
+      "icon_type": "star2",
+      "period": 100,
+      "period_offset": 80,
+      "major_axis": 40
+    },
+
+    "12": {
+      "label": "v",
+      "link": "icontester.html",
+      "icon_r": 3,
+      "icon_type": "v",
+      "period": 100,
+      "period_offset": 90,
+      "major_axis": 40
+    },
+
+    "21": {
+      "label": "spikejump1",
+      "link": "icontester.html",
+      "icon_r": 3,
+      "icon_type": "spikejump1",
+      "orbit_w": 0.4,
+      "period": 100,
+      "period_offset": 0,
+      "major_axis": 60
+    },
+
+    "22": {
+      "label": "spikejump2",
+      "link": "icontester.html",
+      "icon_r": 3,
+      "icon_type": "spikejump2",
+      "period": 100,
+      "period_offset": 10,
+      "major_axis": 60
+    },
+
+    "23": {
+      "label": "spikejump3",
+      "link": "icontester.html",
+      "icon_r": 3,
+      "icon_type": "spikejump3",
+      "period": 100,
+      "period_offset": 20,
+      "major_axis": 60
+    },
+
+    "24": {
+      "label": "spikejump4",
+      "link": "icontester.html",
+      "icon_r": 3,
+      "icon_type": "spikejump4",
+      "period": 100,
+      "period_offset": 30,
+      "major_axis": 60
+    },
+
+    "25": {
+      "label": "spikejump5",
+      "link": "icontester.html",
+      "icon_r": 3,
+      "icon_type": "spikejump5",
+      "period": 100,
+      "period_offset": 40,
+      "major_axis": 60
+    },
+
+    "26": {
+      "label": "spikejump6",
+      "link": "icontester.html",
+      "icon_r": 3,
+      "icon_type": "spikejump6",
+      "period": 100,
+      "period_offset": 50,
+      "major_axis": 60
+    },
+
+    "27": {
+      "label": "gas",
+      "link": "icontester.html",
+      "icon_r": 3,
+      "icon_type": "gas",
+      "period": 100,
+      "period_offset": 60,
+      "major_axis": 60
+    },
+
+    "28": {
+      "label": "gas1",
+      "link": "icontester.html",
+      "icon_r": 3,
+      "icon_type": "gas1",
+      "period": 100,
+      "period_offset": 70,
+      "major_axis": 60
+    },
+
+    "29": {
+      "label": "sun",
+      "link": "icontester.html",
+      "icon_r": 3,
+      "icon_type": "sun",
+      "period": 100,
+      "period_offset": 80,
+      "major_axis": 60
+    },
+
+    "30": {
+      "label": "sun1",
+      "link": "icontester.html",
+      "icon_r": 3,
+      "icon_type": "sun1",
+      "period": 100,
+      "period_offset": 90,
+      "major_axis": 60
+    },
+
+    "35": {
+      "label": "callout",
+      "link": "icontester.html",
+      "icon_r": 5,
+      "icon_type": "callout",
+      "period": 100,
+      "period_offset": -25,
+      "major_axis": 80
+    },
+
+    "36": {
+      "label": "callout1",
+      "link": "icontester.html",
+      "icon_r": 5,
+      "icon_type": "callout1",
+      "period": 100,
+      "period_offset": -20,
+      "major_axis": 80
+    },
+
+    "37": {
+      "label": "callout2",
+      "link": "icontester.html",
+      "icon_r": 5,
+      "icon_type": "callout2",
+      "period": 100,
+      "period_offset": -15,
+      "major_axis": 80
+    },
+
+    "38": {
+      "label": "callout3",
+      "link": "icontester.html",
+      "icon_r": 5,
+      "icon_type": "callout3",
+      "period": 100,
+      "period_offset": -10,
+      "major_axis": 80
+    },
+
+    "39": {
+      "label": "v",
+      "link": "icontester.html",
+      "icon_r": 2,
+      "icon_type": "v",
+      "period": 100,
+      "period_offset": -5,
+      "major_axis": 80
+    },
+
+    "40": {
+      "label": "0.2",
+      "link": "icontester.html",
+      "icon_r": 0.2,
+      "icon_type": "",
+      "period": 100,
+      "period_offset": 0,
+      "major_axis": 80
+    },
+
+    "41": {
+      "label": "0.4",
+      "link": "icontester.html",
+      "icon_r": 0.4,
+      "icon_type": "",
+      "period": 100,
+      "period_offset": 5,
+      "major_axis": 80
+    },
+
+    "42": {
+      "label": "0.8",
+      "link": "icontester.html",
+      "icon_r": 0.8,
+      "icon_type": "",
+      "period": 100,
+      "period_offset": 10,
+      "major_axis": 80
+    },
+
+    "43": {
+      "label": "callout",
+      "icon_r": 5,
+      "icon_type": "callout",
+      "period": 100,
+      "period_offset": 15,
+      "major_axis": 85
+    },
+
+    "44": {
+      "label": "callout1",
+      "icon_r": 5,
+      "icon_type": "callout1",
+      "period": 100,
+      "period_offset": 20,
+      "major_axis": 85
+    },
+
+    "45": {
+      "label": "callout2",
+      "icon_r": 5,
+      "icon_type": "callout2",
+      "period": 100,
+      "period_offset": 25,
+      "major_axis": 85
+    },
+
+    "46": {
+      "label": "callout3",
+      "icon_r": 5,
+      "icon_type": "callout3",
+      "period": 100,
+      "period_offset": 30,
+      "major_axis": 85
+    }
+
+    }
+</type-osm>
+
+
+</body>
+    </html>

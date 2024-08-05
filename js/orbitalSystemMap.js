@@ -8,7 +8,9 @@ var colourway_secondaryColour = 'rgb(255, 176, 0)';
 var colourway_tertiaryColour = 'rgb(255, 176, 0)';
 var revealAnimation_nextTimeout;
 
+
 console.log('orbitalSystemMap.js called...');
+
 
 
 
@@ -1244,6 +1246,21 @@ function getIconFromOrbit(orbitParams,time) {
                 })
             );
 
+            //// add dot
+            //orbitParams.konva_object_icon.add(
+            //    new Konva.Circle({
+            //        preventDefault: false,
+            //        listening: false,
+            //        perfectDrawEnabled: false,
+            //        radius: 0.4,
+            //        fill: colourway_primaryColour,
+            //        shadowColor: colourway_primaryColour,
+            //        shadowBlur: 0.3,
+            //        shadowOffsetX: 0,
+            //        shadowOffsetY: 0,
+            //    })
+            //);
+
             // add shape
             orbitParams.konva_object_icon.add(
                 new Konva.RegularPolygon({
@@ -1310,6 +1327,84 @@ function getIconFromOrbit(orbitParams,time) {
             );
         }
 
+        //callout
+        else if (icon_type==="callout"||icon_type==="callout1"
+              ||icon_type==="callout2"||icon_type==="callout3") {
+
+            orbitParams.konva_object_icon.add(
+                new Konva.Circle({
+                    preventDefault: false,
+                    listening: false,
+                    perfectDrawEnabled: false,
+                    radius: 0.4,
+                    fill: colourway_primaryColour,
+                    shadowColor: colourway_primaryColour,
+                    shadowBlur: 0.3,
+                    shadowOffsetX: 0,
+                    shadowOffsetY: 0,
+                })
+            );
+            
+            if (icon_type==="callout1"){
+                orbitParams.konva_object_icon.add(
+                    new Konva.Line({
+                        preventDefault: false,
+                        listening: false,
+                        perfectDrawEnabled: false,
+                        stroke: colourway_primaryColour,
+                        strokeWidth: 0.4,
+                        shadowBlur: 0.3,
+                        shadowOffsetX: 0,
+                        shadowOffsetY: 0,
+                        points: [0,0,icon_r*0.5,icon_r*0.866],
+                    })
+                );
+            } else if (icon_type==="callout2"){
+                orbitParams.konva_object_icon.add(
+                    new Konva.Line({
+                        preventDefault: false,
+                        listening: false,
+                        perfectDrawEnabled: false,
+                        stroke: colourway_primaryColour,
+                        strokeWidth: 0.4,
+                        shadowBlur: 0.3,
+                        shadowOffsetX: 0,
+                        shadowOffsetY: 0,
+                        points: [0,0,-icon_r*0.5,icon_r*0.866],
+                    })
+                );
+            } else if (icon_type==="callout3"){
+                orbitParams.konva_object_icon.add(
+                    new Konva.Line({
+                        preventDefault: false,
+                        listening: false,
+                        perfectDrawEnabled: false,
+                        stroke: colourway_primaryColour,
+                        strokeWidth: 0.4,
+                        shadowBlur: 0.3,
+                        shadowOffsetX: 0,
+                        shadowOffsetY: 0,
+                        points: [0,0,-icon_r*0.5,-icon_r*0.866],
+                    })
+                );
+            } else {
+                orbitParams.konva_object_icon.add(
+                    new Konva.Line({
+                        preventDefault: false,
+                        listening: false,
+                        perfectDrawEnabled: false,
+                        stroke: colourway_primaryColour,
+                        strokeWidth: 0.4,
+                        shadowBlur: 0.3,
+                        shadowOffsetX: 0,
+                        shadowOffsetY: 0,
+                        points: [0,0,icon_r*0.5,-icon_r*0.866],
+                    })
+                );
+        }
+
+
+        }
     
         //star * - Navigation points?
         else if (icon_type==="star"||icon_type==="star1"||icon_type==="star2") {
@@ -1714,18 +1809,38 @@ function getLabelFromOrbit(orbitParams,time){
 
         //console.log(label, " needs ", labelBoundingDiameter, ", and has ", icon_r*2);
 
-        if (icon_type ==="v"){
-            textLabel.y( (-textLabel.height()) - (icon_r) -0.8 );
-            textLabel.strokeWidth();
-        }
+        if (icon_type ==="callout"){
+            textLabel.y((-icon_r*0.866)-textLabel.height());
+            textLabel.x(icon_r*0.5);
 
-        if (icon_r===0) {
+        } else if (icon_type ==="callout1"){
+            textLabel.y((icon_r*0.866));
+            textLabel.x(icon_r*0.5);
+            if (link!==null && link !== undefined && link !== "") {
+                textLabel.y((icon_r*0.866)-textLabel.height());
+            }
+
+        } else if (icon_type ==="callout2"){
+            textLabel.y((icon_r*0.866));
+            textLabel.x((-icon_r*0.5)-textLabel.width());
+            if (link!==null && link !== undefined && link !== "") {
+                textLabel.y((icon_r*0.866)-textLabel.height());
+            }
+
+        } else if (icon_type ==="callout3"){
+            textLabel.y((-icon_r*0.866)-textLabel.height());
+            textLabel.x((-icon_r*0.5)-textLabel.width());
+
+        } else if (icon_type ==="v"){
+            textLabel.y( (-textLabel.height()) - (icon_r) -1.0 );
+            //textLabel.strokeWidth();
+
+        } else if (icon_r===0) {
         //else if (icon_r<=0 || labelBoundingDiameter < (icon_r*2)) {
             icon_r=0;
             textLabel.y( (-textLabel.height()/2) - (icon_r) );
-        } 
-        
-        else {
+
+        } else {
             textLabel.y( (-textLabel.height()) - (icon_r) - 1.75 );
         }
 
@@ -1738,6 +1853,7 @@ function getLabelFromOrbit(orbitParams,time){
             width: textLabel.width() + 1,  // Add some padding
             height: textLabel.height() + 1,  // Add some padding
             fill: colourway_primaryColour,
+            //fill: "rgb(33, 200, 200,50)",
             //stroke: colourway_primaryColour,
             shadowColor: colourway_primaryColour,
             shadowBlur: 0,
@@ -1746,6 +1862,21 @@ function getLabelFromOrbit(orbitParams,time){
             cornerRadius: 0,  // Optional: rounded corners
             globalCompositeOperation: 'destination-out'
         });
+
+        //shrink backgound to line up callout link underlines
+        if (link!==null && link !== undefined && link !== "") {
+            if (icon_type ==="callout"||icon_type ==="callout1"){
+                background.x(textLabel.x() - 0);
+                background.width(textLabel.width() + 0.25);
+                console.log("(icon_type ===callout)");
+            }
+            if (icon_type ==="callout3"||icon_type ==="callout2"){
+                background.x(textLabel.x() - 0.25);
+                background.width(textLabel.width() + 0);
+                console.log("(icon_type ===callout3)");
+            }
+        }
+
 
         //group text and background together and return them.
         orbitParams.konva_object_label = new Konva.Group({});
