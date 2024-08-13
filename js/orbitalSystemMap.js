@@ -385,6 +385,7 @@ function renderOrbits(orbits, time = 0, offset = {"x":0,"y":0},layer,labelsToBeP
         if (orbits[key].focal_axis_offset===null || orbits[key].focal_axis_offset === undefined) { orbits[key].focal_axis_offset = 0; }
         if (orbits[key].satellites===null || orbits[key].satellites === undefined) { orbits[key].satellites = {}; }
         
+        //fill icons if labeled as a simple default behaviour
         if (orbits[key].label!==""  && orbits[key].icon_type==="")
             { orbits[key].icon_type = "fill"; }
 

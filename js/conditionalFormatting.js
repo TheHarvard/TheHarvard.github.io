@@ -53,6 +53,35 @@ function conditionalFormatting_update() {
             console.log("not replaced.");
         }
     });
+
+    // keep elements with showAfter attribute, if time has passed
+    document.querySelectorAll('[showAfter]').forEach(element => {
+        const showAfterTime = element.getAttribute('showAfter');
+
+        // Convert both times to a comparable format (e.g., Date object, or UNIX timestamp)
+        const showAfterTimestamp = new Date(showAfterTime).getTime();
+
+        console.log("[showAfter]: ", showAfterTime, " === ", new Date(showAfterTime), " === ", showAfterTimestamp);
+    
+        if (params.hasOwnProperty("time")) {
+            const time = params["time"];
+    
+            // Convert both times to a comparable format (e.g., Date object, or UNIX timestamp)
+            const currentTime = new Date(time).getTime();
+    
+            if (currentTime >= showAfterTimestamp) {
+                console.log("Shown. time=", time, " === ",new Date(time), " === ",currentTime);
+            } else {
+                element.remove();
+                console.log("Hidden. time=", time, " === ",new Date(time), " === ",currentTime);
+            }
+    
+        } else {
+            console.log("skipped - url does not have time");
+        }
+    });
+
+    // remove elements with hideAfter attribute, if time has passed
 }
 
 console.log("conditionalFormatting.js called")
