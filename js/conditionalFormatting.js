@@ -83,29 +83,16 @@ function conditionalFormatting_update() {
     });
     */
 
-    const currentUniverseTime = getCurrentTime();
+
+
 
     // Show or hide content based on time
     document.querySelectorAll('[showAfter], [hideAfter], [showBefore], [hideBefore]').forEach(element => {
         
         //moved to saving the file
-        /*
-        //add time to the url
-        if (!params.hasOwnProperty("time")) {
-            // Create a new URL object based on the current URL
-            const url = new URL(window.location.href);
+        
+
             
-            // Set the 'time' parameter to 0
-            url.searchParams.set('time', '100');
-            //getCurrentTime()
-            
-            // Update the URL in the browser without reloading the page
-            window.history.replaceState({}, '', url);
-            
-            // Optionally, you can update the params object to reflect this change
-            params["time"] = '0';
-        }
-            */
         
         
         const attributes = ['showAfter', 'hideAfter', 'showBefore', 'hideBefore'];
@@ -122,8 +109,8 @@ function conditionalFormatting_update() {
                     time = params["time"];
                     console.log("has time property: ",time);
                 } else{
-                    time = currentUniverseTime;
-                    console.log("default to currentUniverseTime: ",currentUniverseTime)
+                    time = conditionalFormatting_currentUniverseTime;
+                    console.log("default to conditionalFormatting_currentUniverseTime: ",conditionalFormatting_currentUniverseTime)
                 }
                 //console.log("time is: ",time)
                 const currentTime = new Date(isNaN(time) ? time : Number(time)).getTime();
@@ -161,7 +148,29 @@ function conditionalFormatting_update() {
 
 }
 
+//hardcodes the currently used "current time" to the url for archival of the
+//current state of the conditional formatting. 
+function conditionalFormatting_addTimeToURL(){
+    const params = cf_getUrlParameters();
+    //add time to the url
+    if (!params.hasOwnProperty("time")) {
+        // Create a new URL object based on the current URL
+        const url = new URL(window.location.href);
+        
+        // Set the 'time' parameter to 0
+        url.searchParams.set('time', conditionalFormatting_currentUniverseTime);
+        
+        // Update the URL in the browser without reloading the page
+        window.history.replaceState({}, '', url);
+        
+        // Optionally, you can update the params object to reflect this change
+        //params["time"] = '0';
+    }
+}
+
+
 console.log("conditionalFormatting.js called")
+var conditionalFormatting_currentUniverseTime = getCurrentTime();
 // Call the cf_toggleElements function only on page load.
 conditionalFormatting_update();
 console.log("conditionalFormatting.js complete")

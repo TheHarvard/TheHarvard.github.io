@@ -481,6 +481,11 @@ function DH_get_externalPage(url) {
 //save the current page to "memory" - html button friendly macro
 function DH_save_currentPage(){
     let dh=DH_get_currentPage();
+
+    //forces the conditionalFormatting.js script to add time to the url
+    //to maintain the state of the current conditional formatting.
+    conditionalFormatting_addTimeToURL();
+
     setDH(dh.name,dh.url,dh.size,dh.actions, "C")
 }
 
