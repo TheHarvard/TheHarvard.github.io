@@ -56,46 +56,7 @@ window.addEventListener('load', () => {
     }
     document.body.insertAdjacentElement('afterbegin', bodyHeader);
 
-
-    // add scripts
-    var script = document.createElement('script');
-    script.src = 'https://cdn.rawgit.com/konvajs/konva/4.0.0/konva.min.js';
-    document.head.appendChild(script);
-
-    //QRious - library for generating qr codes
-    var script = document.createElement('script');
-    script.src = '../js/QRious.js';
-    document.head.appendChild(script);
-
-    var script = document.createElement('script');
-    script.src = '../js/programs.js';
-    document.head.appendChild(script);
-
-    var script = document.createElement('script');
-    script.src = '../js/conditionalFormatting.js';
-    document.head.appendChild(script);
-
-    var script = document.createElement('script');
-    script.src = '../js/typer.js';
-    document.head.appendChild(script);
-
-    var script = document.createElement('script');
-    script.src = '../js/dynamicHeader.js';
-    document.head.appendChild(script);
-
-    var script = document.createElement('script');
-    script.src = '../js/time.js';
-    document.head.appendChild(script);
-
-    var script = document.createElement('script');
-    script.src = '../js/colourwaySelector.js';
-    document.head.appendChild(script);
-
-    var script = document.createElement('script');
-    script.src = '../js/orbitalSystemMap.js';
-    document.head.appendChild(script);
-
-    //remove all init elements last
+    //setup event to remove init elements when everything is loaded.
     window.onload = function() {
         // Select all elements with the class "init"
         var elements = document.querySelectorAll('.init');
@@ -105,4 +66,87 @@ window.addEventListener('load', () => {
             element.parentNode.removeChild(element);
         });
     };
+
+/*
+    // add scripts
+    var script = document.createElement('script');
+    //script.src = 'https://cdn.rawgit.com/konvajs/konva/4.0.0/konva.min.js';
+    script.src = '../js/konva.js';
+    document.head.appendChild(script);
+
+    //QRious - library for generating qr codes
+    var script = document.createElement('script');
+    script.src = '../js/QRious.js';
+    document.head.appendChild(script);
+
+    //document pre processing
+
+    var script = document.createElement('script');
+    script.src = '../js/time.js';
+    script.defer = true;
+    document.head.appendChild(script);
+
+    var script = document.createElement('script');
+    script.src = '../js/programs.js';
+    script.defer = true;
+    document.head.appendChild(script);
+
+    var script = document.createElement('script');
+    script.src = '../js/conditionalFormatting.js';
+    script.defer = true;
+    document.head.appendChild(script);
+
+    //document is done and will be written
+
+    var script = document.createElement('script');
+    script.src = '../js/typer.js';
+    script.defer = true;
+    document.head.appendChild(script);
+
+    var script = document.createElement('script');
+    script.src = '../js/dynamicHeader.js';
+    script.defer = true;
+    document.head.appendChild(script);
+
+    var script = document.createElement('script');
+    script.src = '../js/colourwaySelector.js';
+    script.defer = true;
+    document.head.appendChild(script);
+
+    var script = document.createElement('script');
+    script.src = '../js/orbitalSystemMap.js';
+    script.defer = true;
+    document.head.appendChild(script);
+*/
+
+//load scripts sequentially
+function loadScript(src) {
+    return new Promise((resolve, reject) => {
+        var script = document.createElement('script');
+        script.src = src;
+        script.onload = () => resolve(src);
+        script.onerror = () => reject(new Error(`Script load error for ${src}`));
+        document.head.appendChild(script);
+    });
+}
+
+async function loadScriptsSequentially() {
+    try {
+        await loadScript('../js/konva.js');
+        await loadScript('../js/QRious.js');
+        await loadScript('../js/time.js');
+        await loadScript('../js/programs.js');
+        await loadScript('../js/conditionalFormatting.js');
+        await loadScript('../js/typer.js');
+        await loadScript('../js/dynamicHeader.js');
+        await loadScript('../js/colourwaySelector.js');
+        await loadScript('../js/orbitalSystemMap.js');
+        console.log('All scripts loaded successfully');
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+
+loadScriptsSequentially();
+
 });

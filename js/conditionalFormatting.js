@@ -54,6 +54,7 @@ function conditionalFormatting_update() {
         }
     });
 
+    /*
     // keep elements with showAfter attribute, if time has passed
     document.querySelectorAll('[showAfter]').forEach(element => {
         const showAfterTime = element.getAttribute('showAfter');
@@ -80,8 +81,84 @@ function conditionalFormatting_update() {
             console.log("skipped - url does not have time");
         }
     });
+    */
 
-    // remove elements with hideAfter attribute, if time has passed
+    const currentUniverseTime = getCurrentTime();
+
+    // Show or hide content based on time
+    document.querySelectorAll('[showAfter], [hideAfter], [showBefore], [hideBefore]').forEach(element => {
+        
+        //moved to saving the file
+        /*
+        //add time to the url
+        if (!params.hasOwnProperty("time")) {
+            // Create a new URL object based on the current URL
+            const url = new URL(window.location.href);
+            
+            // Set the 'time' parameter to 0
+            url.searchParams.set('time', '100');
+            //getCurrentTime()
+            
+            // Update the URL in the browser without reloading the page
+            window.history.replaceState({}, '', url);
+            
+            // Optionally, you can update the params object to reflect this change
+            params["time"] = '0';
+        }
+            */
+        
+        
+        const attributes = ['showAfter', 'hideAfter', 'showBefore', 'hideBefore'];
+
+        attributes.forEach(attr => {
+            if (element.hasAttribute(attr)) {
+                const timeValue = element.getAttribute(attr);
+                const timeTimestamp = new Date(isNaN(timeValue) ? timeValue : Number(timeValue)).getTime();
+
+                console.log(`[${attr}]: `, timeValue, " === ", new Date(timeTimestamp), " === ", timeTimestamp);
+
+                var time = "";
+                if (params.hasOwnProperty("time")) {
+                    time = params["time"];
+                    console.log("has time property: ",time);
+                } else{
+                    time = currentUniverseTime;
+                    console.log("default to currentUniverseTime: ",currentUniverseTime)
+                }
+                //console.log("time is: ",time)
+                const currentTime = new Date(isNaN(time) ? time : Number(time)).getTime();
+                
+
+                // If both target time and current time are valid
+                if (!isNaN(timeTimestamp) && !isNaN(currentTime)) {
+
+                    console.log(
+                        `${attr} processed. \ncurrentTime   =`, new Date(isNaN(time) ? time : Number(time)), " === ", time, " === ", currentTime,
+                         "\ntimeTimestamp =", new Date(isNaN(timeValue) ? timeValue : Number(timeValue)), " === ", timeValue, " === ", timeTimestamp);
+
+                    if (currentTime >= timeTimestamp) {
+                        if (attr === 'hideAfter' || attr === 'showBefore') {
+                            element.remove();
+                        }
+                    } else {
+                        if (attr === 'showAfter' || attr === 'hideBefore') {
+                            element.remove();
+                        }
+                    }
+
+                } else {
+                    if (attr === 'showAfter' || attr === 'showBefore') {
+                        // Default behavior is to hide "show" and show "hide" tags
+                        element.remove();
+                    }
+                    console.log(`${attr} skipped due to invalid time values.`);
+                }
+            }
+        });
+    });
+
+
+
 }
 
 console.log("conditionalFormatting.js called")

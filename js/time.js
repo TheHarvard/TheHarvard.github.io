@@ -1,3 +1,5 @@
+console.log("time.js called")
+
 // local storage section - these values are also stored in local storage.
 // ============================================================================
 
@@ -332,6 +334,7 @@ function setTimeSpeed(rate=1){
 }
 
 
+//after time is completely loaded
 
 
 
@@ -381,3 +384,5 @@ function timeToISO8601_compact_withDay(unixTime){
 function timeQR(){
 
 }
+
+console.log("time.js done")
