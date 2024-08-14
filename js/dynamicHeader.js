@@ -212,7 +212,7 @@ function dynamicHeader_update() {
     /*
 
     //headerContent += "B: (M-DISK drive 2)<br>";
-    headerContent += "<details><summary>B: (M-DISK)</summary>";
+    headerContent += "<details><summary>B: (M-Drive)</summary>";
     
     //Eject or empty depending on if drive bay is empty
     if (hasDriveLetter("B")) {
@@ -317,7 +317,7 @@ function dynamicHeader_update() {
     let saveButtonText  = "Save";
     if (sumSize+parseInt(dh.size) > totalSize){
         saveButtonDisableAttribute  = "disabled";
-        saveButtonText  = "Save: MEMORY ERROR";
+        saveButtonText  = "Save: MEMORY LIMIT";
     }
 
     // Check if name exceeds target width
@@ -480,12 +480,12 @@ function DH_get_externalPage(url) {
 
 //save the current page to "memory" - html button friendly macro
 function DH_save_currentPage(){
-    let dh=DH_get_currentPage();
-
+    
     //forces the conditionalFormatting.js script to add time to the url
     //to maintain the state of the current conditional formatting.
     conditionalFormatting_addTimeToURL();
 
+    let dh=DH_get_currentPage();
     setDH(dh.name,dh.url,dh.size,dh.actions, "C")
 }
 

@@ -58,6 +58,10 @@
         document.getElementById('demo5').innerHTML = "time:                "+currentTime;
         document.getElementById('demo6').innerHTML = "timeMode_lastSync:   "+timeMode_lastSync;
         document.getElementById('demo7').innerHTML = "timeMode_pause_time: "+timeMode_pause_time;
+
+        document.getElementById('demo10').innerHTML = timeToISO8601(currentRealTime);
+        document.getElementById('demo11').innerHTML = timeToISO8601_compact(currentRealTime);
+        document.getElementById('demo12').innerHTML = timeToISO8601_compact_withDay(currentRealTime);
     }
 
     // Set interval to execute the function every 1000 milliseconds (1 second)
@@ -70,6 +74,11 @@
 <span id="demo6"> temp </span>
 <span id="demo7"> temp </span>
 
+<pre>
+timeToISO8601:                 <span id="demo10"> temp </span>
+timeToISO8601_compact:         <span id="demo11"> temp </span>
+timeToISO8601_compact_withDay: <span id="demo12"> temp </span>
+</pre>
 
 </pre>
 </body>

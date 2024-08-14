@@ -158,14 +158,58 @@ function conditionalFormatting_addTimeToURL(){
         const url = new URL(window.location.href);
         
         // Set the 'time' parameter to 0
-        url.searchParams.set('time', conditionalFormatting_currentUniverseTime);
+        url.searchParams.set('time', timeToISO8601(conditionalFormatting_currentUniverseTime));
         
         // Update the URL in the browser without reloading the page
         window.history.replaceState({}, '', url);
         
-        // Optionally, you can update the params object to reflect this change
-        //params["time"] = '0';
+        // Reload the page to apply the new time-based formatting
+        window.location.reload();
     }
+}
+
+// Updates the time stored in the URL to the current time or supplied time,
+// and reloads the page to re-apply conditional formatting with the new time.
+function conditionalFormatting_updateURLTime_andReload(newTime_passed) {
+    // Create a new URL object based on the current URL
+    const url = new URL(window.location.href);
+
+    // Check if the "time" parameter exists in the URL, if not, add it
+    //if (!url.searchParams.has("time")) {
+    //    conditionalFormatting_addTimeToURL(); // Assuming this function adds the 'time' parameter
+    //}
+
+    // Determine the new time to be set
+    let newTime = "";
+    if (typeof newTime_passed === 'string') {
+        newTime = newTime_passed;
+    } else {
+        newTime = timeToISO8601(getCurrentTime());
+    }
+
+    // Update the "time" parameter in the URL
+    url.searchParams.set('time', newTime);
+
+    // Update the URL without reloading the page
+    window.history.replaceState({}, '', url);
+
+    // Reload the page to apply the new time-based formatting
+    window.location.reload();
+}
+
+// Removes the url time, making the document a live document.
+function conditionalFormatting_removeURLTime_andReload() {
+    // Create a new URL object based on the current URL
+    const url = new URL(window.location.href);
+
+    // Remove the specified parameter
+    url.searchParams.delete('time');
+
+    // Update the URL without reloading the page
+    window.history.replaceState({}, '', url);
+
+    // Reload the page to apply the new time-based formatting
+    window.location.reload();
 }
 
 
