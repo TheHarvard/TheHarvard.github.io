@@ -320,6 +320,14 @@ function dynamicHeader_update() {
         saveButtonText  = "Save: MEMORY LIMIT";
     }
 
+    //share button
+    let shareButtonDisableAttribute  = "";
+    let shareButtonText  = "Share";
+    if (sumSize+parseInt(dh.size) > totalSize){
+        shareButtonDisableAttribute  = "disabled";
+        shareButtonText  = "Share: MEMORY LIMIT";
+    }
+
     // Check if name exceeds target width
     let staticLength = 6 + dh.size.toString().length + 4; // length of "├─ - KB"
     let availableWidth = targetWidth - staticLength;
@@ -348,6 +356,10 @@ function dynamicHeader_update() {
         })
     }
 
+    // button to share the current page to another device via QR code
+    //linkContent += `&nbsp; ├─<button onclick="DH_shareQR_currentPage()" ${shareButtonDisableAttribute}>[ ${shareButtonText} ]</button><br>`;
+    
+    // Button to save the current page to current device
     linkContent += `&nbsp; └─<button onclick="DH_save_currentPage()" ${saveButtonDisableAttribute}>[ ${saveButtonText} ]</button><br>`;
     
     headerContent += `<details>${summaryContent}${linkContent}</details>`;
@@ -488,6 +500,10 @@ function DH_save_currentPage(){
     let dh=DH_get_currentPage();
     setDH(dh.name,dh.url,dh.size,dh.actions, "C")
 }
+
+//Open a page with a qr code to share the current page.
+//function DH_shareQR_currentPage(){
+//}
 
 //"Are you sure?" delete button behaviour
 function clearDH_buttonWithConfirm(dhName) {

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link class="init" href="../css/style.css" rel="stylesheet" type="text/css" />
+        <script src="../js/populateHTML.js"></script>
+        <title>qrShare.exe</title>
+        <size>1</size>
+        <actions>[
+            {"name":"Run","script":"updateUrlAndReload({ fromDH: '',adBlock1: 'AdVoider.exe' })"}
+            ]</actions>
+    </head>
+    <body>
+              
+      <canvas id="qrcode" style="width: 90vw;height: 90vw;margin: 3vw;"></canvas>
+
+    </body>
+            
+    <script>
+        
+      document.addEventListener('typer_done', function(event) {
+          const element = document.querySelectorAll('#display #qrcode');
+          const url = window.location.href
+          console.log("QR URL",url)
+          var qr = new QRious({
+              element: document.getElementById('qrcode'),
+              //element: element,
+              value: url,
+              size: 200,
+              foreground: '#ffb000',       // Change the QR code color here
+              background: 'transparent'      // Optionally change the background color
+          });
+      });
+    </script>
+
+</html>

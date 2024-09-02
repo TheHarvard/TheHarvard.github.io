@@ -27,6 +27,7 @@ console.log("typer.js called");
     function typeWriter() {
         let charactersToBeRendered = "";
         let charactersToBeAppended = "";
+        let charactersToBePrepended = "<br>";
         stopflag = stopOnNextLoopflag;
         stopOnNextLoopflag = false;
         //set scroll flag the loop after singleScreenStopFlag is set
@@ -44,7 +45,8 @@ console.log("typer.js called");
                 stopflag = true;
                 //index-=(2*charactersPerRender)+12;
                 index-=(charactersPerRender)+1;
-                charactersToBeAppended = ' <br><span style=\"white-space: nowrap;\"><button class="blink" onclick="typeWriter()">[ continue ]</button></span>';
+                charactersToBePrepended = ' <span style=\"white-space: nowrap;\"><button class="blink" onclick="typeWriter()">[ continue ]</button></span>';
+                charactersToBeAppended = ' <br><span style=\"white-space: nowrap;\"><button class="blink" onclick="typeWriter()">[ continue ]</button></span><br>';
             }
         }
 
@@ -52,9 +54,9 @@ console.log("typer.js called");
         if (index < htmlString.length) {
 
             if (stopflag) {
-            displayElement.innerHTML = htmlString.substring(0, index + charactersPerRender)  + '</a></details>' + charactersToBeAppended;
+            displayElement.innerHTML = charactersToBePrepended + htmlString.substring(0, index + charactersPerRender)  + '</a></details>' + charactersToBeAppended;
             } else {
-                displayElement.innerHTML = htmlString.substring(0, index + charactersPerRender) + '</a></details>' + charactersToBeAppended + '<span class="blink" style=\"white-space: nowrap;\">█</span>'; // Add charactersToBeRendered to the display
+                displayElement.innerHTML = charactersToBePrepended + htmlString.substring(0, index + charactersPerRender) + '</a></details>' +'<span class="blink" style=\"white-space: nowrap;\">█</span>'+ charactersToBeAppended; // Add charactersToBeRendered to the display
             }
 
             //only scroll when scroll flag is set
@@ -200,7 +202,7 @@ console.log("typer.js called");
 
 
         } else {
-            displayElement.innerHTML = htmlString.substring(0, index)
+            displayElement.innerHTML = "<br>"+htmlString.substring(0, index)
 
             //fire the completion event "typer_done".
             //const eventTarget = new EventTarget();
