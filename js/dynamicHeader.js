@@ -1,3 +1,7 @@
+
+//get current time to set.
+var currentTime = getCurrentTime();
+
 // Function to set a cookie
 function DHsetCookie(name, value, days) {
     var expires = "";
@@ -148,7 +152,14 @@ function dynamicHeader_update() {
     // Retrieve DH list
     let dhList = getDHList();
     
-    headerContent += "<summary>VNA DECK A33.76 - 32240722 21:15:33 Sat.<br>================================================================================</summary>";
+    //headerContent += "<summary>VNA DECK A33.76 - 32240722 21:15:33 Sat.<br>================================================================================</summary>";
+    headerContent += "<summary>VNA DECK A33.76 - ";
+    //headerContent += currentTime;
+    headerContent += timeToISO8601_compact_withDay(currentTime);
+    headerContent += "<br>================================================================================</summary>";
+    //timeToISO8601_compact_withDay(currentRealTime);
+    
+    
     //headerContent += "A: (M-DISK drive 1)<br>";
 
     //Start with A open if there are A files
@@ -305,7 +316,7 @@ function dynamicHeader_update() {
 
     //headerContent += `Open:<br>`;
 
-    headerContent += `==Open:=========================================================================<br>`;
+    headerContent += `==Open:=========================================================================`;
 
 
     // Generate entry for current document
