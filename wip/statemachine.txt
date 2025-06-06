@@ -1,0 +1,158 @@
+
+How to access a endpoint:
+
+ship1/oxygen1/makeToggle
+ship1/oxygen1/makeOff
+ship1/oxygen1/makeOn
+ship1/oxygen1/showOn
+ship1/oxygen1/alarmLowLow
+
+ship1/coolantLoop1/Temperature
+ship1/heatExchange1/Flow
+
+Hierarchy:
+
+Function A
+    Function 1
+        Endpoint 1
+    Function 2
+    Function 3
+Function B
+Function C
+
+
+
+Interface Hardware
+    a physical function on PCB (can be scan multiplexed).
+    Config
+        name/identifier
+        address
+
+Virtual Endpoint
+    A statefull representation of an interface element.
+    Can multiplex to switch actual hardware.
+    Config
+        name/identifier
+        hardware 
+        Mode (dIn, dOut, aIn, aOut, gIn, gOut, 7seg)
+        Multiplex condition
+    Data
+        value (follows hardware 1 to 1 expect when it is multiplexed)
+        blink (blinks value between 1 and 0)
+        sound
+
+Function
+    Main building block, interfaces with endpoints and other functions
+    Config
+        name/identifier
+
+
+
+
+State machine config: (static)
+    Name
+    Parent
+    Default state
+    Transition time (per transition)
+    Event connections
+    PID parameters
+    Static alarm limits (for value)
+
+State machine data (dynamic)
+    current state
+    value
+    PID controller
+
+
+
+input events:
+
+    Update Time (contains time delta)
+
+    make on
+    make off
+    make toggle
+    make cycle3
+    make cycle4
+
+    make faulty (broken, requires timely fix)
+    make unfaulty
+    make available 
+    make unavailable
+    make trip (EMP, brownout, overheat etc)
+
+    update value (direct value input)
+    update increment (increment value)
+    update decrement (decrement value)
+    auto value (the requested value to be used in auto mode)
+    make auto
+    make manual
+
+    Make alarm acknowledged
+
+    make fire
+    make unfire
+
+    sum topics (sums topics to value)
+    integrate? accumulate?
+
+    Multiply with internal value
+
+    update electrical soft limit (when system will trip)
+    update heat delta
+
+
+Output events:
+    state transition (old and new state)
+    current state (current state)
+    Value output (how on the function is)
+    PID output
+
+    Temperature output
+    Electrical output
+
+
+multi state approach:
+    num value
+    bool isUnavailable
+    bool isTripped
+    bool isFaulty
+    bool isAuto
+    bool isFire
+    bool isAlarm
+
+
+States: (simplified)
+
+    On
+        Value is 1
+
+    Auto
+        Value is set to provided input
+
+    Off
+        Value is 0
+
+    Unavailable
+        Off, can not transition to On
+
+    Faulty
+        Off, can not transition to On
+
+    Tripped
+        Off, can reset back to Off
+
+
+Separate:
+    Fire
+        enable fire sup
+
+    No Fire
+        normal
+
+Alarms:
+    HighHigh
+    High
+    None
+    Low
+    LowLow
