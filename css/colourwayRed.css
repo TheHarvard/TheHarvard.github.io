@@ -1,5 +1,7 @@
 :root {
   --osm-colourway-primarycolour: #E00909;
+  --osm-colourway-primarycolour-bright: #E00909;
+  --osm-colourway-primarycolour-dim: #E00909;
 }
 
 body {
@@ -30,6 +32,11 @@ details {
   color:#E00909;
   text-shadow: 0 0 0.2vw #E00909;
   text-decoration-color: #E00909; 
+}
+
+b {
+  color:#E00909;
+  text-shadow: 0 0 0.2vw #E00909;
 }
 
 mark{

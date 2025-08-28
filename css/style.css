@@ -86,9 +86,14 @@ h2 {
   margin-left: 2vw;
 }
 h3 { 
-  font-weight: bold;
+  font-weight: normal; /*Breaks monospace*/
   text-decoration-line: none;
   margin-left: 1vw;
+}
+
+b, strong { 
+  font-weight: normal; /*Breaks monospace*/
+  text-decoration-line: underline;
 }
 
 p,
