@@ -1,26 +1,34 @@
 <!DOCTYPE html>
 <html>
-  <head>
-      <link class="init" href="../css/style.css" rel="stylesheet" type="text/css" />
-      <script src="../js/populateHTML.js"></script>
-      <title>crashtester.exe</title>
-      <size>4</size>
+    <head>
+        <link class="init" href="../css/style.css" rel="stylesheet" type="text/css" />
+        <script src="../js/populateHTML.js"></script>
+        <title>crashtester.exe</title>
+        <size>23</size>
         <actions>[
-            {"name":"Run","script":"updateUrlAndReload({ fromDH: '',scan1: 'crashtester.exe' })"}
+            {"name":"Run","script":"updateUrlAndReload({ fromDH: '',translate1: 'AutoLexi.exe' })"}
             ]</actions>
     </head>
+    <body>
 
-  <body>
+<p showIf="scan1">[<span replaceWith="scan1"></span>: This is the readme for the AutoLexi.exe program ]</p>
 
-<type-speed-vfast></type-speed-vfast>
+<pre>AutoLexi.exe is a terminal tool designed for efficient translation of files
+from one language to another. It can be run directly from the control bar
+and operates seamlessly on open files.
 
-<pre>
+Key Features:
+- Effortlessly translates text documents between languages.
+- Supports a wide range of file formats, ensuring versatility.
+- Large language compatibility at a small memory footprint.
 
-If you can see this i did not crash!
+Usage:
+1. Ensure the file to be translated is open.
+2. Run AutoLexi.exe from the control bar above.
+3. Save the translated file if desired.
 
+For detailed instructions and troubleshooting, contact your it department.
 </pre>
-
-<p showif="scan1">[<span replaceWith="scan1"></span>: This is the crashtester! ]</p>
 
 <p>
 هذا مثال ترجمة.<span showIf="translate1"> (<span replaceWith="translate1"></span> MSA: "This is an example translation.")<br></span><br>
