@@ -213,8 +213,116 @@ function conditionalFormatting_removeURLTime_andReload() {
 }
 
 
+
+
+
+
 console.log("conditionalFormatting.js called")
 var conditionalFormatting_currentUniverseTime = getCurrentTime();
 // Call the cf_toggleElements function only on page load.
 conditionalFormatting_update();
+
+console.log("conditionalFormatting.js- checking rotation")
+
+const match = document.cookie.match(/(?:^|;\s*)renderrot=(90|180|270)/);
+if (match) {
+    const angle = parseInt(match[1], 10);
+    console.log("rotating " + angle);
+    applyRotation(angle);
+}
+
 console.log("conditionalFormatting.js complete")
+
+
+
+
+
+// apply the rotation
+function applyRotation(angle) {
+  // Only wrap once
+  let wrapper = document.getElementById("page-rotator");
+  if (!wrapper) {
+    wrapper = document.createElement("div");
+    wrapper.id = "page-rotator";
+
+    // Move body children into wrapper (but not ::before background)
+    while (document.body.firstChild) {
+      wrapper.appendChild(document.body.firstChild);
+    }
+    document.body.appendChild(wrapper);
+
+    // Body stays as your styled canvas
+    document.body.style.overflow = "hidden"; // avoid double scrollbars
+  }
+
+  // Reset first
+  wrapper.style.transform = "";
+  wrapper.style.width = "";
+  wrapper.style.height = "";
+  wrapper.style.left = "";
+  wrapper.style.top = "";
+
+  // Apply orientation
+  wrapper.style.position = "absolute";
+  wrapper.style.transformOrigin = "top left";
+
+  if (angle === 90) {
+    wrapper.style.transform = "rotate(90deg)";
+    wrapper.style.width = "80vh";
+    wrapper.style.height = "92vw";
+    wrapper.style.left = "98vw";
+    wrapper.style.top = "2vh";
+    wrapper.style.fontSize = "2vh";
+    wrapper.style.lineHeight = "2.6vh";
+    wrapper.style.overflowX  = "scroll";
+    wrapper.style.overflowY  = "visible";
+  } else if (angle === 180) {
+    wrapper.style.transform = "rotate(180deg)";
+    wrapper.style.width = "92vw";
+    wrapper.style.height = "80vh";
+    wrapper.style.left = "98vw";
+    wrapper.style.top = "98vh";
+    wrapper.style.overflowX  = "visible";
+    wrapper.style.overflowY  = "scroll";
+  } else if (angle === 270) {
+    wrapper.style.transform = "rotate(270deg)";
+    wrapper.style.width = "80vh";
+    wrapper.style.height = "92vw";
+    wrapper.style.left = "2vh";
+    wrapper.style.top = "98vw";
+    wrapper.style.fontSize = "2vh";
+    wrapper.style.lineHeight = "2.6vh";
+    wrapper.style.overflowX  = "scroll";
+    wrapper.style.overflowY  = "visible";
+  }
+
+  // remap scroll if sideways
+  if (angle === 90 || angle === 270) {
+    return;
+    document.addEventListener("wheel", function(e) {
+      if (e.shiftKey) return;
+      window.scrollBy({ left: e.deltaY, top: 0 });
+      e.preventDefault();
+    }, { passive: false });
+  }
+}
+
+// listen for keyboard shortcut to rotate render
+  document.addEventListener("keydown", function(e) {
+    if (!(e.ctrlKey && e.shiftKey)) return;
+
+    switch (e.key) {
+      case "ArrowRight": setRotation(90); break;
+      case "ArrowDown":  setRotation(180); break;
+      case "ArrowLeft":  setRotation(270); break;
+      case "ArrowUp":    setRotation(0); break; // reset
+    }
+  });
+
+  function setRotation(angle) {
+    document.cookie = "renderrot=" + angle + "; path=/";
+    location.reload();
+  }
+
+
+  
