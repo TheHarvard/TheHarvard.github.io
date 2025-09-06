@@ -379,7 +379,7 @@ button:disabled{
   position: absolute;
   transform-origin: top left;
   transform: rotate(90deg);
-  width: 97vh;
+  width: 98vh;
   height: 99vw;
   left: 98vw;
   top: 2vh;
@@ -391,7 +391,7 @@ button:disabled{
   position: absolute;
   transform-origin: top left;
   transform: rotate(180deg);
-  width: 97vw;
+  width: 98vw;
   height: 100vh;
   left: 98vw;
   top: 98vh;
@@ -403,7 +403,7 @@ button:disabled{
   position: absolute;
   transform-origin: top left;
   transform: rotate(270deg);
-  width: 97vh;
+  width: 98vh;
   height: 99vw;
   left: 2vw;
   top: 98vh;
