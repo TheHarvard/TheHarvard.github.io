@@ -22,7 +22,7 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   
-  width: 92vw;
+  width: 97vw;
   height: 80vh;
   border: 1px solid transparent;
   margin-left: 2vw;
@@ -31,6 +31,9 @@ body {
   margin-right: 2vw;
 
   cursor: crosshair;
+  
+  overflow-x: hidden;
+  overflow-y: auto;
   
 }
 
@@ -376,28 +379,34 @@ button:disabled{
   position: absolute;
   transform-origin: top left;
   transform: rotate(90deg);
-  width: 80vh;
-  height: 92vw;
+  width: 97vh;
+  height: 99vw;
   left: 98vw;
   top: 2vh;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .rotate-180 {
   position: absolute;
   transform-origin: top left;
   transform: rotate(180deg);
-  width: 92vw;
-  height: 80vh;
+  width: 97vw;
+  height: 100vh;
   left: 98vw;
   top: 98vh;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .rotate-270 {
   position: absolute;
   transform-origin: top left;
   transform: rotate(270deg);
-  width: 80vh;
-  height: 92vw;
+  width: 97vh;
+  height: 99vw;
   left: 2vw;
   top: 98vh;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
