@@ -222,13 +222,19 @@ var conditionalFormatting_currentUniverseTime = getCurrentTime();
 // Call the cf_toggleElements function only on page load.
 conditionalFormatting_update();
 
-console.log("conditionalFormatting.js- checking rotation")
+console.log("conditionalFormatting.js- checking rotation");
 
-const match = document.cookie.match(/(?:^|;\s*)renderrot=(90|180|270)/);
-if (match) {
-    const angle = parseInt(match[1], 10);
+const renderrot_angle= cf_getCookie("renderrot");
+console.log("renderrot_angle: "+renderrot_angle);
+
+if (renderrot_angle) {
+    const angle = parseInt(renderrot_angle, 10);
+    if (angle === 90 || angle === 180 || angle === 270) {
     console.log("rotating " + angle);
     applyRotation(angle);
+    }
+} else {
+
 }
 
 console.log("conditionalFormatting.js complete")
@@ -256,44 +262,50 @@ function applyRotation(angle) {
   }
 
   // Reset first
-  wrapper.style.transform = "";
-  wrapper.style.width = "";
-  wrapper.style.height = "";
-  wrapper.style.left = "";
-  wrapper.style.top = "";
+  //wrapper.style.transform = "";
+  //wrapper.style.width = "";
+  //wrapper.style.height = "";
+  //wrapper.style.left = "";
+  //wrapper.style.top = "";
 
   // Apply orientation
-  wrapper.style.position = "absolute";
-  wrapper.style.transformOrigin = "top left";
+  //wrapper.style.position = "absolute";
+  //wrapper.style.transformOrigin = "top left";
+  wrapper.classList.remove(
+    'rotate-0', 'rotate-90', 'rotate-180', 'rotate-270'
+    );
 
   if (angle === 90) {
-    wrapper.style.transform = "rotate(90deg)";
-    wrapper.style.width = "80vh";
-    wrapper.style.height = "92vw";
-    wrapper.style.left = "98vw";
-    wrapper.style.top = "2vh";
-    wrapper.style.fontSize = "2vh";
-    wrapper.style.lineHeight = "2.6vh";
-    wrapper.style.overflowX  = "scroll";
-    wrapper.style.overflowY  = "visible";
+    wrapper.classList.add(`rotate-${angle}`);
+    //wrapper.style.transform = "rotate(90deg)";
+    //wrapper.style.width = "80vh";
+    //wrapper.style.height = "92vw";
+    //wrapper.style.left = "98vw";
+    //wrapper.style.top = "2vh";
+    //wrapper.style.fontSize = "2vh";
+    //wrapper.style.lineHeight = "2.6vh";
+    //wrapper.style.overflowX  = "scroll";
+    //wrapper.style.overflowY  = "visible";
   } else if (angle === 180) {
-    wrapper.style.transform = "rotate(180deg)";
-    wrapper.style.width = "92vw";
-    wrapper.style.height = "80vh";
-    wrapper.style.left = "98vw";
-    wrapper.style.top = "98vh";
-    wrapper.style.overflowX  = "visible";
-    wrapper.style.overflowY  = "scroll";
+    wrapper.classList.add(`rotate-${angle}`);
+    //wrapper.style.transform = "rotate(180deg)";
+    //wrapper.style.width = "92vw";
+    //wrapper.style.height = "80vh";
+    //wrapper.style.left = "98vw";
+    //wrapper.style.top = "98vh";
+    //wrapper.style.overflowX  = "visible";
+    //wrapper.style.overflowY  = "scroll";
   } else if (angle === 270) {
-    wrapper.style.transform = "rotate(270deg)";
-    wrapper.style.width = "80vh";
-    wrapper.style.height = "92vw";
-    wrapper.style.left = "2vh";
-    wrapper.style.top = "98vw";
-    wrapper.style.fontSize = "2vh";
-    wrapper.style.lineHeight = "2.6vh";
-    wrapper.style.overflowX  = "scroll";
-    wrapper.style.overflowY  = "visible";
+    wrapper.classList.add(`rotate-${angle}`);
+    //wrapper.style.transform = "rotate(270deg)";
+    //wrapper.style.width = "80vh";
+    //wrapper.style.height = "92vw";
+    //wrapper.style.left = "2vh";
+    //wrapper.style.top = "98vw";
+    //wrapper.style.fontSize = "2vh";
+    //wrapper.style.lineHeight = "2.6vh";
+    //wrapper.style.overflowX  = "scroll";
+    //wrapper.style.overflowY  = "visible";
   }
 
   // remap scroll if sideways
@@ -320,9 +332,45 @@ function applyRotation(angle) {
   });
 
   function setRotation(angle) {
-    document.cookie = "renderrot=" + angle + "; path=/";
+    //document.cookie = "renderrot=" + angle + "; path=/";
+    cf_setCookie("renderrot",angle,1)
+    console.log("renderrot=" + angle + "; path=/")
     location.reload();
   }
 
 
+// Function to set a cookie
+function cf_setCookie(name, value, days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+
+// Function to get a cookie
+function cf_getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
+
+function cf_isPortrait(){
+    
+    const renderrot_angle= cf_getCookie("renderrot");
+
+    if (renderrot_angle) {
+        const angle = parseInt(renderrot_angle, 10);
+        if (angle === 90 || angle === 270) {return true;}
+    }
+
+    return false;
+}
   

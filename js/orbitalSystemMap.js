@@ -516,12 +516,19 @@ function scaleStage() {
         const container = stage.container();
         const containerWidth = container.offsetWidth;  // Use the container width for scaling
         const documentWidth = document.documentElement.clientWidth;  // Use the document width for scaling
+        const documentHeight = document.documentElement.clientHeight;  // Use the document width for scaling
 
         //console.log("documentWidth: ", documentWidth);
         //console.log("window.innerWidth: ", window.innerWidth);
 
 
     let width = documentWidth;
+
+    //If the page is rendered in portrait mode, use height instead
+    if (cf_isPortrait()){
+        width = documentHeight;
+    }
+
     //let width = window.innerWidth;
     let scale = width / initialScreenWidth;  // Calculate scale factor based on initial screen width
 
