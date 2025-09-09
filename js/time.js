@@ -380,6 +380,66 @@ function timeToISO8601_compact_withDay(unixTime){
     return stringWithDay;
 }
 
+// Format delta time between two timestamps
+function timeToCountdown(deltaTime, options = {}) {
+    const {
+        includeDays = false,
+        includeMilliseconds = false
+    } = options;
+    
+    // Determine sign
+    const sign = deltaTime >= 0 ? '+' : '-';
+    const absTime = Math.abs(deltaTime);
+    
+    // Calculate time components
+    const totalSeconds = Math.floor(absTime / 1000);
+    const milliseconds = Math.floor(absTime % 1000);
+    
+    if (includeDays) {
+        const days = Math.floor(totalSeconds / (24 * 3600));
+        const hours = Math.floor((totalSeconds % (24 * 3600)) / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        
+        if (includeMilliseconds) {
+            // Format: "+/-DDD:HH:MM:SS.MsMsMs"
+            return `${sign}${days.toString().padStart(3, '0')}:${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${milliseconds.toString().padStart(3, '0')}`;
+        } else {
+            // Format: "+/-DDD:HH:MM:SS"
+            return `${sign}${days.toString().padStart(3, '0')}:${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+    } else {
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        
+        if (includeMilliseconds) {
+            // Format: "+/-HHH:MM:SS.MsMsMs"
+            return `${sign}${hours.toString().padStart(3, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${milliseconds.toString().padStart(3, '0')}`;
+        } else {
+            // Format: "+/-HHH:MM:SS"
+            return `${sign}${hours.toString().padStart(3, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+    }
+}
+
+// Convenience wrapper functions for specific formats
+function timeToCountdown_HMS(deltaTime) {
+    return timeToCountdown(deltaTime, { includeDays: false, includeMilliseconds: false });
+}
+
+function timeToCountdown_HMSms(deltaTime) {
+    return timeToCountdown(deltaTime, { includeDays: false, includeMilliseconds: true });
+}
+
+function timeToCountdown_DHMS(deltaTime) {
+    return timeToCountdown(deltaTime, { includeDays: true, includeMilliseconds: false });
+}
+
+function timeToCountdown_DHMSms(deltaTime) {
+    return timeToCountdown(deltaTime, { includeDays: true, includeMilliseconds: true });
+}
+
 //generate QR code to share current time 
 function timeQR(){
 

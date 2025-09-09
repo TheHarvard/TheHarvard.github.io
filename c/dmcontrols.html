@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <link class="init" href="../css/style.css" rel="stylesheet" type="text/css" />
+      <script src="../js/populateHTML.js"></script>
+      <title>FORBIDDEN DM CONTROLS</title>
+      <size>999</size>
+    </head>
+
+  <body>
+<type-speed-vfast></type-speed-vfast>
+
+    
+<pre>
+================================ TIME CONTROLS =================================
+
+<span id="demo2"> temp </span>
+<span id="demo4"> temp </span>
+<span id="demo3"> temp </span>
+
+<button onclick="timeSetOffset(0)">[ RESET TO ZERO ]</button>
+<button onclick="timeSetOffsetAnimate(0)">[ ANIMATE TO ZERO ]</button>
+
+- Set spesific date (infer offset)
+- Set spesific offset
+- Copy current offset
+- Create countdown
+
+Set time rate:
+<button onclick="setTimeNormal()">[ PLAY  ]</button>
+<button onclick="setTimePaused()">[ PAUSE ]</button>
+
+<button onclick="setTimeSpeed(1)">[ x1 ]                                               </button>
+min:  <button onclick="setTimeSpeed(60)">[ x60 ]       </button><button onclick="setTimeSpeed(-60)">[ x-60 ]                   </button>
+hour: <button onclick="setTimeSpeed(3600)">[ x3600 ]     </button><button onclick="setTimeSpeed(-3600)">[ x-3600 ]                   </button>
+day:  <button onclick="setTimeSpeed(86400)">[ x86400 ]    </button><button onclick="setTimeSpeed(-86400)">[ x-86400 ]                   </button>
+
+Skips (animation)
+<button onclick="timeJumpAnimate(6*timeUnits.seconds,1*timeUnits.seconds)">[ +6s  ]</button>
+<button onclick="timeJumpAnimate(30*timeUnits.seconds,1*timeUnits.seconds)">[ +30s  ]</button>
+<button onclick="timeJumpAnimate(1*timeUnits.minutes,1*timeUnits.seconds)">[ +1m  ]</button>
+<button onclick="timeJumpAnimate(5*timeUnits.minutes,1*timeUnits.seconds)">[ +5m  ]</button>
+<button onclick="timeJumpAnimate(15*timeUnits.minutes,1*timeUnits.seconds)">[ +15m ]</button>
+<button onclick="timeJumpAnimate(1*timeUnits.hours,1*timeUnits.seconds)">[ +1h  ]</button>
+<button onclick="timeJumpAnimate(8*timeUnits.hours,1*timeUnits.seconds)">[ +8h  ]</button>
+<button onclick="timeJumpAnimate(1*timeUnits.days,1*timeUnits.seconds)">[ +1d  ]</button>
+<button onclick="timeJumpAnimate(5*timeUnits.days,5*timeUnits.seconds)">[ +5d  ]</button>
+<button onclick="timeJumpAnimate(10*timeUnits.days,10*timeUnits.seconds)">[ +10d ]</button>
+<button onclick="timeJumpAnimate(1*timeUnits.months,5*timeUnits.seconds)">[ +1m ]</button>
+<button onclick="timeJumpAnimate(3*timeUnits.months,10*timeUnits.seconds)">[ +3m ]</button>
+<button onclick="timeJumpAnimate(1*timeUnits.years,10*timeUnits.seconds)">[ +1y ]</button>
+
+
+
+
+</pre>
+
+<pre>
+============================= COLOURWAY CONTROLS ===============================
+    <button onclick="setColourway('../css/colourwayAmber.css')">[ Amber ]</button>     <button onclick="setColourway('../css/colourwayGreen.css')">[ Green ]</button>    <button onclick="setColourway('../css/colourwayCyan.css')">[ Cyan ]</button>
+    <button onclick="setColourway('../css/colourwayPurple.css')">[ Purple ]</button>    <button onclick="setColourway('../css/colourwayRed.css')">[ Red ]</button>      <button onclick="setColourway('../css/colourwayBlue.css')">[ Blue ]</button>
+    <button onclick="setColourway('../css/colourwayWhite.css')">[ White ]</button>
+
+</pre>
+
+
+
+
+</body>
+
+  <script>
+      // Function to be executed every second
+      function executeEverySecond() {
+          var currentTime = getCurrentTime();
+          var currentRealTime = realTime;
+          document.getElementById('demo2').innerHTML = "real:   "+timeToISO8601_compact_withDay(currentRealTime);
+          document.getElementById('demo3').innerHTML = "offset: "+"T"+ timeToCountdown_DHMSms(mainTimeOffset)+" ("+mainTimeOffset+")";
+          document.getElementById('demo4').innerHTML = "time:   "+timeToISO8601_compact_withDay(currentTime);
+      }
+
+      // Set interval to execute the function every 1000 milliseconds (1 second)
+      setInterval(executeEverySecond, 25);
+  </script>
+
+    </html>

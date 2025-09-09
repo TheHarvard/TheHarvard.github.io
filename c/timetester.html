@@ -62,6 +62,11 @@
         document.getElementById('demo10').innerHTML = timeToISO8601(currentRealTime);
         document.getElementById('demo11').innerHTML = timeToISO8601_compact(currentRealTime);
         document.getElementById('demo12').innerHTML = timeToISO8601_compact_withDay(currentRealTime);
+
+        document.getElementById('demo21').innerHTML = timeToCountdown_HMS(mainTimeOffset);
+        document.getElementById('demo22').innerHTML = timeToCountdown_HMSms(mainTimeOffset);
+        document.getElementById('demo23').innerHTML = timeToCountdown_DHMS(mainTimeOffset);
+        document.getElementById('demo24').innerHTML = timeToCountdown_DHMSms(mainTimeOffset);
     }
 
     // Set interval to execute the function every 1000 milliseconds (1 second)
@@ -78,6 +83,13 @@
 timeToISO8601:                 <span id="demo10"> temp </span>
 timeToISO8601_compact:         <span id="demo11"> temp </span>
 timeToISO8601_compact_withDay: <span id="demo12"> temp </span>
+
+delta time countdowns:
+T<span id="demo3"> temp </span>
+T<span id="demo21"> temp </span>
+T<span id="demo22"> temp </span>
+T<span id="demo23"> temp </span>
+T<span id="demo24"> temp </span>
 </pre>
 
 </pre>
