@@ -99,7 +99,23 @@ function clearDH(name) {
 // Utility function to get DH list from cookie
 function getDHList() {
     var dhListCookie = DHgetCookie("DH_list");
-    return dhListCookie ? JSON.parse(dhListCookie) : [];
+
+    //more resilient approach
+
+    if (!dhListCookie) {
+        return [];
+    }
+
+    try {
+        return JSON.parse(dhListCookie);
+    } catch (e) {
+        console.warn("Invalid DH_list cookie, resetting...", e);
+        DHsetCookie("DH_list", null, 1);
+        return [];
+    }
+
+    //old approach
+    //return dhListCookie ? JSON.parse(dhListCookie) : [];
 }
 
 // Function to clear all DHs

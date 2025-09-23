@@ -6,28 +6,41 @@
         <title>qrShare.exe</title>
         <size>1</size>
         <actions>[
-            {"name":"Run","script":"updateUrlAndReload({ fromDH: '',adBlock1: 'AdVoider.exe' })"}
+            {"name":"Run","script":"updateUrlAndReload({ fromDH: '',qrshare: '/p/qrshare.html' })"}
             ]</actions>
     </head>
+
+      <type-speed-vfast></type-speed-vfast>
+    
+
     <body>
+
+<pre>Generating QR code.........</pre>
+
+      <type-speed-vfast></type-speed-vfast>
               
-      <canvas id="qrcode" style="width: 90vw;height: 90vw;margin: 3vw;"></canvas>
+      <canvas id="qrcode" style="width: 80vw;height: 80vw;margin: 3vw;"></canvas>
 
     </body>
             
     <script>
-        
       document.addEventListener('typer_done', function(event) {
-          const element = document.querySelectorAll('#display #qrcode');
-          const url = window.location.href
-          console.log("QR URL",url)
-          var qr = new QRious({
+          let qrValue = window.location.href; // default
+
+      // Check if ?qrvalue=... exists in the query string
+      const params = new URLSearchParams(window.location.search);
+      if (params.has('qrvalue')) {
+          qrValue = params.get('qrvalue');
+      }
+
+          console.log("QR Value:", qrValue);
+
+          new QRious({
               element: document.getElementById('qrcode'),
-              //element: element,
-              value: url,
+              value: qrValue,
               size: 200,
-              foreground: '#ffb000',       // Change the QR code color here
-              background: 'transparent'      // Optionally change the background color
+              foreground: '#ffb000',
+              background: 'transparent'
           });
       });
     </script>
