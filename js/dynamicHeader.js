@@ -552,7 +552,7 @@ function processOnDiskParameter() {
     const onDiskParam = urlParams.get('onDisk');
 
     if (onDiskParam) {
-        console.log("onDisk is present! processing:");
+        console.log("onDisk is present! processing:"+onDiskParam);
         try {
             // Attempt to parse as JSON array
             let urlList = JSON.parse(onDiskParam);
