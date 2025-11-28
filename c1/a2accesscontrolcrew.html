@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <link class="init" href="../css/style.css" rel="stylesheet" type="text/css" />
+      <script src="../js/populateHTML.js"></script>
+      <title>Access Control</title>
+      <size>9999</size>
+    </head>
+
+
+
+  <body>
+
+    <type-speed-vfast></type-speed-vfast>
+
+<pre>
+<span hideif="time">&lt <a href="a2rsbaseterminal.html">[ BACK ]</a>
+
+================================ ACCESS CONTROL ================================
+
+                          d01
+               __ __ __ __<span id="d01">[L]</span>__ __ __ __           Commands:
+              /                         \          
+             /          LOC-01           \         open d00, ABC-00, all
+            /             d02             \        close d00, ABC-00, all
+           /__ __ __ __ __<span id="d02">[/]</span>__ __ __ __ __\       lock d00, ABC-00, all
+          /    \                       /    \      ulock d00, ABC-00, all
+         /      \                     /      \     
+        | CAB-01 |      BAY-01       | CAB-02 |
+        |   d03 <span id="d03">[/]</span>                 <span id="d04">[/]</span> d04   |
+        |        |                   |        |
+         \      /         d05         \      /
+          \ __ /__ __ __ _<span id="d05">[/]</span>_ __ __ __\ __ /
+          /    \                       /    \
+         /      \                     /      \
+        | CAB-03 |      BAY-02       | CAB-04 |
+        |   d06 <span id="d06">[/]</span>                 <span id="d07">[/]</span> d07   |
+        |        |                   |        |
+         \      /                     \      /
+          \ __ /__ _<span id="d08">[L]</span>__ ___ __<span id="d09">[L]</span>_ __\ __ /
+           \        d08    |    d09        /
+            \              |              /
+             \   TEC-01    |   LAB-01    /
+              \            |            /
+               \           |           /
+                \          |          /
+                 \ __ __ __|__ __ __ /
+                    
+                            
+( type "open d02" )
+/CREW:<input id="commandline" type="text" maxlength="80">
+<span id="commandlineresponse" style="display:block; max-width:80ch; white-space:pre-wrap; word-wrap:break-word; overflow-wrap:break-word;"></span>
+
+
+</pre>
+
+
+
+<script>
+
+    function firstWord(str) {
+        return str.trim().split(/\s+/)[0] || "";
+    }
+    
+    function secondWord(str) {
+        return str.trim().split(/\s+/)[1] || "";
+    }
+
+    document.addEventListener('typer_done', function(event) {
+
+        console.log("Commandline starting");
+        
+        const cli = document.getElementById("commandline");
+        const cliresponse = document.getElementById("commandlineresponse");
+
+        const d01 = document.getElementById("d01");
+        const d02 = document.getElementById("d02");
+        const d03 = document.getElementById("d03");
+        const d04 = document.getElementById("d04");
+        const d05 = document.getElementById("d05");
+        const d06 = document.getElementById("d06");
+        const d07 = document.getElementById("d07");
+        const d08 = document.getElementById("d08");
+        const d09 = document.getElementById("d09");
+
+        //d01.textContent="[?]";
+        //d02.textContent="[?]";
+        //d03.textContent="[?]";
+        //d04.textContent="[?]";
+        //d05.textContent="[?]";
+        //d06.textContent="[?]";
+        //d07.textContent="[?]";
+        //d08.textContent="[?]";
+        //d09.textContent="[?]";
+
+        
+        cli.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                const command = cli.value.toLowerCase();
+                let response = "";
+                console.log("Command:", command);
+
+                cli.value = ""; // clear after enter
+
+                let legalcommand = true;
+                
+
+                let newState = "";
+                switch (firstWord(command)){
+                    case "open":
+                    case "o":
+                        newState = "] [";
+                        response=command + " - Opening ";
+                        break;
+                    case "close":
+                    case "c":
+                        newState = "[/]";
+                        response=command + " - Closing ";
+                        break;
+                    case "lock":
+                    case "l":
+                        //newState = "[L]";
+                        //response=command + " - Locking ";
+                        legalcommand = false;
+                        response=command + " - Locking "+secondWord(command)+" \n    INSUFFICIENT USER PRIVILEGE!";
+                        break;
+                    case "ulock":
+                    case "u":
+                        //newState = "[/]";
+                        //response=command + " - Unlocking ";
+                        legalcommand = false;
+                        response=command + " - Unlocking "+secondWord(command)+" \n    INSUFFICIENT USER PRIVILEGE!";
+                        break;
+                    case "test":
+                    case "t":
+                        newState = "[?]";
+                        response=command + " - Testing ";
+                        break;
+                    default:
+                        legalcommand = false;
+                        response=command + " - Illegal Command";
+                }
+
+                if (legalcommand){
+                    switch (secondWord(command)){
+                        case "d01":case "d1": response=response + "door01\n    INSUFFICIENT USER PRIVILEGE!"; break;
+                        case "d02":case "d2": d02.textContent=newState; response=response + "door02"; break;
+                        case "d03":case "d3": d03.textContent=newState; response=response + "door03"; break;
+                        case "d04":case "d4": d04.textContent=newState; response=response + "door04"; break;
+                        case "d05":case "d5": d05.textContent=newState; response=response + "door05"; break;
+                        case "d06":case "d6": d06.textContent=newState; response=response + "door06"; break;
+                        case "d07":case "d7": d07.textContent=newState; response=response + "door07"; break;
+                        case "d08":case "d8": response=response + "door08\n    INSUFFICIENT USER PRIVILEGE!"; break;
+                        case "d09":case "d9": response=response + "door09\n    INSUFFICIENT USER PRIVILEGE!"; break;
+                        case "all":case "a":
+                            //d01.textContent=newState;
+                            d02.textContent=newState;
+                            d03.textContent=newState;
+                            d04.textContent=newState;
+                            d05.textContent=newState;
+                            d06.textContent=newState;
+                            d07.textContent=newState;
+                            //d08.textContent=newState;
+                            //d09.textContent=newState;
+                            response=response + "door01, door02, door03, door04, door05, door06, door07, door08, door09\n    INSUFFICIENT USER PRIVILEGE!";
+                        break;
+                        case "bay-01":case "bay-1":case "bay01":case "bay1":
+                            d02.textContent=newState;
+                            d03.textContent=newState;
+                            d04.textContent=newState;
+                            d05.textContent=newState;
+                            response=response + "door02, door03, door04, door05";
+                        break;
+                        case "bay-02":case "bay-2":case "bay02":case "bay2":
+                            d05.textContent=newState;
+                            d06.textContent=newState;
+                            d07.textContent=newState;
+                            //d08.textContent=newState;
+                            //d09.textContent=newState;
+                            response=response + "door05, door06, door07, door08, door09\n    INSUFFICIENT USER PRIVILEGE!";
+                        break;
+                        case "cab-01":case "cab-1":case "cab01":case "cab1": d03.textContent=newState; response=response + "door03"; break;
+                        case "cab-02":case "cab-2":case "cab02":case "cab2": d04.textContent=newState; response=response + "door04"; break;
+                        case "cab-03":case "cab-3":case "cab03":case "cab3": d06.textContent=newState; response=response + "door06"; break;
+                        case "cab-04":case "cab-4":case "cab04":case "cab4": d07.textContent=newState; response=response + "door07"; break;
+                        case "tec-01":case "tec-1":case "tec01":case "tec1": d08.textContent=newState; response=response + "door08"; break;
+                        case "lab-01":case "lab-1":case "lab01":case "lab1": d09.textContent=newState; response=response + "door09"; break;
+                        case "loc-01":case "loc-2":case "loc01":case "loc2":
+                            //d01.textContent=newState;
+                            d02.textContent=newState;
+                            response=response + "door01, door02\n    INSUFFICIENT USER PRIVILEGE!";
+                        break;
+                        default:
+                            response=command + " - Invalid Argument";
+                    }
+                }
+
+                //cliresponse.textContent="/user: "+response;
+
+                const lines = cliresponse.textContent.split('\n').filter(Boolean);
+                // prepend new response
+                lines.unshift("/CREW: "+response);
+                // clip to 10 lines
+                cliresponse.textContent = lines.slice(0, 10).join('\n');
+
+            }
+        });
+
+        //Set foucs
+        cli.focus();
+
+        // When the browser window/tab gains focus
+        window.addEventListener("focus", () => {
+            cli.focus();
+        });
+
+        // When the user clicks anywhere in the window
+        window.addEventListener("click", () => {
+            cli.focus();
+        });
+
+
+    });
+</script>
+
+</body>
+    </html>

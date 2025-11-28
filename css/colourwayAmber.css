@@ -66,8 +66,6 @@ a:hover,
 a:focus,
 summary:focus,
 summary:hover,
-input:focus,
-input:hover
 textarea:focus,
 textarea:hover,
 button:not([disabled]):focus,
@@ -76,7 +74,7 @@ button:not([disabled]):hover {
   color:#202020;
   background: #ffb000;
   text-shadow: 0 0 0.2vw #202020;
-  box-shadow:  0 0 0.3vw #ffb000, inset 0 0 0.3vw #ffb000;
+  box-shadow:  0 0 0.3vw hsl(41, 100%, 50%), inset 0 0 0.3vw #ffb000;
 }
 
 textarea:hover,

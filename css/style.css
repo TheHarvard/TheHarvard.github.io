@@ -176,7 +176,25 @@ textarea {
   border-radius: 0px;
   font-size: 2vw;
   resize: none;
-  cursor: none;
+}
+
+input {
+  color:#ffb000;
+  text-shadow: 0 0 0.2vw #ffb000;
+
+  background-color: transparent;
+  box-shadow:  0 0 0.3vw #ffb00000, inset 0 0 0.3vw #ffb00000;
+  width: 100%;
+  /*height: 150px;*/
+  padding: 0px 0px;
+  box-sizing: border-box;
+  border: 0.5vw solid #ffb00000;
+  border-radius: 0px;
+  font-size: 2vw;
+  resize: none;
+
+  caret-color: #ffb000;
+  caret-shape: block;
 }
 
 button { 
@@ -203,8 +221,6 @@ a:hover,
 a:focus,
 summary:focus,
 summary:hover,
-input:focus,
-input:hover
 textarea:focus,
 textarea:hover,
 button:not([disabled]):focus,
@@ -215,6 +231,13 @@ button:not([disabled]):hover {
   background: #ffb00000;
   text-shadow: 0 0 0.2vw #202020;
   box-shadow:  0 0 0.3vw #ffb00000, inset 0 0 0.3vw #ffb00000;
+}
+
+
+input:focus,
+input:hover{
+  /*focus for tabindex navigation*/
+  outline: none;
 }
 
 
