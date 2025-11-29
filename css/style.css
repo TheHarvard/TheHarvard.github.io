@@ -1,6 +1,7 @@
 
 /*Import Iosevka font definitions*/
 @import url("../fonts/PkgWebFont-IosevkaFixedSS11-33.2.8/IosevkaFixedSS11.css");
+@import url("../fonts/ibmplex/ibmplexdefinitions.css");
 
 
 :root {
@@ -74,7 +75,7 @@ size {
   font-size: 2.45vw;
   line-height: 2.6vw;
   */
-  font-family: "Noto Sans Mono","Iosevka Fixed SS11 Web",monospace;
+  font-family: "IBM PLEX MONO","Noto Sans Mono","Iosevka Fixed SS11 Web",monospace;
   font-size: 2vw;
   line-height: 2.6vw;
  }
