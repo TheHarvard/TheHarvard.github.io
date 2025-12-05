@@ -373,7 +373,7 @@ function dynamicHeader_update() {
     let linkContent="";
 
     //add dh actions
-    //console.log(dh.name,dh.actions);
+    console.log("384284982 "+dh.name,dh.actions);
     if (Array.isArray(dh.actions)){
         //console.log("IS AN ARRAY!");
         dh.actions.forEach(function(dhAction){
@@ -423,20 +423,54 @@ function DH_get_currentPage(){
     
     {
         // Scoped block to check/calculate title, size and actions
-        const nameElement = document.querySelector('title');
-        if (nameElement) {
-        dh.name = nameElement.textContent;
-        } 
-        const sizeElement = document.querySelector('size');
-        if (sizeElement) {
-        dh.size = sizeElement.textContent;
-        } 
-        const actionsElement = document.querySelector('actions');
-        if (actionsElement) {
-        //console.log("actions: ",actionsElement.textContent)
-        dh.actions = JSON.parse(actionsElement.textContent);
-        //console.log("actions parsed: ",dh.actions)
-        } 
+        const urlObj = new URL(dh.url); 
+
+        //override name if dhtitle parameter is present in url
+        const dhtitle = urlObj.searchParams.get('dhtitle');
+        if (dhtitle) {
+            dh.name=dhtitle
+        } else {
+            //name / title
+            const nameElement = document.querySelector('title');
+            if (nameElement) {
+                dh.name = nameElement.textContent;
+            }
+        }
+
+        //override size if dhsize parameter is present in url
+        const dhsize = urlObj.searchParams.get('dhsize');
+        if (dhsize) {
+                dh.size=dhsize
+        //only use document if agrument is not present
+        //if it is present but empty use calculated size
+        } else if (dhsize===null){
+            //size
+            const sizeElement = document.querySelector('size');
+            if (sizeElement) {
+                dh.size = sizeElement.textContent;
+            }
+        }
+
+
+        //override actions if dhactions parameter is present in url
+        const dhactions = urlObj.searchParams.get('dhactions');
+        //console.log("!!!!!!!!! dhactions: ",dhactions)
+        if (dhactions) {
+            //complicated json parsing from url parameter......
+            //dh.actions=dhactions
+        //only use document if agrument is not present
+        //if it is present but empty supress document
+        } else if (dhactions===null){
+            //actions
+            const actionsElement = document.querySelector('actions');
+            if (actionsElement) {
+                //console.log("actions: ",actionsElement.textContent)
+                dh.actions = JSON.parse(actionsElement.textContent);
+                //console.log("actions parsed: ",dh.actions)
+            }
+        }
+
+
     }
     
     {

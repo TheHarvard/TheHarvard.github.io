@@ -9,7 +9,7 @@
 
   <body>
 
-<pre>Welcome Crewmemember [NAME HERE]!
+<pre showIf="c1a2=crew">Welcome CREWMEMBER <span replaceWith="c1a2name">[NAME HERE]</span>!
 
 It is [TIME FETCH ERROR] the [TIME FETCH ERROR] of [TIME FETCH ERROR],[TIME FETC
 H ERROR] and the weather is [WEATHER FETCH ERROR]!    <type-sleep></type-sleep>
@@ -20,27 +20,32 @@ H ERROR] and the weather is [WEATHER FETCH ERROR]!    <type-sleep></type-sleep>
 
 <type-speed-vfast></type-speed-vfast>// DASHBOARD ///////////////////////////////////////////////////////////////////
 
-<a href="a2accesscontrolcrew.html">> Access Control</a>    <a href="a2crewtrak.html">> Lighting</a>
+<a href="a2accesscontrolcrew.html">> Access Control</a>    <a href="a0memoryfailure.html">> Lighting</a>
 
 
 // PERSONAL ////////////////////////////////////////////////////////////////////
 
-<a href="a2crewtrak.html">> NOVA MAIL</a>         <a href="a2crewtrak.html">> Personal files</a>
+Currently logged in as: CREWMEMBER <span replaceWith="c1a2name">[NAME HERE]</span>
+<span showIf="c1a2name=M.Moreau"><a href="a0memoryfailure.html">> NOVA MAIL</a>         <a href="a0memoryfailure.html">> Personal files</a>
+</span><span showIf="c1a2name=A.Inada"><a href="a0memoryfailure.html">> NOVA MAIL</a>         <a href="a0memoryfailure.html">> Personal files
+</a></span><span showIf="c1a2name=N.Park"><a href="a0memoryfailure.html">> NOVA MAIL</a>         <a href="a0memoryfailure.html">> Personal files</a></span>
 
 
 // PROGRAMS ////////////////////////////////////////////////////////////////////
 
-<a href="a2shipwizard.html">> ShipWizard.exe</a>    <a href="a2selftest.html">> selftest.exe</a>       <a href="a2crewtrak.html">> VI_config.exe</a>
-<a href="a2crewtrak.html">> ShipLogger.exe</a>    <a href="a0memoryfailure.html">> NOVA_Vault.exe</a>    <a href="a2crewtrak.html">> CREWTRAK_V3.exe</a>
+<a href="a2shipwizard.html">> ShipWizard.exe</a>    <a href="a2selftest.html">> selftest.exe</a>       <a href="a0accessdenied.html">> VI_config.exe</a>
+<a href="a0accessdenied.html">> ShipLogger.exe</a>    <a href="a0accessdenied.html">> NOVA_Vault.exe</a>    <a href="a2crewtrak.html">> CREWTRAK_V3.exe</a>
+
 
 // NOTES ///////////////////////////////////////////////////////////////////////
 
- /// NOTE: if you don't have access to something you ///
-///      think you shoud, come see me! - inada      ///
+  /// NOTE: if you don't have access to something you ///
+ ///      think you shoud, come see me!              ///
+/// For now i'll be the only administrator - inada  ///
 
 /// NOTE2: Remember you must be logged in - inada  ///
 
-           __ __ __ __[*]__ __ __ __
+           __ __ __ __[L]__ __ __ __
           /                         \
          /          LOC-01           \
         /                             \
@@ -58,7 +63,7 @@ H ERROR] and the weather is [WEATHER FETCH ERROR]!    <type-sleep></type-sleep>
     |       [/]                 [/]       |
     |        |                   |        |    /// NOTE3: reminder:    ///
      \      /                     \      /    /// BAY-01 livingroom   ///
-      \ __ /__ _[*]__ ___ __[*]_ __\ __ /    /// BAY-02 Syths        ///
+      \ __ /__ _[L]__ ___ __[L]_ __\ __ /    /// BAY-02 Synths       ///
        \               |               /    /// CAB-01 cabin, Inada ///
         \              |              /    /// CAB-02 Park         ///
          \   TEC-01    |   LAB-01    /    /// CAB-03 Hayes        ///
@@ -71,26 +76,139 @@ H ERROR] and the weather is [WEATHER FETCH ERROR]!    <type-sleep></type-sleep>
 </pre>
 
 
-<pre>
-
-Welcome Guest!
-
-<a href="a0accessdenied.html">> ShipWizard.exe</a>
-</pre>
 
 
-<pre>
-Welcome ADMINISTRATOR
-
-<span class="blink-fast">** WARNING: MULTIBLE SEVERITY 3 ISSUES! **</span>
 
 
-<a href="a2accesscontrol.html">> Access Control</a>
 
-logs
 
-Research data
 
+<pre hideIf="c1a2=admin"> <span hideIf="c1a2=crew">Welcome Guest!
+
+It is [TIME FETCH ERROR] the [TIME FETCH ERROR] of [TIME FETCH ERROR],[TIME FETC
+H ERROR] and the weather is [WEATHER FETCH ERROR]!    <type-sleep></type-sleep>
+
+
+<type-speed-vfast></type-speed-vfast><span class="blink-fast">** WARNING: MULTIBLE SEVERITY 3 ISSUES! **</span><type-sleep></type-sleep><type-sleep></type-sleep><type-sleep></type-sleep><type-sleep></type-sleep>
+
+
+<type-speed-vfast></type-speed-vfast>// DASHBOARD ///////////////////////////////////////////////////////////////////
+
+<a href="a0accessdenied.html">> Access Control</a>    <a href="a0accessdenied.html">> Lighting</a>
+
+
+// PROGRAMS ////////////////////////////////////////////////////////////////////
+
+<a href="a0accessdenied.html">> ShipWizard.exe</a>    <a href="a0accessdenied.html">> selftest.exe</a>       <a href="a0accessdenied.html">> VI_config.exe</a>
+<a href="a0accessdenied.html">> ShipLogger.exe</a>    <a href="a0accessdenied.html">> NOVA_Vault.exe</a>    <a href="a0accessdenied.html">> CREWTRAK_V3.exe</a>
+
+
+// NOTES ///////////////////////////////////////////////////////////////////////
+
+  /// NOTE: if you don't have access to something you ///
+ ///      think you shoud, come see me!              ///
+/// For now i'll be the only administrator - inada  ///
+
+/// NOTE2: Remember you must be logged in - inada  ///
+
+           __ __ __ __[L]__ __ __ __
+          /                         \
+         /          LOC-01           \
+        /                             \
+       /__ __ __ __ __[/]__ __ __ __ __\
+      /    \                       /    \
+     /      \                     /      \
+    | CAB-01 |      BAY-01       | CAB-02 |
+    |       [/]                 [/]       |
+    |        |                   |        |
+     \      /                     \      /
+      \ __ /__ __ __ _[/]_ __ __ __\ __ /
+      /    \                       /    \
+     /      \                     /      \
+    | CAB-03 |      BAY-02       | CAB-04 |
+    |       [/]                 [/]       |
+    |        |                   |        |    /// NOTE3: reminder:    ///
+     \      /                     \      /    /// BAY-01 livingroom   ///
+      \ __ /__ _[L]__ ___ __[L]_ __\ __ /    /// BAY-02 Synths       ///
+       \               |               /    /// CAB-01 cabin, Inada ///
+        \              |              /    /// CAB-02 Park         ///
+         \   TEC-01    |   LAB-01    /    /// CAB-03 Hayes        ///
+          \            |            /    /// CAB-04 Moreau       ///
+           \           |           /    /// LAB-01 Lab          ///
+            \          |          /    /// LOC-01 Airlock      ///
+             \_________|_________/    /// TEC-01 Technical    ///
+</span></pre>
+
+
+
+
+
+
+
+
+
+
+<pre showIf="c1a2=admin">
+Welcome ADMINISTRATOR <span replaceWith="c1a2name">[NAME HERE]</span>!
+
+It is [TIME FETCH ERROR] the [TIME FETCH ERROR] of [TIME FETCH ERROR],[TIME FETC
+H ERROR] and the weather is [WEATHER FETCH ERROR]!    <type-sleep></type-sleep>
+
+
+<type-speed-vfast></type-speed-vfast><span class="blink-fast">** WARNING: MULTIBLE SEVERITY 3 ISSUES! **</span><type-sleep></type-sleep><type-sleep></type-sleep><type-sleep></type-sleep><type-sleep></type-sleep>
+
+
+<type-speed-vfast></type-speed-vfast>// DASHBOARD ///////////////////////////////////////////////////////////////////
+
+<a href="a2accesscontrol.html">> Access Control</a>    <a href="a0memoryfailure.html">> Lighting</a>
+
+
+// PERSONAL ////////////////////////////////////////////////////////////////////
+
+Currently logged in as: ADMINISTRATOR <span replaceWith="c1a2name">[NAME HERE]</span>
+<a href="a0memoryfailure.html">> NOVA MAIL</a>         <a href="a2logdrhayes.html">> Personal files</a>
+
+
+// PROGRAMS ////////////////////////////////////////////////////////////////////
+
+<a href="a2shipwizard.html">> ShipWizard.exe</a>    <a href="a2selftest.html">> selftest.exe</a>       <a href="a0memoryfailure.html">> VI_config.exe</a>
+<a href="a0memoryfailure.html">> ShipLogger.exe</a>    <a href="a0memoryfailure.html">> NOVA_Vault.exe</a>    <a href="a2crewtrak.html">> CREWTRAK_V3.exe</a>
+
+
+// NOTES ///////////////////////////////////////////////////////////////////////
+
+  /// NOTE: if you don't have access to something you ///
+ ///      think you shoud, come see me!              ///
+/// For now i'll be the only administrator - inada  ///
+
+/// NOTE2: Remember you must be logged in - inada  ///
+
+           __ __ __ __[L]__ __ __ __
+          /                         \
+         /          LOC-01           \
+        /                             \
+       /__ __ __ __ __[/]__ __ __ __ __\
+      /    \                       /    \
+     /      \                     /      \
+    | CAB-01 |      BAY-01       | CAB-02 |
+    |       [/]                 [/]       |
+    |        |                   |        |
+     \      /                     \      /
+      \ __ /__ __ __ _[/]_ __ __ __\ __ /
+      /    \                       /    \
+     /      \                     /      \
+    | CAB-03 |      BAY-02       | CAB-04 |
+    |       [/]                 [/]       |
+    |        |                   |        |    /// NOTE3: reminder:    ///
+     \      /                     \      /    /// BAY-01 livingroom   ///
+      \ __ /__ _[L]__ ___ __[L]_ __\ __ /    /// BAY-02 Synths       ///
+       \               |               /    /// CAB-01 cabin, Inada ///
+        \              |              /    /// CAB-02 Park         ///
+         \   TEC-01    |   LAB-01    /    /// CAB-03 Hayes        ///
+          \            |            /    /// CAB-04 Moreau       ///
+           \           |           /    /// LAB-01 Lab          ///
+            \          |          /    /// LOC-01 Airlock      ///
+             \_________|_________/    /// TEC-01 Technical    ///
 </pre>
 
 </body>

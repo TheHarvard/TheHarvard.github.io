@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <link class="init" href="../css/style.css" rel="stylesheet" type="text/css" />
+      <script src="../js/populateHTML.js"></script>
+      <title>Format Test</title>
+      <size>10</size>
+      <actions>[
+{"name":"?test=action","script":"updateUrlAndReload({ fromDH: '',test: 'action' })"},
+{"name":"?test2=action","script":"updateUrlAndReload({ fromDH: '',test2: 'action' })"}
+               ]</actions>
+    </head>
+
+  <body>
+
+<type-speed-vfast></type-speed-vfast>
+
+<pre>Parameter Shortcuts:
+  <a href='testconditionalformat.html'>&gt no parameters</a>         <a href='testconditionalformat.html?test'>&gt ?test</a>
+                          <a href='testconditionalformat.html?test=Hello'>&gt ?test="Hello"</a>
+                          <a href='testconditionalformat.html?test=123'>&gt ?test="123"</a>
+
+  <a href='testconditionalformat.html?showall'>&gt ?showall</a>
+  <a href='testconditionalformat.html?debug'>&gt ?debug</a>
+  <a href='testconditionalformat.html?time'>&gt ?time</a>
+  <a href='testconditionalformat.html?user'>&gt ?user</a>
+
+  DH override parameters:
+  <a href='testconditionalformat.html?dhsize'>&gt ?dhsize</a>
+  <a href='testconditionalformat.html?dhsize=8'>&gt ?dhsize=8</a>
+
+  <a href='testconditionalformat.html?dhtitle'>&gt ?dhtitle</a>
+  <a href='testconditionalformat.html?dhtitle=OVERRIDE'>&gt ?dhtitle=OVERRIDE</a>
+
+  <a href='testconditionalformat.html?dhactions'>&gt ?dhactions</a>
+
+________________________________________________________________________________
+
+Shows the element if parameter is present.
+    showIf="test": <span showIf="test">ELEMENT</span>
+
+Hides the element if parameter is present.
+    hideIf="test": <span hideIf="test">ELEMENT</span>
+________________________________________________________________________________
+
+Replaces the element with the value of parameter, if present:
+    replaceWith="test": <span replaceWith="test">ELEMENT</span>
+________________________________________________________________________________
+
+Shows the element if parameter equals value, if present.
+    showIf="test=123": <span showIf="test=123">ELEMENT</span>
+
+Hides the element if parameter equals value, if present.
+    hideIf="test=123": <span hideIf="test=123">ELEMENT</span>
+
+</pre>
+
+</body>
+    </html>

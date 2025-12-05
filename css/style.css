@@ -334,7 +334,7 @@ button:disabled{
   cursor:context-menu;
 }
 
-.blink-invert{
+.blink-marked{
   animation: blinker-invert 0.5s linear infinite;
   color:#202020;
   background-color: #ffb00000;
@@ -343,6 +343,25 @@ button:disabled{
   text-shadow: 0 0 0.2vw #ffb00000;
   cursor:context-menu;
 }
+
+.mark-blink{
+  animation: blinker-mark 1s linear infinite;
+  color:#202020;
+  background-color: #ffb00000;
+  text-shadow: 0 0 0.3vw #202020;
+  box-shadow:  0 0 0.3vw #ffb00000, inset 0 0 0.3vw #ffb00000;
+  text-shadow: 0 0 0.2vw #ffb00000;
+}
+
+.mark-blink-invert{
+  animation: blinker-mark-invert 1s linear infinite;
+  color:#202020;
+  background-color: #ffb00000;
+  text-shadow: 0 0 0.3vw #202020;
+  box-shadow:  0 0 0.3vw #ffb00000, inset 0 0 0.3vw #ffb00000;
+  text-shadow: 0 0 0.2vw #ffb00000;
+}
+
 
 @keyframes blinker {
   0% { opacity: 1;}
@@ -358,6 +377,22 @@ button:disabled{
   45% { color: #ffb00000;}
   50% { color:#202020;}
   100% { color:#202020;}
+}
+
+@keyframes blinker-mark {
+  0% { background-color:#20202000; color:#ffb000;}
+  1% { background-color: #ffb000; color:#202020;}
+  40% { background-color: #ffb000; color:#202020;}
+  51% { background-color:#20202000; color:#ffb000;}
+  100% { background-color:#20202000;color:#ffb000;}
+}
+
+@keyframes blinker-mark-invert {
+  0% { background-color:#ffb000; color:#202020;}
+  1% { background-color: #20202000; color:#ffb000;}
+  50% { background-color: #20202000; color:#ffb000;}
+  51% { background-color:#ffb000; color:#202020;}
+  100% { background-color:#ffb000;color:#202020;}
 }
 
 

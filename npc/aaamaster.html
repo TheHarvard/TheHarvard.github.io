@@ -3,35 +3,75 @@
   <head>
       <link class="init" href="../css/style.css" rel="stylesheet" type="text/css" />
       <script src="../js/populateHTML.js"></script>
-      <title>person example</title>
+      <title>aaamaster</title>
+      <size>9999</size>
+      <actions>[
+{"name":"Authenticate","script":"updateUrlAndReload({ fromDH: '',name: 'aaamaster' })"}
+               ]</actions>
     </head>
 
   <body>
 
 <pre>
-Name
-Pronouns
-Age
-Death
-Place of birth
-Geneline
+<a href='aaamaster.html?sin&name&birth&death'>show all</a>
 
 
-Gene
-Fingerprint
+DOE       JOHN      THEY/THEM 32200101 MEFOS        8282918291281298128
 
-Imperially recognized privileges:
-- Noble
-- Psyker
-- Synth
-- Etc
 
-Post mortem bioscanner report
+<span id="sin" showIf="sin"     >SIN:              123</span>
+<span id="name" showIf="name"    >NAME:             DOE JOHN
+<span id="name" showIf="name"    >NAME:             DOE JOHN
+PRONOUNS:         THEY THEM</span>
+<span id="birth" showIf="birth"   >TIME OF BIRTH:    32200101
+<span id="birth" showIf="birth"   >TIME OF BIRTH:    32200101
+PLACE OF BIRTH:   MEFOS MERIS</span>
 
-Authenticator
+<span id="death" showIf="death"   >TIME OF DEATH:    32500101
+PLACE OF DEATH:   MEFOS MERIS</span>
+
+<span showIf="sygnet">
+  nobility
+</span>
+
+<span showIf="sygnet">
+  psyker
+</span>
+
+<span showIf="print">
+  fingerprints
+</span>
+
+<span showIf="dna">
+  geneline, genetic conditions
+</span>
+
+<span showIf="autopsy">
+CAUSE OF DEATH
+</span>
+
+
+
+
+<span showIf="com">
+  Synth commissioning
+</span>
+
+<span showIf="dcom">
+  Certificate of decommissioning
+</span>
+
+<span showIf="dact">
+  Synth deactivation phrases
+</span>
+
+<span showIf="insurance">
+  Synth insurance/ownership
+</span>
+
+
 
 </pre>
-
 
 </body>
     </html>

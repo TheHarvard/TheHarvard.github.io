@@ -16,28 +16,49 @@ function conditionalFormatting_update() {
     
     // remove elements with hideIf attribute
     document.querySelectorAll('[hideIf]').forEach(element => {
-        const paramName = element.getAttribute('hideIf');
+        //const paramName = element.getAttribute('hideIf');
+        const paramName = element.getAttribute('hideIf').split("=")[0];
+        const paramValue = element.getAttribute('hideIf').split("=")[1];
         console.log("[hideIf]: ",element);
+        //console.log("[paramName]: ",paramName);
+        //console.log("[paramValue]: ",paramValue);
+        //console.log("[params[paramName]]: ",params[paramName]);
         if (params[paramName] !== undefined) {
+
+            //if value is defined (test=123), match that too.
+            if (paramValue !== undefined){
+                if (paramValue !== params[paramName]){return;}
+            }
+
             //element.style.display = 'none';
             element.remove();
             console.log("Removed!");
+            
 
         }
     });
 
     // keep elements with showIf attribute
     document.querySelectorAll('[showIf]').forEach(element => {
-        const paramName = element.getAttribute('showIf');
+        //const paramName = element.getAttribute('showIf');
+        const paramName = element.getAttribute('showIf').split("=")[0];
+        const paramValue = element.getAttribute('showIf').split("=")[1];
         console.log("[showIf]: ",element);
+        //console.log("[paramName]: ",paramName);
+        //console.log("[paramValue]: ",paramValue);
+        //console.log("[params[paramName]]: ",params[paramName]);
         if (params[paramName] !== undefined) {
-            //element.style.display = 'block';
-            console.log("Spared.");
-        } else {
-            //element.style.display = 'none';
-            element.remove();
-            console.log("Removed!");
+
+            //if value is defined (test=123), match that too.
+            if (paramValue === undefined){return;}
+            if (paramValue === params[paramName]){return;}
+            
         }
+        
+        //element.style.display = 'none';
+        element.remove();
+        console.log("Removed!");
+        
     });
 
     // Replace content based on replaceWith attribute

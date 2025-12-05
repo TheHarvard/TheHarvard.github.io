@@ -114,7 +114,7 @@ button:active {
   text-shadow: 0 0 0.2vw #30F030;
 }
 
-.blink-invert{
+.blink-marked{
   color:#202020;
   background-color: #30F030;
   text-shadow: 0 0 0.3vw #202020;
@@ -126,4 +126,20 @@ button:active {
 .display {
   color:#30F030;
   text-shadow: 0 0 0.2vw #30F030;
+}
+
+@keyframes blinker-mark {
+  0% { background-color:#20202000; color:#30F030;}
+  1% { background-color: #30F030; color:#202020;}
+  40% { background-color: #30F030; color:#202020;}
+  51% { background-color:#20202000; color:#30F030;}
+  100% { background-color:#20202000;color:#30F030;}
+}
+
+@keyframes blinker-mark-invert {
+  0% { background-color:#30F030; color:#202020;}
+  1% { background-color: #20202000; color:#30F030;}
+  50% { background-color: #20202000; color:#30F030;}
+  51% { background-color:#30F030; color:#202020;}
+  100% { background-color:#30F030;color:#202020;}
 }
