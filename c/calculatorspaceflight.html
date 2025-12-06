@@ -12,29 +12,24 @@
 
 <pre>
 
-Constant acceleration calculator:
-This assumed flight paths that accelerate for half the journey,
-and slow down for the other half to both start and end at rest.
+Game mechanics from SWN:
+- Spike Drills costs 1 unit of fuel @ 1000 Credits independent of ship size
+- A standard ship can only hold 1 unit, 2 if configured with some expense
+- Fuel must be bought, unless ship is configured to harvest at some expense
+- All spike drills take 1 unit of fuel, but take 6 days * hex / drive rating
+- Sublight/intrasystem travel takes negligible amounts of fuel
+- Sublight/intrasystem travel takes "a few days at most":
+-- across a region, 6 hours
+-- between any region, 48 hours
+-- travel time is divided by Drive rating (1-6+)
 
-- A - Constant acceleration m/s/s
-- V - Exhaust velocity m/s
-- F - Fuel fraction of total mass %
-- D - Distance m
-- T - Time s
-
-Calculating distance from fuel fraction:
-D = (V^2/4*A) * ln(1/(1-F))^2
-
-Calculating required fuel fraction for a given distance:
-F = 1-e^ (-(2*sqrt(A*D)/V))
-
-Calculate Time from Distance:
-//T = sqrt(2*D/A)
-T = 2*sqrt(D/A)
-
-Calculate Distance from Time:
-//D = A*T^2
-D = (A*T^2)/4
+Implemented mechanics
+- Needed fuel (and cost) scales linearly with ship mass.
+- Fuel can be hydrogen, or collected water ran through electrolyzer.
+- Intrasystem travel consumes significant fuel.
+- Intrasystem travel times are based on 1g constant acceleration.
+- Distinction between space engines, and atmospheric engines
+-- Flying in atmosphere is much much less efficient for an engaging range
 
 
 Benefits of these assumptions and this framework:
@@ -57,6 +52,33 @@ Examples:
 
 
 
+Constant acceleration calculator:
+This assumed flight paths that accelerate for half the journey,
+and slow down for the other half to both start and end at rest.
+
+- A - Constant acceleration m/s/s
+- V - Exhaust velocity m/s
+- F - Fuel fraction of total mass %
+- D - Distance m
+- T - Time s
+
+Calculating distance from fuel fraction:
+D = (V^2/4*A) * ln(1/(1-F))^2
+
+Calculating required fuel fraction for a given distance:
+F = 1-e^ (-(2*sqrt(A*D)/V))
+
+Calculate Time from Distance:
+T = 2*sqrt(D/A)
+
+Calculate Distance from Time:
+D = (A*T^2)/4
+
+
+
+
+
+
 
 Missing:
 
@@ -75,6 +97,20 @@ Missing:
 - Energy needed to match orbits (negligible)
 - time to switch between hover and orbit. 15 min ish
 - time to take off and land on planet surface. 3min ish
+
+
+
+Atmospheric flights
+
+Breguet range equation 
+Range = Lift/Drag * speed/fuelConsumption * ln(W_initial/Weight_final)
+Range ∝ Speed/FuelEfficiencyTerm * ln(1/1-FuelMassFraction)
+Assume constant speed
+
+Car range:
+Range ∝ FuelWeight / (VehicleWeight+FuelWeight * Speed * speed)
+Assume constant speed
+
 
 </pre>
 

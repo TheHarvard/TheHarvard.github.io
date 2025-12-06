@@ -141,6 +141,7 @@ async function loadScriptsSequentially() {
         await loadScript('../js/dynamicHeader.js');
         await loadScript('../js/colourwaySelector.js');
         await loadScript('../js/orbitalSystemMap.js');
+        await loadScript('../js/travelling.js');
         console.log('All scripts loaded successfully');
     } catch (error) {
         console.error(error.message);
