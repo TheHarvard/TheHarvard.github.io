@@ -100,6 +100,70 @@ Missing:
 
 
 
+
+
+
+
+Current effective range considering
+- Max safe acceleration
+- Min safe acceleration
+- Max safe deacceleration
+- Min safe deacceleration
+- Current remaining time (limited by food, or custom limit)
+- Engine exhaust velocity
+- Current fuel mass fraction
+
+How far can the vessel get in the specified time,
+without breaking acceleration limits. (spend longest time at high speed)
+
+
+
+
+
+
+
+
+
+
+
+
+Shorthand table
+
+C = 0.002004 AU / S
+1 AU in 499 Seconds or 8.32 minutes
+
+
+Distance        - 0.002AU - 0.1AU - 1AU - 2AU - 40 AU
+Light delay     -                   499s
+Traveltime (1G) - 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Atmospheric flights
 
 Breguet range equation 
@@ -110,6 +174,56 @@ Assume constant speed
 Car range:
 Range ∝ FuelWeight / (VehicleWeight+FuelWeight * Speed * speed)
 Assume constant speed
+
+
+
+
+
+
+Habitable zone and solar power per square meter
+
+Star types, luminocity (relative to sun)
+M 0.0001-0.08
+K 0.08-0.4
+G 0.6-1.6
+
+Suns luminocity 3.828 E^26 W
+Earth solar flux 1361 W/m^2
+
+
+Habitable zone for sunlike stars: 0.95AU (ocean evaporation) to 1.67AU (CO2 condensation)
+
+Stellar output
+Stellar power relative to distance
+
+Stellar flux = Luminocity / 4 * pi * Distance^2 
+decides:
+- Planet habitability
+- Equilibrium temperature of ships
+- Available power
+
+Stellar flux, Hotter habitable limit ~ 1500 to 1600
+Stellar flux, Colder habitable limit ~ 475 - 490
+Stellar flux, 
+
+
+
+Converting solar flux to equilibrum temperature
+(assuming uniform sphere)
+
+(Flux - AlbedoReflectedFluxFraction) / (4 * Emissivity * SB_Constant)
+
+
+Thermal time constant - 63.2% (aka 1/e)
+It takes the same time for temeprature to 
+
+
+Thermal conductivity =  Conductivity * TempDelta
+Radiation "conductivity" =  Conductivity * TempDelta
+
+
+
+
 
 
 </pre>
