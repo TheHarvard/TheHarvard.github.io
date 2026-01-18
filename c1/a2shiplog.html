@@ -3,13 +3,13 @@
   <head>
       <link class="init" href="../css/style.css" rel="stylesheet" type="text/css" />
       <script src="../js/populateHTML.js"></script>
-      <title>Personal Notes, Dr. Park</title>
-        <size>12</size>
+      <title>ShipLogger.exe</title>
     </head>
 
   <body>
-<pre hideIf="repair1">
+
 <type-speed-vfast></type-speed-vfast>
+<pre>
 41 63 63 6F 72 64 69 6E 67 20 74 6F 20 61 6C 6C 20 6B 6E 6F 77 6E 20 6C 61 77 73
 20 0A 0A 6F 66 20 61 76 69 61 74 69 6F 6E 2C 20 0A 0A 0A 74 68 65 72 65 20 69 73
 20 6E 6F 20 77 61 79 20 61 20 62 65 65 20 0A 73 68 6F 75 6C 64 20 62 65 20 61 62
@@ -40,82 +40,39 @@
 68 65 20 73 74 61 69 72 73 29 20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 
                                    ! WARNING !
-                                 FILE CORRUPTED!
+                           FILE TOO LARGE TO DISPLAY!
 ================================================================================
+</pre>
 
 
 <pre showIf="scan1">
 ================================================================================
 <span replaceWith="scan1"></span>
-    > This file appears to be damaged.
+    > This is the raw database of a technical log.
     > 
-    > Partial Restoration might be possible.
+    > Several entries around 3225-10-11 10:12 appear to have been edited.
+    > Restoration might be possible.
     > 
 
-</pre>
 
-</pre>
-
-<pre showIf="repair1">
+<span showIf="repair1">
 ================================================================================
 <span replaceWith="repair1"></span>
 
-    > Corruption detected.
+    > RESTORED EDITS:
     > 
-    > Partial repair possible...................................................
-    > .............................................................
-    > Done! 
+3225-10-11 10:11:32 user connected: super@nova.vna
+3225-10-11 10:12:53 super@nova.vna: system.promoteUser R.Hayes@nova.vna -"admin"
+3225-10-11 10:12:06 system.demoteUser A.Inada@nova.vna -"crew"
+3225-10-11 10:12:44 system.deleteUser super@nova.vna
+3225-10-11 10:12:44 user dissconnected: super@nova.vna
+3225-10-11 10:13:26 user connected: R.Hayes@nova.vna
+3225-10-11 10:12:59 R.Hayes@nova.vna: accessControl.exe
     > 
-
-================================================================================
-
-[RESTORED FILE START]
-    
-Dr Nikolai Park, Personal notes.
-
-"The Columns" Biome:
-A tower seemingly build by the continual deposits of triskellion exoskelletons.
-<a href="a0memoryfailure.html">> Triskellion</a>
-
-"Reed Forest" Biome:
-Strange mono-biome, unclear why the reeds dominate
-
-"Fields" Biome:
-Tombstone crabs clear the fields at night.
-<a href="a0memoryfailure.html">> Tombstone Crab</a>
-
-"Cauldron Jungle" Biome:
-Very dense and bio-diverse jungle.
-<a href="a0memoryfailure.html">> Cryobulbs</a>
-<a href="a0memoryfailure.html">> Venusian Bear Trap</a>
-<a href="a0memoryfailure.html">> Slick Mould</a>
-<a href="a0memoryfailure.html">> Jungle Crawler</a>
-<a href="a0memoryfailure.html">> Decapede</a>
-
-"Cryogenic" Biome:
-Intratidal pools of chilled fluid appartently still hosts ecosystems.
-<a href="a0memoryfailure.html">> Floaters</a>
-<a href="a0memoryfailure.html">> Stalkers</a>
-<a href="a0memoryfailure.html">> Fractal Sponge</a>
-
-"Tunnels" Biome:
-<a href="a0memoryfailure.html">> Ice Hydra</a>
-<a href="a0memoryfailure.html">> Native</a>
-
-* note to self
-Ice Hydra more lethal than first expected.
-Post expedition description of Native keept in research vault.
-
-[RESTORED FILE END]<span showIf="scan1">
-================================================================================
-<span replaceWith="scan1"></span>
-    > This file appears to be a index of personal notes.
-    > 
-    > The individual notes however appear to be unaccessable.
-    > 
-
 </span>
 </pre>
+
+
 
 </body>
     </html>
