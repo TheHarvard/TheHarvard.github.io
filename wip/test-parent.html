@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Parent Window - Popup Tester</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        #messages {
+            margin-top: 20px;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .message {
+            padding: 5px;
+            margin: 5px 0;
+            background: white;
+            border-left: 3px solid #007bff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Parent Window - Popup Tester</h1>
+    <button id="openPopup">Open State Manager Popup</button>
+    <div id="messages">
+        <p>Messages from popup will appear here...</p>
+    </div>
+
+    <script>
+        let popup = null;
+        const messagesDiv = document.getElementById('messages');
+
+        document.getElementById('openPopup').addEventListener('click', () => {
+            popup = window.open(
+                'http://localhost:3000',
+                'stateManager',
+                'width=600,height=400'
+            );
+        });
+
+        // Listen for messages from popup
+        window.addEventListener('message', (event) => {
+            // In production, always verify event.origin!
+            // if (event.origin !== 'http://localhost:3000') return;
+            
+            const messageEl = document.createElement('div');
+            messageEl.className = 'message';
+            messageEl.textContent = `${new Date().toLocaleTimeString()}: ${JSON.stringify(event.data)}`;
+            messagesDiv.appendChild(messageEl);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        });
+    </script>
+</body>
+</html>
