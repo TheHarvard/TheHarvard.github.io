@@ -1,0 +1,143 @@
+:root {
+  --osm-colourway-primarycolour: #a7d0cc;
+  --osm-colourway-primarycolour-bright: #a7d0cc;
+  --osm-colourway-primarycolour-dim: #a7d0cc;
+}
+
+body {
+  background-image: radial-gradient(
+    #0c312a, #1b3f3d
+  );
+}
+
+body::before{
+  background: repeating-linear-gradient(
+    transparent 0.0px, 
+    #20202040 0.05vw, 
+    #20202040 0.05vw, 
+    transparent 0.10vw, 
+    transparent 0.30vw);
+}
+ 
+p,
+code,
+pre,
+h1,
+h2,
+h3,
+div,
+a,
+summary,
+details { 
+  color:#c3ece8;
+  text-shadow: 0 0 0.2vw #a7d0cc;
+  text-decoration-color: #a7d0cc; 
+}
+
+b {
+  color:#c3ece8;
+  text-shadow: 0 0 0.2vw #a7d0cc;
+}
+
+mark{
+  color:#202020;
+  background-color: #a7d0cc;
+  text-shadow: 0 0 0.3vw #202020;
+  box-shadow:  0 0 0.3vw #a7d0cc, inset 0 0 0.3vw #a7d0cc;
+}
+
+textarea {
+  color:#a7d0cc;
+  text-shadow: 0 0 0.2vw #a7d0cc;
+
+  background-color: transparent;
+  box-shadow:  0 0 0.3vw #a7d0cc, inset 0 0 0.3vw #a7d0cc;
+  border-color:#a7d0cc;
+}
+
+button { 
+  color:#c3ece8;
+  text-shadow: 0 0 0.2vw #a7d0cc;
+  background-color: transparent;
+  border-color: #a7d0cc;
+}
+
+a:hover,
+a:focus,
+summary:focus,
+summary:hover,
+textarea:focus,
+textarea:hover,
+button:not([disabled]):focus,
+button:not([disabled]):hover {
+  /*focus for tabindex navigation*/
+  color:#202020;
+  background: #c3ece8;
+  text-shadow: 0 0 0.2vw #202020;
+  box-shadow:  0 0 0.3vw #a7d0cc, inset 0 0 0.3vw #a7d0cc;
+}
+
+textarea:hover,
+textarea:focus {
+  /*focus for tabindex navigation*/
+  outline: none;
+  color:#202020;
+  background: #c3ece8;
+  text-shadow: 0 0 0.2vw #202020;
+  box-shadow:  0 0 0.3vw #a7d0cc, inset 0 0 0.3vw #a7d0cc;
+}
+
+
+a:active,
+button:active {
+  color:#c3ece8;
+  text-shadow: 0 0 0.3vw #a7d0cc;
+  border-color: #a7d0cc;
+}
+
+/*selection, apparently*/
+
+::selection {
+  background: #c3ece8;
+  color:#202020;
+  text-shadow: 0 0 0.3vw #202020;
+  box-shadow:  0 0 0.3vw #a7d0cc, inset 0 0 0.3vw #a7d0cc;
+}
+
+/*classes*/
+.blink,
+.blink-fast,
+.blink-slow{
+  color:#c3ece8;
+  text-shadow: 0 0 0.2vw #a7d0cc;
+}
+
+.blink-marked{
+  color:#202020;
+  background-color: #c3ece8;
+  text-shadow: 0 0 0.3vw #202020;
+  box-shadow:  0 0 0.3vw #a7d0cc, inset 0 0 0.3vw #a7d0cc;
+  text-shadow: 0 0 0.2vw #a7d0cc;
+}
+
+.content,
+.display {
+  color:#c3ece8;
+  text-shadow: 0 0 0.2vw #a7d0cc;
+}
+
+@keyframes blinker-mark {
+  0% { background-color:#20202000; color:#a7d0cc;}
+  1% { background-color: #a7d0cc; color:#202020;}
+  40% { background-color: #a7d0cc; color:#202020;}
+  51% { background-color:#20202000; color:#a7d0cc;}
+  100% { background-color:#20202000;color:#a7d0cc;}
+}
+
+@keyframes blinker-mark-invert {
+  0% { background-color:#a7d0cc; color:#202020;}
+  1% { background-color: #20202000; color:#a7d0cc;}
+  50% { background-color: #20202000; color:#a7d0cc;}
+  51% { background-color:#a7d0cc; color:#202020;}
+  100% { background-color:#a7d0cc;color:#202020;}
+}

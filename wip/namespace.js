@@ -92,21 +92,21 @@ let jsonState2 = {"transition1":"string","objectElement1":1};
 // - h - 010001
 // - i - 010010
 // - j - 010011
-// - k - 010100
+// - k - 010100 - no 7 segment render
 // - l - 010101
-// - m - 010110
+// - m - 010110 - no 7 segment render
 // - n - 010111
 // - o - 011000
 // - p - 011001
 // - q - 011010
 // - r - 011011
-// - s - 011100
+// - s - 011100 - no 7 segment render
 // - t - 011101
 // - u - 011110
-// - v - 011111
-// - x - 100000
+// - v - 011111 - no 7 segment render
+// - x - 100000 - no 7 segment render
 // - y - 100001
-// - z - 100010
+// - z - 100010 - no 7 segment render
 // - A - 100011
 // - B - 100100
 // - C - 100101
@@ -380,3 +380,70 @@ let jsonState2 = {"transition1":"string","objectElement1":1};
 // - Digital Off
 // - Blink [Period]
 // - InvBlink [Period]
+
+
+
+
+
+
+
+
+
+//Keyboard symbols
+
+//   a b c d e f g h i j k l m n o p q r s t u v w x y z æ ø å
+//s  A B C D E F G H I J K L M N O P Q R S T U V W X Y Z Æ Ø Å
+//a      © Δ €               µ   + \   ® ß þ             * ○ ^
+//as                             ? `     ẞ Þ             '   ~
+//f                              ≠                       ⁑   ≈
+//fs                                                     ⁂   
+
+//   1 2 3 4 5 6 7 8 9 0
+//s  ! " # ¤ % & / ( ) =
+//a  | @ £ $ ÷ √ { [ ] }
+//as ¹ ² ³ ⁴ ⁵ ⁶ ⁷ ⁸ ⁹ ⁰
+//f  F1F2F3F4F5F6F7F8F9F0
+
+//   < , . -
+//s  > ; : _
+//a  ≤ ⁝ · —
+//as ≥ ⁞ ˙ ‾
+//f  ⁺ ⁽ ⁾ ⁻
+//fs       ₋
+
+
+//  escape                                              delete
+//  shift                                                enter
+
+//  control   OS-key   func   space   backspace   alt
+
+
+//   ←    ↓    ↑    →
+//a  home pgd  pgu  end
+
+
+
+// Interrobang ‽
+// Asterism ⁂
+// dubble asterix ⁑
+// dagger
+// circle? ○
+// tricolon ⁝ (⁞)
+
+// tironian et ⁊
+
+// multiplication ×
+// dot ·
+// √
+// subscript ₂ ¾
+// superscript minus ⁻
+      
+// ⟨⟩ 
+
+
+
+
+//(#Outer_Radius-(#Bending_Thickness/2))*2*PI*((#Bending_Angle/deg)/360)
+
+//((#Outer_Radius-(#Bending_Thickness/2))*2*PI*((#Bending_Angle/deg)/360)%#Vane_Pitch)/floor((#Outer_Radius-(#Bending_Thickness/2))*2*PI*((#Bending_Angle/deg)/360)/#Vane_Pitch)
+
