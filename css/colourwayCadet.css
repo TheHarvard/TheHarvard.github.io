@@ -40,9 +40,9 @@ b {
 }
 
 mark{
-  color:#202020;
+  color:#133833;
   background-color: #a7d0cc;
-  text-shadow: 0 0 0.3vw #202020;
+  text-shadow: 0 0 0.3vw #133833;
   box-shadow:  0 0 0.3vw #a7d0cc, inset 0 0 0.3vw #a7d0cc;
 }
 
@@ -71,9 +71,9 @@ textarea:hover,
 button:not([disabled]):focus,
 button:not([disabled]):hover {
   /*focus for tabindex navigation*/
-  color:#202020;
+  color:#133833;
   background: #c3ece8;
-  text-shadow: 0 0 0.2vw #202020;
+  text-shadow: 0 0 0.2vw #133833;
   box-shadow:  0 0 0.3vw #a7d0cc, inset 0 0 0.3vw #a7d0cc;
 }
 
@@ -81,9 +81,9 @@ textarea:hover,
 textarea:focus {
   /*focus for tabindex navigation*/
   outline: none;
-  color:#202020;
+  color:#133833;
   background: #c3ece8;
-  text-shadow: 0 0 0.2vw #202020;
+  text-shadow: 0 0 0.2vw #133833;
   box-shadow:  0 0 0.3vw #a7d0cc, inset 0 0 0.3vw #a7d0cc;
 }
 
@@ -99,8 +99,8 @@ button:active {
 
 ::selection {
   background: #c3ece8;
-  color:#202020;
-  text-shadow: 0 0 0.3vw #202020;
+  color:#133833;
+  text-shadow: 0 0 0.3vw #133833;
   box-shadow:  0 0 0.3vw #a7d0cc, inset 0 0 0.3vw #a7d0cc;
 }
 
@@ -113,9 +113,9 @@ button:active {
 }
 
 .blink-marked{
-  color:#202020;
+  color:#133833;
   background-color: #c3ece8;
-  text-shadow: 0 0 0.3vw #202020;
+  text-shadow: 0 0 0.3vw #133833;
   box-shadow:  0 0 0.3vw #a7d0cc, inset 0 0 0.3vw #a7d0cc;
   text-shadow: 0 0 0.2vw #a7d0cc;
 }
