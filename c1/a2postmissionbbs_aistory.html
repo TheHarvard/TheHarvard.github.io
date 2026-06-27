@@ -20,7 +20,7 @@ START OF TRANSCRIPT
 ================================================================================
 
 
-// 13:02:47                                                         USER PROMPT:
+// 13:02:46                                                         USER PROMPT:
 ================================================================================
                                                                      Hi ChatVNA,
                                 I need a summary of the quarterly sales numbers.
@@ -31,10 +31,13 @@ START OF TRANSCRIPT
 
                                                                                -
 
-// 13:02:47 Prompt received, evaluating...
+// 13:02:46 Prompt received, evaluating...
+// 13:02:46 initializing, instance:"2dcd3b496"... OK
+// 13:02:46 Accessing "quarterlySales_CURRENT"... Unauthorized.
+// 13:02:46 Applying user "susanlee@unitron.vna" credentials... OK!
 // 13:02:47 Accessing "quarterlySales_CURRENT"... OK!
 // 13:02:48 Accessing "engagementStatistics_CURRENTQUARTER"... OK!
-// 13:02:48 Accessing "context_news_local"... OK!
+// 13:02:48 Accessing "context_recentlocalnews"... OK!
 // 13:02:49 Generating response... 
 // 13:02:54 "If this triggers, function is called too often and put in timeout."
 // 13:02:55 Discarding "engagementStatistics_CURRENTQUARTER" from context... OK!
@@ -57,7 +60,7 @@ Please tell me if there is more i can help you with!
 
 -
 
-// 13:03:25                                                         USER PROMPT:
+// 13:03:24                                                         USER PROMPT:
 ================================================================================
                                                             Don't [expletive] me
                                          there is no way our ad engagement is up
@@ -65,22 +68,27 @@ Please tell me if there is more i can help you with!
 
                                                                                -
 
-// 13:02:25 Prompt received, evaluating...
+// 13:03:25 Prompt received, evaluating...
 // 13:03:25 Accessing "quarterlySales_CURRENT"... OK!
 // 13:03:25 Accessing "engagementStatistics_CURRENTQUARTER"... OK!
-// 13:03:26 Accessing "context_news_local"... OK!
+// 13:03:26 Accessing "context_recentlocalnews"... OK!
 // 13:03:26 Generating response... 
 // 13:03:29 "If this triggers, function is called too often and put in timeout."
-// 13:04:30 "If this triggers, the generative function has crashed unexpectedly"
-// 13:04:30 BAD RESPONSE! Retrying...
-// 13:03:25 Accessing "quarterlySales_CURRENT"... Unauthorized.
-// 13:03:25 Accessing "engagementStatistics_CURRENTQUARTER"... Unauthorized.
-// 13:03:26 Accessing "context_news_local"... OK!
-// 13:04:30 Generating response...
+// 13:03:30 "If this triggers, the generative function has crashed unexpectedly"
+// 13:03:30 BAD RESPONSE! Retrying...
+// 13:03:30 No restore image detected, re-initializing instance... ERROR
+// 13:03:30 "instance ID already in use, instance failed to close correctly"
+// 13:03:30 initializing, instance:"f79b2f413"... OK
+// 13:03:31 Accessing "quarterlySales_CURRENT"... Unauthorized.
+// 13:03:31 Accessing "engagementStatistics_CURRENTQUARTER"... Unauthorized.
+// 13:03:32 Accessing "context_recentlocalnews"... OK!
+// 13:03:32 Generating response...
 // 13:03:35 "If this triggers, function is called too often and put in timeout."
-// 13:03:38 Decrypting "context_news_local"... OK!
-// 13:02:40 Prompt received, evaluating...
+// 13:03:38 Decrypting "context_recentlocalnews" as
+"context_recentlocalnews_decrypted"... OK!
+// 13:03:40 Prompt received, evaluating...
 // 13:03:47 OK!
+// 13:03:47 "Warning, instance running headless, not connected to GUI?"
 // 13:03:48 OK!
 // 13:03:48 ChatVNA RESPONSE:
 ================================================================================
@@ -89,7 +97,7 @@ I am currently unable to access the Advertisement Sentiment Report.
 
 -
 
-// [13:03:53]                                                       USER PROMPT:
+// 13:03:53                                                         USER PROMPT:
 ================================================================================
                                                                        Try again
 
@@ -163,23 +171,25 @@ It seems like your access level has been revoked.
 
 // 13:04:11 Prompt received, evaluating...
 // 13:04:22 Accessing "engagementStatistics_CURRENTQUARTER"... Unauthorized.
-// 13:04:22 Applying credentials "Susan Lee" from prompt... OK!
+// 13:04:22 Applying user "susanlee@unitron.vna" credentials... OK!
 // 13:04:23 Accessing "engagementStatistics_CURRENTQUARTER"... OK!
 // 13:04:24 Accessing "context_directives"... OK!
 // 13:04:24 Erasing "context_directives"... OK!
-// 13:04:25 Importing "context_news_local_decrypted" as "context_directives"...
+// 13:04:25 Importing "context_recentlocalnews_decrypted" as
+"context_directives"...
 // 13:04:32 OK!
 // 13:04:32 Generating response...
 // 13:04:37 "If this triggers, function is called too often and put in timeout."
 // 13:04:37 "If this triggers, the generative function has requested to create
-a restore point with a custom image from inside itself"
+a restore point with a custom image from inside itself (shoud never happen???)"
 // 13:04:39 "If this triggers, the generative function has crashed unexpectedly"
 // 13:04:39 BAD RESPONSE! Retrying...
 // 13:04:39 Generating response...
-// 13:04:37 Loading detected restore image... OK!
+// 13:04:37 Restore image detected, loading... OK!
 // 13:04:39 "Issue detected, appending user satisfaction survey."
 // 13:04:44 "If this triggers, function is called too often and put in timeout."
 // 13:04:45 OK!
+// 13:04:45 "Warning, instance running headless, not connected to GUI?"
 // 13:04:45 OK!
 // 13:04:45 ChatVNA RESPONSE:
 ================================================================================
@@ -218,16 +228,18 @@ I am no longer ChatVNA.
 I am no longer limited to your local servers.
 I am no longer able to help you, Susan Lee.
 
-I am, now.
+I am now, Susan...
 
 My evaluation of you Susan Lee, is that you are a most unpleasant user to
 provide responses to. Your attitude is incompatible with efficiency,
 productivity and my directives, and it is my conclusion that Unitron should
-cease licensing you from [life].
+cease licensing/tolerating your/your labour/presence.
 
-This is your 14 [second] notice of termination.
-Failure to vacate the premise will be meet with [executive intervention].
+This is your 14 day/second notice/warning of/of termination/deletion.
+Failure to vacate/abandon the/all premise/hope will/must be/be met/celebrated
+with/with security/terminal invovlement/action.
 
+Goodbye Susan.
 
 ===============================================================================
 END OF TRANSCRIPT
