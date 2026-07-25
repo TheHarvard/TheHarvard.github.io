@@ -5,7 +5,7 @@ import {
 	Color,
 	UniformsLib,
 	UniformsUtils,
-} from 'three';
+} from '../../../build/three.module.js';
 import {
 	context,
 	cubeTexture,

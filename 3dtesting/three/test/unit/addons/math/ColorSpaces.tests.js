@@ -1,4 +1,4 @@
-import { Color, ColorManagement, LinearSRGBColorSpace } from 'three';
+import { Color, ColorManagement, LinearSRGBColorSpace } from '../../../build/three.module.js';
 import {
 	DisplayP3ColorSpace,
 	DisplayP3ColorSpaceImpl,

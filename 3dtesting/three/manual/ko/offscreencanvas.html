@@ -525,7 +525,7 @@ window.addEventListener('touchend', clearPickPosition);
 <p>터치 이벤트의 경우는 <code class="notranslate" translate="no">touches</code> 속성의 <code class="notranslate" translate="no">pageX</code>, <code class="notranslate" translate="no">pageY</code> 속성이 필요하네요.</p>
 <p>이를 처리할 경유(proxy) 객체를 한 쌍 만들어봅시다. 한쪽은 메인 페이지에서 위 이벤트를 받아 필요한 속성을 워커에 넘겨주는 역할을 할 겁니다. 그리고 다른 한쪽은 워커 안에서 이 이벤트를 받아 <a href="/docs/#examples/controls/OrbitControls"><code class="notranslate" translate="no">OrbitControls</code></a>에 넘겨줄 겁니다. 이벤트 객체가 DOM 이벤트와 같은 구조이기에 <a href="/docs/#examples/controls/OrbitControls"><code class="notranslate" translate="no">OrbitControls</code></a>는 이 이벤트가 DOM 이벤트가 아니란 걸 눈치채지 못하겠죠.</p>
 <p>아래는 워커 안의 코드입니다.</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import { EventDispatcher } from 'three';
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import { EventDispatcher } from '../../../build/three.module.js';
 
 class ElementProxyReceiver extends EventDispatcher {
   constructor() {

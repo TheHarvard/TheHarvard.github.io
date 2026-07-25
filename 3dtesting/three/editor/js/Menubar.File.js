@@ -1,5 +1,5 @@
 import { UIPanel, UIRow, UIHorizontalRule } from './libs/ui.js';
-import { FileLoader, PropertyBinding } from 'three';
+import { FileLoader, PropertyBinding } from '../../../build/three.module.js';
 
 function MenubarFile( editor ) {
 

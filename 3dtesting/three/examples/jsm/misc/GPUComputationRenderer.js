@@ -6,7 +6,7 @@ import {
 	RGBAFormat,
 	ShaderMaterial,
 	WebGLRenderTarget
-} from 'three';
+} from '../../../build/three.module.js';
 
 import { FullScreenQuad } from '../postprocessing/Pass.js';
 

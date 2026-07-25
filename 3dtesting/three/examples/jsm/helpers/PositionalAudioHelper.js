@@ -4,7 +4,7 @@ import {
 	LineBasicMaterial,
 	Line,
 	MathUtils
-} from 'three';
+} from '../../../build/three.module.js';
 
 /**
  * This helper displays the directional cone of a positional audio.

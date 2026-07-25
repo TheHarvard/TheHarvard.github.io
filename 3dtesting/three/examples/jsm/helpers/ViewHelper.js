@@ -15,7 +15,7 @@ import {
 	Vector2,
 	Vector3,
 	Vector4
-} from 'three';
+} from '../../../build/three.module.js';
 
 /**
  * A special type of helper that visualizes the camera's transformation

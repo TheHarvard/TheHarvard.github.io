@@ -6,7 +6,7 @@ import {
 	PlaneGeometry,
 	SRGBColorSpace,
 	Color
-} from 'three';
+} from '../../../build/three.module.js';
 
 /**
  * This class can be used to render a DOM element onto a canvas and use it as a texture

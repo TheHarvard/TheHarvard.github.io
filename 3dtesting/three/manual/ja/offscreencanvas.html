@@ -566,7 +566,7 @@ OrbitControlsが必要とする機能をサポートする必要があります�
 ある時はメインページで実行され、全てのイベント、関連するプロパティ値をWorkerに渡します。
 また、ある時はWorkerで実行され、全てのイベント、DOMイベントと同じ構造をもつイベントをメインページに渡すので、OrbitControlsは違いを見分けられません。</p>
 <p>ここにWorker部分のコードがあります。</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import {EventDispatcher} from 'three';
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import {EventDispatcher} from '../../../build/three.module.js';
 
 class ElementProxyReceiver extends EventDispatcher {
   constructor() {

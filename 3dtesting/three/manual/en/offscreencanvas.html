@@ -605,7 +605,7 @@ events and pass them on using events that have the same structure
 as the original DOM events so the OrbitControls won't be able to
 tell the difference.</p>
 <p>Here's the code for the worker part.</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import {EventDispatcher} from 'three';
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import {EventDispatcher} from '../../../build/three.module.js';
 
 class ElementProxyReceiver extends EventDispatcher {
   constructor() {

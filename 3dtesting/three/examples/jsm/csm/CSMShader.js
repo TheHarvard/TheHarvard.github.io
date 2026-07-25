@@ -1,4 +1,4 @@
-import { ShaderChunk } from 'three';
+import { ShaderChunk } from '../../../build/three.module.js';
 
 /**
  * @module CSMShader

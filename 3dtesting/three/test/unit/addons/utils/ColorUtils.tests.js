@@ -1,4 +1,4 @@
-import { Color, ColorManagement } from 'three';
+import { Color, ColorManagement } from '../../../build/three.module.js';
 import * as ColorUtils from '../../../../examples/jsm/utils/ColorUtils.js';
 
 export default QUnit.module( 'Addons', () => {

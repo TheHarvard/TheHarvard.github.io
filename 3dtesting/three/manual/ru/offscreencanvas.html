@@ -557,7 +557,7 @@ window.addEventListener('touchend', clearPickPosition);
 <p>А для событий касания нам понадобятся только <code class="notranslate" translate="no">pageX</code> и <code class="notranslate" translate="no">pageY</code> из свойства <code class="notranslate" translate="no">touches</code>.</p>
 <p>Итак, создадим пару прокси-объектов. Одна часть будет работать на главной странице, получать все эти события и передавать соответствующие значения свойств воркеру. Другая часть будет запускаться в воркере, получать эти события и передавать их, используя события, которые имеют ту же структуру, что и исходные события DOM, поэтому <a href="/docs/#examples/controls/OrbitControls"><code class="notranslate" translate="no">OrbitControls</code></a> не сможет определить разницу.</p>
 <p>Вот код рабочей части.</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import {EventDispatcher} from 'three';
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import {EventDispatcher} from '../../../build/three.module.js';
 
 class ElementProxyReceiver extends EventDispatcher {
   constructor() {

@@ -602,7 +602,7 @@ au worker. L'autre partie s'exécutera dans le worker, recevra ces
 que les événements DOM originaux, de sorte que les OrbitControls ne pourront pas
 faire la différence.</p>
 <p>Voici le code pour la partie worker.</p>
-<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import {EventDispatcher} from 'three';
+<pre class="prettyprint showlinemods notranslate lang-js" translate="no">import {EventDispatcher} from '../../../build/three.module.js';
 
 class ElementProxyReceiver extends EventDispatcher {
   constructor() {

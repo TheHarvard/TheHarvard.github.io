@@ -1,4 +1,4 @@
-import { FileLoader, error } from 'three';
+import { FileLoader, error } from '../../../build/three.module.js';
 
 import * as THREE from 'three';
 import * as TSL from 'three/tsl';

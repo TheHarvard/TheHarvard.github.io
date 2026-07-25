@@ -17,7 +17,7 @@ import {
 	WebGL3DRenderTarget,
 	WebGLCubeRenderTarget,
 	WebGLRenderTarget
-} from 'three';
+} from '../../../build/three.module.js';
 
 // Shared fullscreen-quad scene / camera
 let _scene = null;
