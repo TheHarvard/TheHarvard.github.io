@@ -16,18 +16,33 @@
     </style>
 </head>
 <body>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.185.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.185.0/examples/jsm/"
+        }
+    }
+    </script>
+
     <script type="module">
 
 ////////// Import
-        import * as THREE from './three/build/three.module.js';
-        import { OrbitControls } from './three/examples/jsm/controls/OrbitControls.js';
-        import { GLTFLoader } from './three/examples/jsm/loaders/GLTFLoader.js';
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+        // line
+        import { LineSegments2 } from 'three/addons/lines/LineSegments2.js';
+        import { LineSegmentsGeometry } from 'three/addons/lines/LineSegmentsGeometry.js';
+        import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
 
         // Import post-processing effects
-        import { EffectComposer } from './three/examples/jsm/postprocessing/EffectComposer.js';
-        import { RenderPass } from './three/examples/jsm/postprocessing/RenderPass.js';
-        import { ShaderPass } from './three/examples/jsm/postprocessing/ShaderPass.js';
-        import { UnrealBloomPass } from './three/examples/jsm/postprocessing/UnrealBloomPass.js';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
 
 ////////// Create scene
@@ -50,31 +65,43 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(window.devicePixelRatio);
         document.body.appendChild(renderer.domElement);
-        
-////////// Create geometry and material
+
+
+////////// Test Cube
         const geometry = new THREE.BoxGeometry(1, 1, 1);
+        //const geometry = new THREE.EdgesGeometry(new THREE.BoxGeometry(1, 1, 1),1);
         const material = new THREE.MeshBasicMaterial({
                             color: 0x0049df,
                             wireframe: true
                         });
 
-
-////////// Create mesh
+        //mesh
         const cube = new THREE.Mesh(geometry, material);
+        cube.renderOrder = -10;
         scene.add(cube);
-
 
 ////////// load GLTF
         const loader = new GLTFLoader();
+        var gltfmesh = null;
         loader.load(
             'test.gltf', // path to your GLTF file
             (gltf) => {
                 // Add the loaded model to your scene
-                scene.add(gltf.scene);
+                //scene.add(gltf.scene);
+                gltfmesh = gltf.scene.clone();
+                //gltfmesh.renderOrder = -10;
+
+                gltfmesh.traverse((child) => {
+                if (child.isMesh) {
+                    child.renderOrder = -0;
+                }
+                });
+                
+                scene.add(gltfmesh);
                 
                 // Optional: Set position, scale, or other properties
-                gltf.scene.position.set(0, 0, 0);
-                gltf.scene.scale.set(1, 1, 1);
+                //gltf.scene.position.set(0, 0, 0);
+                gltfmesh.scale.set(10, 10, 10);
             },
             (xhr) => {
                 // Progress callback
@@ -85,6 +112,67 @@
                 console.error('An error happened:', error);
             }
         );
+
+
+
+////////// Unrendered occluder method 
+    {
+        const baseGeometry = new THREE.CylinderGeometry(1, 1, 3, 32, 1);
+        //const baseGeometry = gltfmesh.clone();
+
+        // render mesh as flat occluder
+        const occluderMaterial = new THREE.MeshBasicMaterial({
+        colorWrite: false, // depth-only: occludes hidden edges but paints nothing itself
+        polygonOffset: true,
+        polygonOffsetFactor: 1,
+        polygonOffsetUnits: 1,
+        });
+        const occluder = new THREE.Mesh(baseGeometry, occluderMaterial);
+        occluder.renderOrder = -1;
+        scene.add(occluder);
+
+
+        // assemble pruned edge set
+        let edgesObject = null;
+        
+        function buildEdges(thresholdDeg) {
+            if (edgesObject) {
+                scene.remove(edgesObject);
+                edgesObject.geometry.dispose();
+            }
+            
+            const edgesGeo = new THREE.EdgesGeometry(baseGeometry, thresholdDeg);
+            
+            // Convert to LineSegmentsGeometry so we can use Line2/LineMaterial,
+            // which gives reliable, controllable pixel-width lines (regular
+            // LineBasicMaterial ignores linewidth on most platforms).
+            const positions = edgesGeo.attributes.position.array;
+            const lineGeo = new LineSegmentsGeometry();
+            lineGeo.setPositions(positions);
+            
+            const lineMaterial = new LineMaterial({
+                color: 0xff0000,      // R=255 -- the "on" value
+                //linewidth: parseFloat(document.getElementById('lineWidth').value),
+                linewidth: 1.5,
+                worldUnits: false,     // interpret linewidth in *screen pixels*
+                resolution: new THREE.Vector2(window.innerWidth, window.innerHeight),
+                depthTest: true,
+                depthWrite: true,
+            });
+            
+            edgesObject = new LineSegments2(lineGeo, lineMaterial);
+            edgesObject.computeLineDistances();
+            scene.add(edgesObject);
+            
+            edgesGeo.dispose();
+        }
+        
+        //buildEdges(parseFloat(document.getElementById('thresh').value));
+        buildEdges(0.01);
+
+    }
+
+
 
 
 ////////// Add lights
@@ -150,8 +238,8 @@
         const composer = new EffectComposer(renderer);
         composer.addPass(renderPass);
         //composer.addPass(bloomPass);
-        composer.addPass(chromaticAberrationPass);
-        
+        //composer.addPass(chromaticAberrationPass);
+
 
 ////////// Animation loop
         function animate() {

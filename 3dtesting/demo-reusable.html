@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Hidden-Line Rendering - Reusable Setup</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #00f; }
+</style>
+</head>
+<body>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { setupHiddenLine, updateHiddenLineResolution } from './hiddenLine.js';
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setClearColor(0x000000, 1);
+document.body.appendChild(renderer.domElement);
+
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 50);
+camera.position.set(4, 3, 6);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+
+const scene = new THREE.Scene();
+
+// This uniform must be kept in sync with the canvas size for all
+// fat-line materials created by setupHiddenLine.
+//updateHiddenLineResolution(window.innerWidth, window.innerHeight);
+
+// ---------- test cube: default options ----------
+
+const cube = new THREE.Mesh(
+  new THREE.BoxGeometry(1, 1, 1),
+  new THREE.MeshBasicMaterial({ color: 0x0049df }) // irrelevant, will be replaced
+);
+cube.position.x = -1.5;
+scene.add(cube); // add as normal -- edges come along automatically
+setupHiddenLine(cube); // defaults: red, 1px, renderOrder -100, 1deg threshold
+
+// ---------- GLTF: custom color/width, still just one call ----------
+
+const loader = new GLTFLoader();
+loader.load(
+  'test.gltf',
+  (gltf) => {
+    const gltfmesh = gltf.scene;
+    gltfmesh.position.x = 1.5;
+    gltfmesh.scale.set(10, 10, 10);
+    scene.add(gltfmesh); // add as normal
+
+    setupHiddenLine(gltfmesh, {
+      color: 0x00ff00,
+      lineWidth: 1,
+      occluderRenderOrder: -100,
+      thresholdDeg: 0.2,
+    });
+  },
+  undefined,
+  (error) => console.error('GLTF load failed:', error)
+);
+
+// ---------- resize ----------
+
+window.addEventListener('resize', () => {
+  const w = window.innerWidth, h = window.innerHeight;
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  renderer.setSize(w, h);
+  updateHiddenLineResolution(w, h);
+});
+
+// ---------- render loop ----------
+
+function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  cube.rotation.y += 0.005; // proves edges track the mesh with no manual sync
+  renderer.render(scene, camera);
+}
+animate();
+</script>
+</body>
+</html>
